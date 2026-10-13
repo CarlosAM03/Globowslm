@@ -1,7 +1,6 @@
 import { SectionContainer } from "@/components/shared/SectionContainer";
 import { SectionTitle } from "@/components/shared/SectionTitle";
 import { faq } from "@/content/faq";
-import "./trust-support.css";
 
 export function TrustSupportSection() {
   if (faq.length === 0) return null;

@@ -3,7 +3,6 @@ import { SectionTitle } from "@/components/shared/SectionTitle";
 import { ContextualContact } from "@/components/shared/ContextualContact";
 import { ContactChannelItems } from "@/components/shared/ContactChannelItems";
 import { getContactLinks, site } from "@/config/site";
-import "./contact.css";
 
 export function ContactSection() {
   return (

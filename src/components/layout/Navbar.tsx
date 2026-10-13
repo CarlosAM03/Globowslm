@@ -3,7 +3,6 @@ import { SectionContainer } from "@/components/shared/SectionContainer";
 import { navigation } from "@/config/site";
 import { MobileMenu } from "./MobileMenu";
 import { ButtonLink } from "@/components/ui/Button";
-import "./layout.css";
 
 export function Navbar() {
   return (

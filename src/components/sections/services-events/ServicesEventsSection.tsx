@@ -4,7 +4,6 @@ import { SectionTitle } from "@/components/shared/SectionTitle";
 import { services } from "@/content/services";
 import { galleryCategories, galleryImages } from "@/content/gallery";
 import { ServiceCard } from "./ServiceCard";
-import "./services-events.css";
 
 export function ServicesEventsSection() {
   return (

@@ -4,7 +4,6 @@ import { SectionContainer } from "@/components/shared/SectionContainer";
 import { SectionTitle } from "@/components/shared/SectionTitle";
 import { aboutContent } from "@/content/institutional";
 import { ButtonLink } from "@/components/ui/Button";
-import "./about.css";
 
 export function AboutSection() {
   return (
@@ -12,7 +11,7 @@ export function AboutSection() {
       <SectionContainer>
         <div className="about-grid">
           <figure className="about-figure">
-            <Image src={aboutContent.image.src} width={aboutContent.image.width} height={aboutContent.image.height} alt={aboutContent.image.alt} sizes="(min-width: 1024px) 45vw, (min-width: 768px) 560px, 100vw" className="about-image" />
+            <Image src={aboutContent.image.src} width={aboutContent.image.width} height={aboutContent.image.height} alt={aboutContent.image.alt} sizes="(min-width: 1344px) 560px, (min-width: 1024px) calc((100vw - 224px) / 2), (min-width: 768px) calc((100vw - 128px) / 2), calc(100vw - 48px)" className="about-image" />
             <figcaption className="editorial-note">Licey Márquez · Composición promocional del archivo de la marca, conservada íntegramente.</figcaption>
           </figure>
           <div className="about-copy">

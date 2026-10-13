@@ -52,6 +52,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: landing-browser-evidence
+          include-hidden-files: true
           path: |
             playwright-report/
             test-results/

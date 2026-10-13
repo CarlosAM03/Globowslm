@@ -27,7 +27,7 @@ export function GalleryGrid({ categories, images }: { categories: readonly Galle
       <div ref={viewport} id="gallery-results" className="gallery-viewport" role="region" aria-roledescription="carrusel" aria-label="Portafolio de decoraciones" tabIndex={0} onKeyDown={onKeyDown}>
         <div className="gallery-track">
         {visibleImages.map((image) => <figure key={image.id} className="gallery-card" data-category={image.category}>
-          <div className="gallery-image"><Image src={image.src} width={image.width} height={image.height} alt={image.alt} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" /></div>
+          <div className="gallery-image"><Image src={image.src} width={image.width} height={image.height} alt={image.alt} sizes="(min-width: 1440px) 405px, (min-width: 1024px) calc((100vw - 224px) / 3), (min-width: 768px) calc((100vw - 128px) / 2), calc(100vw - 48px)" /></div>
           <figcaption><span>{categories.find((category) => category.id === image.category)?.label}</span><strong>{image.title}</strong></figcaption>
         </figure>)}
         </div>

@@ -2,7 +2,6 @@ import { SectionContainer } from "@/components/shared/SectionContainer";
 import { SectionTitle } from "@/components/shared/SectionTitle";
 import { galleryCategories, galleryImages } from "@/content/gallery";
 import { GalleryGrid } from "./GalleryGrid";
-import "./gallery.css";
 
 export function GallerySection() {
   return (

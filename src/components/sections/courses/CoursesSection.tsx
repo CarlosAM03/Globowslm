@@ -4,7 +4,6 @@ import { SectionTitle } from "@/components/shared/SectionTitle";
 import { ContextualContact } from "@/components/shared/ContextualContact";
 import { trainingContent } from "@/content/training";
 import { services } from "@/content/services";
-import "./courses.css";
 
 export function CoursesSection() {
   return (
@@ -18,7 +17,7 @@ export function CoursesSection() {
             <p id="training-status" className="editorial-note">Consulta disponibilidad, fechas y precios directamente con Globows LM.</p>
           </div>
           <figure className="training-figure">
-            <Image src={trainingContent.image.src} width={trainingContent.image.width} height={trainingContent.image.height} alt={trainingContent.image.alt} sizes="(min-width: 768px) 50vw, 100vw" />
+            <Image src={trainingContent.image.src} width={trainingContent.image.width} height={trainingContent.image.height} alt={trainingContent.image.alt} sizes="(min-width: 1440px) 616px, (min-width: 1024px) calc((100vw - 208px) / 2), (min-width: 768px) calc((100vw - 144px) / 2), calc(100vw - 48px)" />
             <figcaption className="editorial-note">{trainingContent.imageCaption}</figcaption>
           </figure>
         </div>

@@ -1,4 +1,15 @@
 @import "tailwindcss" source("..");
+@import "../components/layout/floating-contact.css";
+@import "../components/layout/layout.css";
+@import "../components/sections/about/about.css";
+@import "../components/sections/certifications/certifications.css";
+@import "../components/sections/contact/contact.css";
+@import "../components/sections/courses/courses.css";
+@import "../components/sections/gallery/gallery.css";
+@import "../components/sections/hero/hero.css";
+@import "../components/sections/services-events/services-events.css";
+@import "../components/sections/trust-support/trust-support.css";
+@import "../components/shared/contact-channels.css";
 
 @theme inline {
   --color-primary: #b3006d;

@@ -4,7 +4,6 @@ import { SectionContainer } from "@/components/shared/SectionContainer";
 import { ButtonLink } from "@/components/ui/Button";
 import { ContextualContact } from "@/components/shared/ContextualContact";
 import { heroContent } from "@/content/institutional";
-import "./hero.css";
 
 export function HeroSection() {
   return (

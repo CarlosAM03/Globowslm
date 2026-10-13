@@ -1,6 +1,5 @@
 import { Camera, Globe, Mail, MessageCircle, Music2 } from "lucide-react";
 import type { ContactLink } from "@/types/content";
-import "./contact-channels.css";
 
 const icons = { whatsapp: MessageCircle, facebook: Globe, instagram: Camera, tiktok: Music2, email: Mail };
 
