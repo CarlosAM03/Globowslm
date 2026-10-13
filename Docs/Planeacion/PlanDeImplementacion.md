@@ -438,11 +438,6 @@ Seis derivados WebP: Hero, Licey, Baby Shower, XV, Kermés y San Valentín. Orig
 
 **Salida:** Sprints 2 y 3 técnicamente implementados para los insumos disponibles; aceptación funcional/comercial parcial. Noindex permanece. Sprint 4 pendiente: Lighthouse/contraste/lector, credenciales reales, logo/favicon/SEO con dominio aprobado, validación comercial y decisión del responsable sobre riesgo dev. Sin release ni autorización de producción comercial.
 
-## 13. Política de revisiones del plan
-
-Las decisiones D01–D09 de la auditoría se consideran aprobadas. Este plan no introduce nuevas decisiones de negocio. Las propuestas operativas pendientes de ratificación son: metas cuantitativas Lighthouse, herramientas de analítica y dominio definitivo. Registrar cualquier cambio con fecha, responsable, motivo, impacto y versión del plan.
-
-
 ## 13. Corte vigente — Sprints 4–5, 13/10/2026
 
 Los apartados históricos de §12 conservan resultados del momento en que se obtuvieron. Sus referencias a aprobación genérica pendiente, FAQ omitida, canales deshabilitados, tres fotos y 20/22 pruebas fueron superadas por este corte; no deben utilizarse como diagnóstico actual. ERP, ERV1, MID y D01–D09 permanecen intactos.
@@ -459,3 +454,9 @@ Los apartados históricos de §12 conservan resultados del momento en que se obt
 - **Release:** candidata reproducible, CI con npm ci/tipos/lint/unitarias/build/E2E/axe/Lighthouse y artifacts siete días. Vercel CD existente no se reconfigura. No merge por el agente, tag final, indexación pública, release ni Sprint 6. Rollback documentado, no ejecutado/ensayado en producción.
 
 **Salida:** READY WITH CONDITIONS como candidata técnica; no READY para liberar V1 íntegra. Datos concretos pendientes: correo, credenciales/organismos/evidencias y fotografía representativa de acreditación. Decisiones técnicas: aceptación del riesgo dev, dominio permanente, acceso QA al Preview, autorización formal de release/indexación. Detalle, evidencia y puerta de salida en [ReleaseCandidateV1.md](ReleaseCandidateV1.md) y [Evidencias/Sprints4-5](Evidencias/Sprints4-5/).
+
+**Cierre remoto verificado:** código/evidencias `862483b8f6225a06aba66616f66efd5ec4dfdd7a`; [CI push](https://github.com/CarlosAM03/Globowslm/actions/runs/38434878406) y [CI PR](https://github.com/CarlosAM03/Globowslm/actions/runs/38434886707), ambos success, todas las etapas. Artifact E2E: 29 esperadas/29 correctas, cero flaky/omitidas. Lighthouse CI de ese corte: 94/100, A/BP 100, SEO 66; LCP 3134.62/683.03 ms, CLS 0, TBT 52.5/0 ms. Preview del mismo SHA deployment success, observado como Login Vercel, no Landing. PR #4 se creó Draft y fue integrado externamente por CarlosAM03 el 13/10/2026, merge `7a1355d7938579b978722c32417f82fe395d6f08`; no merge del agente ni liberación oficial. Esta actualización solo corrige documentación y no altera código funcional.
+
+## 14. Política de revisiones del plan
+
+Las decisiones D01–D09 de la auditoría se consideran aprobadas. Este plan no introduce nuevas decisiones de negocio. Las propuestas operativas pendientes de ratificación son: metas cuantitativas Lighthouse, herramientas de analítica y dominio definitivo. Registrar cualquier cambio con fecha, responsable, motivo, impacto y versión del plan.
