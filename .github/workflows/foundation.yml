@@ -3,7 +3,7 @@ name: Foundation
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, feature/sprints-1-2-landing-core]
 
 permissions:
   contents: read
