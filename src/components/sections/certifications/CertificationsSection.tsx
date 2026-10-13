@@ -6,7 +6,6 @@ import { certifications as verifiedContent } from "@/content/certifications";
 import { getVerifiedCertifications } from "@/lib/certifications";
 import type { Certification } from "@/types/content";
 import { HorizontalTimeline } from "./HorizontalTimeline";
-import "./certifications.css";
 
 export function CertificationsSection({ entries = verifiedContent }: { entries?: readonly Certification[] }) {
   const verified = getVerifiedCertifications(entries);

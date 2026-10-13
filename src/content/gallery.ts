@@ -1,6 +1,6 @@
 import type { GalleryCategory, GalleryImage } from "@/types/content";
 
-// Classification describes visible decorations, without asserting clients or dates.
+// Decoraciones y captions del preview aprobado; formación permanece separada por D05.
 export const galleryCategories: readonly GalleryCategory[] = [
   { id: "baby-shower", label: "Baby Shower" },
   { id: "xv-anos", label: "XV años" },
@@ -8,7 +8,8 @@ export const galleryCategories: readonly GalleryCategory[] = [
 ];
 
 export const galleryImages: readonly GalleryImage[] = [
-  { id: "baby-shower-rosa", category: "baby-shower", title: "Detalles para una bienvenida", src: "/images/gallery/baby-shower.webp", width: 472, height: 411, alt: "Decoración rosa al aire libre con globos, mariposas y letrero de Baby Shower.", approval: "pending" },
-  { id: "xv-anos-rosa", category: "xv-anos", title: "Una celebración de XV años", src: "/images/gallery/xv-anos.webp", width: 825, height: 555, alt: "Decoración de XV años con globos rosas, flores y números luminosos 15.", approval: "pending" },
-  { id: "tematica-otono", category: "tematicas", title: "Colores de temporada", src: "/images/gallery/decoracion-tematica.webp", width: 827, height: 531, alt: "Montaje decorativo con globos naranjas, hojas de otoño y elementos de cosecha.", approval: "pending" },
+  { id: "baby-shower-rosa", category: "baby-shower", title: "Decoración, sobremesa y centros de mesa. Baby Shower, 2026", src: "/images/gallery/baby-shower.webp", width: 472, height: 411, alt: "Decoración rosa al aire libre con globos, mariposas y letrero de Baby Shower.", approval: "approved" },
+  { id: "xv-anos-rosa", category: "xv-anos", title: "Decoración para XV años", src: "/images/gallery/xv-anos.webp", width: 825, height: 555, alt: "Decoración de XV años con globos rosas, flores y números luminosos 15.", approval: "approved" },
+  { id: "tematica-otono", category: "tematicas", title: "Kermés Día de la Cosecha. Tijuana, 2026", src: "/images/gallery/decoracion-tematica.webp", width: 827, height: 531, alt: "Montaje decorativo con globos naranjas, hojas de otoño y elementos de cosecha.", approval: "approved" },
+  { id: "8-marzo", category: "tematicas", title: "8 de marzo de 2026 · Gimnasio Sparta 55", src: "/images/gallery/8-marzo.webp", width: 692, height: 749, alt: "Participantes del Gimnasio Sparta 55 junto a una decoración violeta de globos del 8 de marzo.", approval: "approved" },
 ];

@@ -3,10 +3,10 @@ import { getApprovedDestination } from "@/lib/contact";
 import { createWhatsappUrl, type WhatsappInterest } from "@/lib/whatsapp";
 
 const channels: readonly ContactChannel[] = [
-  { id: "whatsapp", label: "WhatsApp", status: "candidate", destination: "5216644846470", source: "legacy/index.html; no existe aprobación comercial registrada" },
-  { id: "facebook", label: "Facebook", status: "candidate", destination: "https://www.facebook.com/globowslm", source: "MID: Anexo de enlaces; coincide con preview; aprobación de publicación pendiente" },
-  { id: "instagram", label: "Instagram", status: "candidate", destination: "https://www.instagram.com/globows_lm/", source: "MID: Anexo de enlaces; coincide con preview; aprobación de publicación pendiente" },
-  { id: "tiktok", label: "TikTok", status: "candidate", destination: "https://www.tiktok.com/@globows_liceymarquez", source: "MID: Anexo de enlaces; coincide con preview; aprobación de publicación pendiente" },
+  { id: "whatsapp", label: "WhatsApp", status: "approved", destination: "5216644846470", source: "legacy/index.html; preview aprobado por la clienta; confirmación expresa del responsable, Sprint 4–5" },
+  { id: "facebook", label: "Facebook", status: "approved", destination: "https://www.facebook.com/globowslm", source: "MID: Anexo de enlaces; coincide con preview; publicación aprobada por la clienta, confirmada por el responsable" },
+  { id: "instagram", label: "Instagram", status: "approved", destination: "https://www.instagram.com/globows_lm/", source: "MID: Anexo de enlaces; coincide con preview; publicación aprobada por la clienta, confirmada por el responsable" },
+  { id: "tiktok", label: "TikTok", status: "approved", destination: "https://www.tiktok.com/@globows_liceymarquez", source: "MID: Anexo de enlaces; coincide con preview; publicación aprobada por la clienta, confirmada por el responsable" },
   { id: "email", label: "Correo electrónico", status: "missing", destination: null, source: "No hay correo verificable en documentación ni preview" },
 ];
 
@@ -16,8 +16,9 @@ export const site = {
   repository: "https://github.com/CarlosAM03/Globowslm",
   channels,
   whatsappNumber: getApprovedDestination(channels[0]),
-  phoneNumber: null as string | null,
-  editorialStatus: "review",
+  phoneNumber: "+526644846470",
+  phoneDisplay: "+52 664 484 6470",
+  editorialStatus: "approved-preview",
 } as const;
 
 export function getContactLinks(interest: WhatsappInterest = "general"): readonly ContactLink[] {
@@ -35,6 +36,7 @@ export const navigation = [
   { href: "#galeria", label: "Galería" },
   { href: "#formacion", label: "Formación" },
   { href: "#certificaciones", label: "Certificaciones" },
+  { href: "#confianza", label: "FAQ" },
   { href: "#contacto", label: "Contacto" },
 ] as const;
 

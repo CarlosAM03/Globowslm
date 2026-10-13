@@ -8,7 +8,7 @@ test("institutional page is Spanish, semantic and self-hosted", async ({ page })
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
   await expect(page).toHaveTitle(/Globows LM by Licey Márquez/);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Creamos experiencias memorables.");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Arte en el Aire,");
   await expect(page.locator("#inicio img")).toHaveCount(1);
   await expect(page.getByRole("main")).toHaveCount(1);
   await expect(page.getByText("Un emprendimiento iniciado en casa", { exact: false })).toBeVisible();
@@ -63,6 +63,7 @@ for (const width of [320, 375, 390, 428, 640, 768, 1024, 1280, 1440]) {
     for (const action of await page.locator("main .button, header a, header button, footer a, .floating-trigger").all()) {
       if (await action.isVisible()) expect((await action.boundingBox())!.height).toBeGreaterThanOrEqual(44);
     }
+    await page.locator("#gallery-results").evaluate(el => el.scrollTo({left:0,behavior:"instant"}));
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
     await page.screenshot({ path: testInfo.outputPath(`landing-${width}.png`), fullPage: true });
   });
@@ -74,40 +75,34 @@ test("reduced motion disables smooth scrolling", async ({ page }) => {
   expect(await page.locator("html").evaluate((el) => getComputedStyle(el).scrollBehavior)).toBe("auto");
 });
 
-test("five services disclose missing commercial assets and do not invent recipients", async ({ page }) => {
-  await page.goto("/");
-  const cards = page.locator(".service-card");
-  await expect(cards).toHaveCount(5);
-  for (const name of ["Decoraciones profesionales", "Cursos presenciales", "Talleres intensivos", "Certificaciones", "Asesorías"]) {
-    const card = cards.filter({ has: page.getByRole("heading", { name, exact: true }) });
-    await expect(card.locator(".service-body > p")).not.toBeEmpty();
-    await expect(card.getByRole("button")).toBeDisabled();
-    await expect(card.getByRole("button")).toHaveAttribute("aria-describedby", "contact-channel-status");
-    expect(await card.locator("img, .service-image--pending").count()).toBe(1);
+test("five services have contextual approved recipients and disclose only absent certification evidence", async ({ page }) => {
+  await page.goto("/"); const cards=page.locator(".service-card"); await expect(cards).toHaveCount(5);
+  for (const [name, interest] of [["Decoraciones profesionales","decoración"],["Cursos presenciales","cursos"],["Talleres intensivos","talleres"],["Certificaciones","certificaciones"],["Asesorías","asesorías"]]) {
+    const card=cards.filter({has:page.getByRole("heading",{name,exact:true})}); await expect(card.locator(".service-body > p")).not.toBeEmpty();
+    const link=card.getByRole("link"); const url=new URL((await link.getAttribute("href"))!); expect(url.origin).toBe("https://wa.me"); expect(url.pathname).toBe("/5216644846470"); expect(url.searchParams.get("text")).toContain(interest); await expect(link).toHaveAttribute("target","_blank");
   }
-  await expect(page.locator('.service-image--pending')).toHaveCount(4);
-  await expect(page.locator('a[href*="wa.me"], a[href*="api.whatsapp"]')).toHaveCount(0);
+  await expect(page.locator(".service-image--pending")).toHaveCount(1); await expect(cards.locator("img")).toHaveCount(4);
 });
 
 test("gallery filters match categories and work by keyboard on mobile", async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/#galeria");
   const filters = page.getByRole("group", { name: "Filtrar decoraciones por categoría" });
-  await expect(page.locator("#gallery-results figure")).toHaveCount(3);
+  await expect(page.locator("#gallery-results figure")).toHaveCount(4);
   for (const [label, category] of [["Baby Shower", "baby-shower"], ["XV años", "xv-anos"], ["Decoraciones temáticas", "tematicas"]]) {
     const button = filters.getByRole("button", { name: label, exact: true });
     await button.focus();
     await page.keyboard.press("Enter");
     await expect(button).toHaveAttribute("aria-pressed", "true");
     await expect(filters.locator('[aria-pressed="true"]')).toHaveCount(1);
-    await expect(page.locator("#gallery-results figure")).toHaveCount(1);
-    await expect(page.locator("#gallery-results figure")).toHaveAttribute("data-category", category);
-    await expect(page.getByRole("status")).toContainText("1 decoración");
+    await expect(page.locator("#gallery-results figure")).toHaveCount(category === "tematicas" ? 2 : 1);
+    for (const figure of await page.locator("#gallery-results figure").all()) await expect(figure).toHaveAttribute("data-category", category);
+    await expect(page.getByRole("status")).toContainText(category === "tematicas" ? "2 decoraciones" : "1 decoración");
   }
   await page.locator("#galeria").screenshot({ path: testInfo.outputPath("gallery-filter-mobile.png") });
   await filters.getByRole("button", { name: "Todas", exact: true }).click();
-  await expect(page.locator("#gallery-results figure")).toHaveCount(3);
-  await expect(page.locator('#galeria img[src*="curso"], #galeria img[src*="8marzo"]')).toHaveCount(0);
+  await expect(page.locator("#gallery-results figure")).toHaveCount(4);
+  await expect(page.locator('#galeria img[src*="curso"]')).toHaveCount(0);
 });
 
 test("mobile disclosure and skip link have visible keyboard focus", async ({ page }, testInfo) => {
@@ -130,7 +125,7 @@ test("complete landing navigation has no broken anchors or sticky header obstruc
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  for (const id of ["inicio", "sobre-licey", "servicios", "galeria", "formacion", "certificaciones", "contacto"]) await expect(page.locator(`section#${id}`)).toHaveCount(1);
+  for (const id of ["inicio", "sobre-licey", "servicios", "galeria", "formacion", "certificaciones", "confianza", "contacto"]) await expect(page.locator(`section#${id}`)).toHaveCount(1);
   for (const link of await page.locator('a[href^="#"]').all()) {
     const href = await link.getAttribute("href");
     await expect(page.locator(href!)).toHaveCount(1);
@@ -141,19 +136,14 @@ test("complete landing navigation has no broken anchors or sticky header obstruc
     const title = page.locator(`${href} h2`).first();
     expect((await title.boundingBox())!.y).toBeGreaterThanOrEqual((await page.locator("header").boundingBox())!.height);
   }
-  await expect(page.locator('#faq, #confianza')).toHaveCount(0);
-  await page.locator('#inicio .button').first().click();
-  await expect(page).toHaveURL(/#contacto$/);
+  await expect(page.locator("#confianza details")).toHaveCount(3);
+  await expect(page.locator("#inicio .button").first()).toHaveAttribute("href", /^https:\/\/wa\.me\//);
 });
 
-test("formation is contextual and does not claim unverified teaching or schedules", async ({ page }) => {
-  await page.goto("/#formacion");
-  await expect(page.locator("#formacion .training-card")).toHaveCount(4);
-  await expect(page.locator("#formacion img")).toHaveCount(1);
-  await expect(page.locator("#formacion figcaption")).toContainText("no acredita docencia");
-  await expect(page.locator("#formacion")).toContainText("temarios, fechas");
-  for (const button of await page.locator("#formacion .button").all()) await expect(button).toBeDisabled();
-  await expect(page.locator("#formacion")).not.toContainText("8marzo");
+test("formation restores approved academy content without automatic enrollment", async ({ page }) => {
+ await page.goto("/#formacion"); await expect(page.locator(".training-card")).toHaveCount(4); await expect(page.locator("#formacion figcaption")).toContainText("curso intensivo de San Valentín"); await expect(page.locator(".training-topics li")).toHaveCount(4);
+ for(const link of await page.locator("#formacion .button").all()) await expect(link).toHaveAttribute("href",/^https:\/\/wa\.me\//);
+ await expect(page.locator("#formacion form")).toHaveCount(0);
 });
 
 test("certifications disclose absent verified credentials without fictional timeline entries", async ({ page }) => {
@@ -163,17 +153,9 @@ test("certifications disclose absent verified credentials without fictional time
   await expect(page.locator("#certificaciones img")).toHaveCount(0);
 });
 
-test("contact and footer share five controlled channels with no fictitious destinations", async ({ page }) => {
-  await page.goto("/#contacto");
-  for (const scope of [page.locator("#contacto"), page.locator("footer")]) {
-    await expect(scope.locator(".contact-channels li")).toHaveCount(5);
-    for (const button of await scope.locator(".contact-channels button").all()) await expect(button).toBeDisabled();
-  }
-  await expect(page.locator('#contacto')).toContainText("Teléfono oficial pendiente");
-  await expect(page.locator('a[href^="https://wa.me"], a[href^="tel:"], a[href^="mailto:"]')).toHaveCount(0);
-  await expect(page.getByRole("navigation", { name: "Navegación del pie de página" }).getByRole("link")).toHaveCount(7);
-  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
-  await expect(page.locator('form')).toHaveCount(0);
+test("contact and footer share approved channels while only email remains absent", async ({ page }) => {
+ await page.goto("/#contacto"); for(const scope of [page.locator("#contacto"),page.locator("footer")]) { await expect(scope.locator(".contact-channels li")).toHaveCount(5); await expect(scope.locator(".contact-channels a")).toHaveCount(4); await expect(scope.locator(".contact-channels button")).toHaveCount(1); await expect(scope.locator(".contact-channels button")).toBeDisabled(); }
+ await expect(page.locator('a[href="tel:+526644846470"]')).toBeVisible(); await expect(page.locator('a[href^="mailto:"]')).toHaveCount(0); await expect(page.getByRole("navigation",{name:"Navegación del pie de página"}).getByRole("link")).toHaveCount(8); await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content",/noindex/); await expect(page.locator("form")).toHaveCount(0); await expect(page.locator(".editorial-banner")).toHaveCount(0);
 });
 
 test("floating menu supports keyboard, Escape and outside closing with controlled channels", async ({ page }, testInfo) => {
@@ -184,8 +166,11 @@ test("floating menu supports keyboard, Escape and outside closing with controlle
   await page.keyboard.press("Enter");
   await expect(trigger).toHaveAttribute("aria-expanded", "true");
   const panel = page.getByRole("region", { name: "Contacto rápido" });
-  await expect(panel.locator(".contact-channels li")).toHaveCount(5);
-  for (const button of await panel.locator(".contact-channels button").all()) await expect(button).toBeDisabled();
+  await expect(panel.locator("li")).toHaveCount(5);
+  await expect(panel.getByRole("link")).toHaveCount(4);
+  await page.keyboard.press("Tab");
+  await expect(panel.getByRole("link", {name:/WhatsApp/})).toBeFocused();
+  for (const button of await panel.locator("button").all()) await expect(button).toBeDisabled();
   const box = (await panel.boundingBox())!;
   expect(box.x).toBeGreaterThanOrEqual(0);
   expect(box.x + box.width).toBeLessThanOrEqual(375);

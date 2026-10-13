@@ -14,3 +14,7 @@
 .training-card .button { margin-top: auto; align-self: start; }
 .training-section :focus-visible { outline-color: var(--color-accent); }
 @media (min-width: 768px) { .training-editorial { grid-template-columns: 1fr 1fr; gap: var(--space-12); } .training-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.training-topics { padding-left:var(--space-6); margin-block:var(--space-6); color:var(--color-neutral-300); }
+.training-topics li { margin-bottom:var(--space-3); }
+.training-topics-title { color:var(--color-accent); }
