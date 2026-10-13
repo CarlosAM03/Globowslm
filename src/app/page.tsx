@@ -5,7 +5,8 @@ import { GallerySection } from "@/components/sections/gallery/GallerySection";
 import { CoursesSection } from "@/components/sections/courses/CoursesSection";
 import { CertificationsSection } from "@/components/sections/certifications/CertificationsSection";
 import { ContactSection } from "@/components/sections/contact/ContactSection";
+import { TrustSupportSection } from "@/components/sections/trust-support/TrustSupportSection";
 
 export default function Home() {
-  return <main id="contenido" tabIndex={-1}><HeroSection /><AboutSection /><ServicesEventsSection /><GallerySection /><CoursesSection /><CertificationsSection /><ContactSection /></main>;
+  return <main id="contenido" tabIndex={-1}><HeroSection /><AboutSection /><ServicesEventsSection /><GallerySection /><CoursesSection /><CertificationsSection /><TrustSupportSection /><ContactSection /></main>;
 }

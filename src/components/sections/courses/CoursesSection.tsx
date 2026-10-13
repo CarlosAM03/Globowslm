@@ -13,7 +13,9 @@ export function CoursesSection() {
         <div className="training-editorial">
           <div>
             <SectionTitle id="training-title" eyebrow={trainingContent.eyebrow} description={trainingContent.description}>{trainingContent.title}</SectionTitle>
-            <p id="training-status" className="editorial-note">La oferta detallada, temarios, fechas y fotografías de docencia están pendientes de validación. Las consultas se habilitarán al confirmar el canal oficial.</p>
+            <h3 className="training-topics-title">Academia GlobowsLM</h3>
+            <ul className="training-topics">{trainingContent.topics.map((topic) => <li key={topic}>{topic}</li>)}</ul>
+            <p id="training-status" className="editorial-note">Consulta disponibilidad, fechas y precios directamente con Globows LM.</p>
           </div>
           <figure className="training-figure">
             <Image src={trainingContent.image.src} width={trainingContent.image.width} height={trainingContent.image.height} alt={trainingContent.image.alt} sizes="(min-width: 768px) 50vw, 100vw" />

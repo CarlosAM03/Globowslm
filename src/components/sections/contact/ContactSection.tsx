@@ -13,8 +13,8 @@ export function ContactSection() {
           <div>
             <SectionTitle id="contact-title" eyebrow="Hablemos" description="Cuéntanos tu interés en decoración, cursos, talleres, certificaciones o asesorías. El contacto se realiza directamente por los canales de Globows LM.">Demos forma a tu próxima idea.</SectionTitle>
             <ContextualContact interest="general" label="Contactar por WhatsApp" describedBy="contact-status" />
-            <p id="contact-status" className="editorial-note">Los canales candidatos están pendientes de aprobación comercial. Mientras se validan, no se generan enlaces hacia destinatarios sin confirmar.</p>
-            <p className="contact-phone">{site.phoneNumber ? <a href={`tel:${site.phoneNumber}`}>Teléfono: {site.phoneNumber}</a> : "Teléfono oficial pendiente de validación."}</p>
+            <p id="contact-status" className="editorial-note">Nuestra sede principal de cursos y talleres se encuentra en Tijuana, Baja California, México. Contamos con alcance regional para decoraciones y eventos en los municipios cercanos.</p>
+            <p className="contact-phone">{site.phoneNumber ? <a href={`tel:${site.phoneNumber}`}>Teléfono: {site.phoneDisplay}</a> : "Teléfono oficial pendiente de validación."}</p>
           </div>
           <div className="contact-panel"><h3>Canales de contacto</h3><ContactChannelItems links={getContactLinks()} describedBy="contact-status" /></div>
         </div>

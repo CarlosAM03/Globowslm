@@ -10,8 +10,8 @@ export function ServicesEventsSection() {
   return (
     <section id="servicios" className="section services-section" aria-labelledby="services-title">
       <SectionContainer>
-        <SectionTitle id="services-title" eyebrow="Servicios y eventos" description="La oferta de Globows LM reúne decoración profesional, aprendizaje y orientación. Cada servicio responde a un interés distinto.">Creatividad para celebrar. Formación para crecer.</SectionTitle>
-        <p id="contact-channel-status" className="editorial-note contact-status">Las consultas por WhatsApp se habilitarán después de validar el número oficial. Las fotografías y los textos comerciales están en revisión.</p>
+        <SectionTitle id="services-title" eyebrow="Servicios y eventos" description="La oferta de Globows LM reúne decoración profesional, aprendizaje y orientación. Cada servicio responde a un interés distinto.">Servicios Curados</SectionTitle>
+        <p id="contact-channel-status" className="editorial-note contact-status">Consulta disponibilidad y precios por WhatsApp. La imagen de acreditación del servicio de certificaciones todavía no está disponible.</p>
         <div className="services-grid">{services.map((service) => <ServiceCard key={service.id} service={service} />)}</div>
         <div className="events-heading"><h3>Ocasiones decorativas</h3><p>La ocasión describe el contexto de una decoración; no sustituye al servicio. Estas categorías corresponden al material visual disponible.</p></div>
         <div className="events-grid">{galleryCategories.map((category) => {

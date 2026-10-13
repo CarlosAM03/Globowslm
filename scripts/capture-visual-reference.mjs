@@ -35,13 +35,22 @@ try {
       for (const image of await page.locator("img").all()) await image.scrollIntoViewIfNeeded();
       await page.waitForTimeout(500);
       await page.evaluate(() => {
-        document.querySelectorAll(".carousel-container").forEach((element) => { element.scrollLeft = 0; });
+        document.querySelectorAll(".carousel-container, .gallery-viewport").forEach((element) => { element.scrollLeft = 0; });
         window.scrollTo({ top: 0, behavior: "instant" });
       });
       await page.screenshot({ path: path.join(output, `${name}-${width}-viewport.png`) });
+      if (name === "preview") {
+        await page.locator("body > div.fixed > button").hover();
+        await page.screenshot({ path: path.join(output, `${name}-${width}-floating-open.png`) });
+        await page.mouse.move(0, 0);
+      } else {
+        await page.getByRole("button", { name: "Abrir canales de contacto" }).click();
+        await page.screenshot({ path: path.join(output, `${name}-${width}-floating-open.png`) });
+        await page.keyboard.press("Escape");
+      }
       const fullPage = await page.screenshot({ path: path.join(output, `${name}-${width}-full.png`), fullPage: true });
       const fullSize = await sharp(fullPage).metadata();
-      const selectors = name === "preview" ? ["section:nth-of-type(1)", "#about", "#services", "#gallery", "#courses", "footer"] : ["#inicio", "#sobre-licey", "#servicios", "#galeria", "#formacion", "#certificaciones", "#contacto", "footer"];
+      const selectors = name === "preview" ? ["section:nth-of-type(1)", "#about", "#services", "#gallery", "#courses", "footer"] : ["#inicio", "#sobre-licey", "#servicios", "#galeria", "#formacion", "#certificaciones", "#confianza", "#contacto", "footer"];
       for (const selector of selectors) {
         const section = page.locator(selector);
         if (await section.count()) {

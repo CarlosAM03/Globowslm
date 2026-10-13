@@ -3,7 +3,7 @@ name: Foundation
 on:
   pull_request:
   push:
-    branches: [main, feature/sprints-1-2-landing-core, feature/sprints-2-3-visual-integration]
+    branches: [main, feature/sprints-1-2-landing-core, feature/sprints-2-3-visual-integration, feature/sprints-4-5-release-hardening]
 
 permissions:
   contents: read
@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version: '22.16.0'
+          node-version: '22.19.0'
           cache: npm
       - name: Install from lockfile
         run: npm ci
@@ -36,6 +36,17 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Functional and responsive tests
         run: npm run test:e2e
+      - name: Lighthouse measurements
+        shell: bash
+        run: |
+          npm run start -- --hostname 127.0.0.1 --port 3100 > /tmp/globows-lighthouse-server.log 2>&1 &
+          QA_SERVER_PID=$!
+          trap 'kill "$QA_SERVER_PID" 2>/dev/null || true' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:3100/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run audit:lighthouse -- ci
       - name: Upload browser evidence
         if: always()
         uses: actions/upload-artifact@v7
@@ -44,4 +55,5 @@ jobs:
           path: |
             playwright-report/
             test-results/
+            .visual-evidence/lighthouse/ci/
           retention-days: 7

@@ -6,7 +6,7 @@ const allowedHosts = {
   tiktok: ["tiktok.com", "www.tiktok.com"],
 };
 
-// Approval is editorial, never inferred from a reachable URL or the preview.
+// Approval is explicit project authorization, never inferred from a reachable URL.
 export function getApprovedDestination(channel: ContactChannel): string | null {
   if (channel.status !== "approved" || !channel.destination) return null;
   if (channel.id === "whatsapp") return channel.destination;

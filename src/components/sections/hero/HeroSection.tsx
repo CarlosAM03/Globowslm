@@ -1,7 +1,8 @@
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown } from "lucide-react";
 import { SectionContainer } from "@/components/shared/SectionContainer";
 import { ButtonLink } from "@/components/ui/Button";
+import { ContextualContact } from "@/components/shared/ContextualContact";
 import { heroContent } from "@/content/institutional";
 import "./hero.css";
 
@@ -17,7 +18,7 @@ export function HeroSection() {
           <p className="hero-subtitle">{heroContent.subtitle}</p>
           <p className="hero-description">{heroContent.description}</p>
           <div className="hero-actions">
-            <ButtonLink href="#contacto">Solicitar información <ArrowUpRight className="icon" strokeWidth={1.75} aria-hidden="true" /></ButtonLink>
+            <ContextualContact interest="decoracion" label="Consultar por WhatsApp" describedBy="hero-title" />
             <ButtonLink href="#galeria" variant="secondary">Ver portafolio</ButtonLink>
           </div>
           <a href="#sobre-licey" className="hero-discover"><ArrowDown className="icon" strokeWidth={1.75} aria-hidden="true" /> Conoce a Licey</a>

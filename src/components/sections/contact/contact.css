@@ -6,3 +6,5 @@
 .contact-panel { padding: var(--space-8); background: white; border: 1px solid var(--color-neutral-300); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
 .contact-panel h3 { margin-bottom: var(--space-6); }
 @media (min-width: 768px) { .contact-grid { grid-template-columns: 1fr 1fr; align-items: start; } }
+
+.contact-phone a { display:inline-flex; min-height:48px; align-items:center; color:var(--color-primary); }

@@ -12,6 +12,7 @@ const images = [
   ["assets/galeria/XVs.png", "gallery/xv-anos.webp"],
   ["assets/galeria/KermesDiaCosecha.png", "gallery/decoracion-tematica.webp"],
   ["assets/galeria/CursoSanValentin.png", "courses/montaje-san-valentin.webp"],
+  ["assets/galeria/8marzo.png", "gallery/8-marzo.webp"],
 ];
 
 for (const [source, destination] of images) {
