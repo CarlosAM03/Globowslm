@@ -2,6 +2,7 @@
 export const heroContent = {
   eyebrow: "Decoración profesional y formación",
   title: "Creamos experiencias memorables.",
+  subtitle: "Formamos profesionales capaces de crear las suyas.",
   description: "Creatividad, técnica y atención al detalle para transformar tus celebraciones. Somos Globows LM by Licey Márquez.",
   image: { src: "/images/hero/decoracion-globows.webp", width: 852, height: 856, alt: "Decoración con globos blancos, magenta y dorados alrededor de un sillón blanco.", approval: "pending" as const },
 };

@@ -14,10 +14,10 @@ export function HeroSection() {
         <div className="hero-copy">
           <p className="eyebrow">{heroContent.eyebrow}</p>
           <h1 id="hero-title">{heroContent.title}</h1>
-          <p className="hero-subtitle">Formamos profesionales capaces de crear las suyas.</p>
+          <p className="hero-subtitle">{heroContent.subtitle}</p>
           <p className="hero-description">{heroContent.description}</p>
           <div className="hero-actions">
-            <ButtonLink href="#servicios">Explorar servicios <ArrowUpRight className="icon" strokeWidth={1.75} aria-hidden="true" /></ButtonLink>
+            <ButtonLink href="#contacto">Solicitar información <ArrowUpRight className="icon" strokeWidth={1.75} aria-hidden="true" /></ButtonLink>
             <ButtonLink href="#galeria" variant="secondary">Ver portafolio</ButtonLink>
           </div>
           <a href="#sobre-licey" className="hero-discover"><ArrowDown className="icon" strokeWidth={1.75} aria-hidden="true" /> Conoce a Licey</a>

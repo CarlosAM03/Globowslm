@@ -1,0 +1,8 @@
+.floating-contact { position: fixed; right: var(--space-6); bottom: var(--space-6); z-index: 50; }
+.floating-trigger { width: 64px; height: 64px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-xl); border: 1px solid var(--color-primary); background: var(--color-primary); color: white; box-shadow: var(--shadow-md); transition: box-shadow 200ms; }
+.floating-trigger:hover { box-shadow: var(--shadow-sm); }
+.floating-panel { position: absolute; bottom: calc(100% + var(--space-4)); right: 0; width: min(360px, calc(100vw - var(--space-12))); max-height: calc(100dvh - var(--space-32)); overflow-y: auto; padding: var(--space-6); border: 1px solid var(--color-neutral-300); border-radius: var(--radius-lg); background: white; box-shadow: var(--shadow-md); }
+.floating-panel h2 { font-size: var(--type-h4); }
+.floating-panel > p { margin-block: var(--space-4); }
+.floating-panel .channel-item { padding-inline: var(--space-3); }
+@media (max-width: 639px) { .floating-trigger { width: 56px; height: 56px; } }
