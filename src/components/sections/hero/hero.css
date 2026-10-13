@@ -1,0 +1,12 @@
+.hero { background: linear-gradient(120deg, white, var(--color-surface)); }
+.hero-grid { display: grid; gap: var(--space-10); align-items: center; }
+.hero-copy { max-width: 560px; }
+.hero-description { margin-top: var(--space-6); color: var(--color-neutral-900); max-width: 480px; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-top: var(--space-8); }
+.hero-discover { display: inline-flex; align-items: center; gap: var(--space-3); color: var(--color-primary); min-height: 48px; margin-top: var(--space-8); font-size: var(--type-small); }
+.hero-figure { position: relative; margin: 0; border-radius: var(--radius-xl); overflow: hidden; max-width: 560px; width: 100%; box-shadow: var(--shadow-sm); }
+.hero-image { width: 100%; height: auto; }
+.hero-overlay { position: absolute; inset: 0; background: linear-gradient(transparent 55%, rgb(0 0 0 / 82%)); pointer-events: none; }
+.hero-figure figcaption { position: absolute; bottom: var(--space-6); left: var(--space-6); right: var(--space-6); color: white; display: grid; gap: var(--space-2); font-size: var(--type-caption); line-height: 1.5; }
+.hero-figure figcaption span:first-child { font-family: var(--font-cormorant), Georgia, serif; font-size: var(--type-h3); line-height: 1; }
+@media (min-width: 1024px) { .hero-grid { grid-template-columns: 1fr 1fr; gap: var(--space-16); } }

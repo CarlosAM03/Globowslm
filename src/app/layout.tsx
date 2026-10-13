@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 const manrope = localFont({
@@ -30,7 +32,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="es"
       className={`${manrope.variable} ${cormorant.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body>
+        <a className="skip-link" href="#contenido">Saltar al contenido</a>
+        <div className="editorial-banner">Versión de desarrollo · Contenido visual y canales comerciales en validación.</div>
+        <Navbar />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }
