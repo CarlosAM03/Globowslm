@@ -14,7 +14,7 @@ export function HeroSection() {
           <h1 id="hero-title">{heroContent.title}</h1>
           <p className="hero-description">{heroContent.description}</p>
           <div className="hero-actions">
-            <ButtonLink href="#sobre-licey">Conocer a Licey <ArrowUpRight className="icon" strokeWidth={1.75} aria-hidden="true" /></ButtonLink>
+            <ButtonLink href="#servicios">Explorar servicios <ArrowUpRight className="icon" strokeWidth={1.75} aria-hidden="true" /></ButtonLink>
           </div>
           <a href="#sobre-licey" className="hero-discover"><ArrowDown className="icon" strokeWidth={1.75} aria-hidden="true" /> Conoce a Licey</a>
         </div>

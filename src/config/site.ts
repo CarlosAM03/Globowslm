@@ -10,6 +10,7 @@ export const site = {
 export const navigation = [
   { href: "#inicio", label: "Inicio" },
   { href: "#sobre-licey", label: "Sobre Licey" },
+  { href: "#servicios", label: "Servicios y eventos" },
 ] as const;
 
 export type NavigationItem = { readonly href: string; readonly label: string };
