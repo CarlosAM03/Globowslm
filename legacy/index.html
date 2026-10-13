@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Globows LM | Hazlo con amor, dilo con Globows</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary": "#ffffff",
+                        "outline": "#8b7079",
+                        "tertiary-fixed-dim": "#7edc6e",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#002201",
+                        "primary-container": "#b3006d",
+                        "surface-container-high": "#fbe2e9",
+                        "on-background": "#25181d",
+                        "surface-container-highest": "#f5dce3",
+                        "surface-dim": "#ecd4db",
+                        "on-secondary-fixed": "#340c26",
+                        "surface-container-low": "#fff0f3",
+                        "secondary-fixed": "#ffd8ea",
+                        "inverse-primary": "#ffb0ce",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#673753",
+                        "surface-variant": "#f5dce3",
+                        "tertiary": "#005104",
+                        "surface-bright": "#fff8f8",
+                        "outline-variant": "#dfbec8",
+                        "on-surface-variant": "#584049",
+                        "tertiary-container": "#006c08",
+                        "on-tertiary-container": "#8ceb7c",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#99f988",
+                        "surface": "#fff8f8",
+                        "surface-tint": "#b6066f",
+                        "primary-fixed": "#ffd9e5",
+                        "background": "#fff8f8",
+                        "inverse-surface": "#3c2c32",
+                        "primary-fixed-dim": "#ffb0ce",
+                        "on-primary-container": "#ffc5da",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#ffecf1",
+                        "on-surface": "#25181d",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#8c0054",
+                        "secondary-fixed-dim": "#f4b4d5",
+                        "secondary": "#814e6b",
+                        "primary": "#880052",
+                        "on-secondary-container": "#7c4a66",
+                        "secondary-container": "#ffbfe0",
+                        "on-tertiary-fixed-variant": "#005305",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed": "#3e0022",
+                        "surface-container": "#ffe8ee",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "gutter": "24px",
+                        "base": "4px",
+                        "container-max": "1280px",
+                        "section-padding-mobile": "48px",
+                        "section-padding": "80px"
+                    },
+                    fontFamily: {
+                        "display-lg-mobile": ["Cormorant Garamond", "serif"],
+                        "headline-md": ["Cormorant Garamond", "serif"],
+                        "body-md": ["Manrope", "sans-serif"],
+                        "body-lg": ["Manrope", "sans-serif"],
+                        "display-lg": ["Cormorant Garamond", "serif"],
+                        "headline-sm": ["Cormorant Garamond", "serif"],
+                        "button": ["Manrope", "sans-serif"],
+                        "label-caps": ["Manrope", "sans-serif"]
+                    },
+                    fontSize: {
+                        "display-lg-mobile": ["40px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-lg": ["64px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "button": ["14px", { "lineHeight": "1", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+             font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .shadow-ambient-md {
+            box-shadow: 0 4px 12px rgba(179, 0, 109, 0.08);
+        }
+        .hero-image {
+            background-image: url('assets/HeroImagen.PNG');
+        }
+        .accordion-content {
+            transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .accordion-content.open {
+            max-height: 500px;
+            opacity: 1;
+        }
+        
+        /* Carousel Styles */
+        .carousel-container {
+            overflow: hidden;
+            position: relative;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            gap: 2rem; /* Matches tailwind gap-8 */
+        }
+        .carousel-item {
+            flex: 0 0 calc(33.333% - 1.33rem); /* md:grid-cols-3 minus gap adjustment */
+            min-width: 0;
+        }
+        @media (max-width: 768px) {
+            .carousel-item {
+                flex: 0 0 100%;
+            }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/30 shadow-sm">
+<div class="max-w-container-max mx-auto px-gutter flex justify-between items-center h-20">
+<div class="font-display-lg text-headline-sm text-primary dark:text-primary-fixed-dim tracking-tight">
+                Globows LM
+            </div>
+<nav class="hidden md:flex gap-8">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary hover:opacity-80 transition-opacity duration-300 cursor-pointer transition-all duration-200 active:scale-95" href="#decoration">Decoración</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary hover:opacity-80 transition-opacity duration-300 cursor-pointer transition-all duration-200 active:scale-95" href="#courses">Cursos</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary hover:opacity-80 transition-opacity duration-300 cursor-pointer transition-all duration-200 active:scale-95" href="#workshops">Talleres</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary hover:opacity-80 transition-opacity duration-300 cursor-pointer transition-all duration-200 active:scale-95" href="#gallery">Galería</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-secondary-fixed-variant hover:text-primary hover:opacity-80 transition-opacity duration-300 cursor-pointer transition-all duration-200 active:scale-95" href="#faq">FAQ</a>
+</nav>
+<a class="bg-[#B3006D] text-white font-label-caps text-label-caps uppercase px-6 py-3 rounded-full hover:bg-primary transition-colors duration-300 shadow-ambient-md"
+    href="https://wa.me/5216644846470?text=Hola%20Licey,%20me%20gustaría%20cotizar%20un%20evento." 
+    target="_blank" 
+    rel="noopener noreferrer">
+                Contacto
+            </a>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-section-padding min-h-[921px] flex items-center">
+<div class="absolute inset-0 z-0">
+<div class="hero-image bg-cover bg-center w-full h-full opacity-60" data-alt="Arreglo artístico de globos de Globows LM"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/60 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-container-max mx-auto px-gutter w-full grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+<div class="md:col-span-8 lg:col-span-7">
+<h1 class="font-display-lg text-display-lg text-on-surface mb-6">
+                    Arte en el Aire, <br/>
+<span class="text-primary italic">Excelencia en Educación</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl">
+                    Elevando el estilo con globos a la categoría de arte. Descubre nuestros servicios premium y talleres de capacitacion.
+                </p>
+<div class="flex gap-4">
+<a class="bg-[#B3006D] text-white font-label-caps text-label-caps uppercase px-8 py-4 rounded-full flex items-center gap-2 hover:bg-primary transition-colors shadow-ambient-md"
+    href="https://wa.me/5216644846470?text=Hola%20Licey,%20me%20gustaría%20cotizar%20un%20evento." 
+    target="_blank" 
+    rel="noopener noreferrer"><span class="material-symbols-outlined icon-fill text-[18px]">chat</span>
+                        Consultar por WhatsApp
+                    </a>
+<a class="bg-surface-container-lowest text-primary border border-outline-variant font-label-caps text-label-caps uppercase px-8 py-4 rounded-full hover:bg-surface-container transition-colors shadow-sm" href="#gallery">
+                        Ver Portafolio
+                    </a>
+</div>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="py-section-padding bg-surface-container-lowest" id="about">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div class="w-full aspect-[4/5] rounded-[16px] overflow-hidden shadow-ambient-md relative">
+<img class="w-full h-full object-cover" data-alt="Retrato de Licey Márquez" src="assets/ImagenLicey.jpg" alt="Retrato de Licey Márquez" loading="lazy"/>
+<div class="absolute inset-0 border border-secondary/20 rounded-[16px]"></div>
+</div>
+<div class="flex flex-col gap-6">
+<div>
+<span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">La Visionaria</span>
+<h2 class="font-headline-md text-display-lg text-on-surface mt-2">Licey Márquez</h2>
+<div class="w-16 h-1 bg-primary rounded-full mt-4"></div>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface-variant">
+                        Con más de 5 años moldeando el panorama del diseño de eventos premium, Globows LM fue fundada sobre una premisa simple: los globos no son solo recuerdos de fiesta, son un medio para embellecer y volver memorables las experiencias que acompañan momentos de la vida.
+                    </p>
+<p class="font-body-md text-body-md text-outline">
+                        Nuestro enfoque combina estructura arquitectónica con formas orgánicas fluidas, creando atmósferas inolvidables y a la medida para clientes exigentes y empoderando a la próxima generación de artistas a través de una educación rigurosa.
+                    </p>
+<a class="mt-4 border border-primary text-primary font-label-caps text-label-caps uppercase py-4 px-8 rounded-full self-start hover:bg-primary/5 transition-colors" href="#about">
+                        Leer Historia Completa
+                    </a>
+</div>
+</div>
+</div>
+</section>
+<!-- Services Grid -->
+<section class="py-section-padding bg-surface-container-low" id="services">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="text-center mb-16">
+<span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">Nuestra Experiencia</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mt-2">Servicios Curados</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Service Card 1 -->
+<div class="bg-surface rounded-[16px] shadow-ambient-md p-8 border border-outline-variant/30 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group" id="decoration">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary text-[32px]">celebration</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Decoración Profesional</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Instalaciones escultóricas a medida para eventos corporativos, bodas, fiestas de cumpleaños o cualquier otro evento especial.</p>
+<a class="font-label-caps text-label-caps text-primary uppercase flex items-center gap-1 hover:text-primary-container transition-colors" href="#gallery">
+                        Ver Portafolio <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+<div class="absolute -right-10 -bottom-10 opacity-5 group-hover:scale-110 transition-transform duration-500">
+<span class="material-symbols-outlined text-[160px]">celebration</span>
+</div>
+</div>
+<!-- Service Card 2 -->
+<div class="bg-surface rounded-[16px] shadow-ambient-md p-8 border border-outline-variant/30 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group">
+<div class="w-16 h-16 rounded-full bg-secondary-fixed flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary text-[32px]">school</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Cursos y Talleres</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Plan de estudios integral presencial diseñado para aspirantes a profesionales que buscan maestría técnica o iniciar en el mundo del arte con globos.</p>
+<a class="font-label-caps text-label-caps text-secondary uppercase flex items-center gap-1 hover:text-primary-container transition-colors" href="#courses">
+                        Explorar Talleres y Cursos disponibles 
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Service Card 3 -->
+<div class="bg-surface rounded-[16px] shadow-ambient-md p-8 border border-outline-variant/30 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group" id="workshops">
+<div class="w-16 h-16 rounded-full bg-tertiary-container/10 flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-tertiary text-[32px]">groups</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-3">Talleres Prácticos</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Talleres semnales dedicados a desarrollar habilidades prácticas en diseño y creación de arte con globos.</p>
+<a class="font-label-caps text-label-caps text-tertiary uppercase flex items-center gap-1 hover:text-primary-container transition-colors" href="#workshops">
+                        Ver Horarios 
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Gallery -->
+<section class="py-section-padding bg-surface" id="gallery">
+<div class="max-w-container-max mx-auto px-gutter">
+<div class="flex justify-between items-end mb-12">
+<div>
+<span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">Portafolio</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mt-2">Nuestro Trabajo</h2>
+</div>
+<div class="flex gap-4">
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors" id="carousel-prev">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-12 h-12 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:bg-surface-variant transition-colors" id="carousel-next">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="carousel-container">
+<div class="carousel-track" id="carousel-track">
+<!-- Gallery Item 1 -->
+<div class="carousel-item flex flex-col gap-4 group cursor-pointer">
+<div class="aspect-[4/3] rounded-[16px] overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Decoración con globos para la Kermés Día de la Cosecha" src="assets/galeria/KermesDiaCosecha.png" alt="Decoración con globos para la Kermés Día de la Cosecha" loading="lazy"/>
+</div>
+<p class="font-label-caps text-label-caps text-outline group-hover:text-primary transition-colors">Kermes Dia de la cosecha. Tijuana, 2026</p>
+</div>
+<!-- Gallery Item 2 -->
+<div class="carousel-item flex flex-col gap-4 group cursor-pointer">
+<div class="aspect-[4/3] rounded-[16px] overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Decoración del curso intensivo de San Valentín" src="assets/galeria/CursoSanValentin.png" alt="Decoración del curso intensivo de San Valentín" loading="lazy"/>
+</div>
+<p class="font-label-caps text-label-caps text-outline group-hover:text-primary transition-colors">Curso intensivo, enero 2026. San Valentín</p>
+</div>
+<!-- Gallery Item 3 -->
+<div class="carousel-item flex flex-col gap-4 group cursor-pointer">
+<div class="aspect-[4/3] rounded-[16px] overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Decoración con globos para Baby Shower" src="assets/galeria/BabyShower.png" alt="Decoración con globos para Baby Shower" loading="lazy"/>
+</div>
+<p class="font-label-caps text-label-caps text-outline group-hover:text-primary transition-colors">Decoración, sobremesa y centros de mesa. Baby Shower, 2026</p>
+</div>
+<!-- Gallery Item 4 -->
+<div class="carousel-item flex flex-col gap-4 group cursor-pointer">
+<div class="aspect-[4/3] rounded-[16px] overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Decoración conmemorativa del 8 de marzo" src="assets/galeria/8marzo.png" alt="Decoración conmemorativa del 8 de marzo" loading="lazy"/>
+</div>
+<p class="font-label-caps text-label-caps text-outline group-hover:text-primary transition-colors">Decoracion conmemorativa de la lucha por la igualdad de género, el empoderamiento y los derechos laborales y sociales de nosotras las mujeres. 8 de marzo 2026. Gimnasio Sparta 55.</p>
+</div>
+<!-- Gallery Item 5 -->
+<div class="carousel-item flex flex-col gap-4 group cursor-pointer">
+<div class="aspect-[4/3] rounded-[16px] overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="Decoración con globos para XV años" src="assets/galeria/XVs.png" alt="Decoración con globos para XV años" loading="lazy"/>
+</div>
+<p class="font-label-caps text-label-caps text-outline group-hover:text-primary transition-colors">Decoracion para XVs.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Education & Certifications -->
+<section class="py-section-padding bg-[#3c2c32] text-white" id="courses">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+<div>
+<span class="font-label-caps text-label-caps text-[#D4AF37] tracking-widest uppercase">La Academia</span>
+<h2 class="font-headline-md text-display-lg mt-4 mb-6">Eleva tu Arte</h2>
+<p class="font-body-lg text-body-lg text-white/70 mb-8 max-w-lg">
+                    Únete a una comunidad de verdaderos artistas de globos. Desde talleres prácticos, cursos intensivos y mentorías personalizadas.
+                </p>
+</div>
+<div class="bg-white/5 border border-[#D4AF37]/30 rounded-[16px] p-10 backdrop-blur-sm relative overflow-hidden">
+<div class="absolute -right-6 -top-6 text-[#D4AF37]/10">
+<span class="material-symbols-outlined text-[160px] icon-fill">workspace_premium</span>
+</div>
+<h3 class="font-headline-sm text-headline-md text-[#D4AF37] mb-8 relative z-10">Academia GlobowsLM</h3>
+<ul class="flex flex-col gap-6 relative z-10 mb-10">
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-[#D4AF37] text-[24px]">check_circle</span>
+<span class="font-body-lg text-body-lg text-white/90">Tecnicas y fundamentos de decoracion profesional con globos</span>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-[#D4AF37] text-[24px]">check_circle</span>
+<span class="font-body-lg text-body-lg text-white/90">Elaboración profesional de Ballon-Bouquet</span>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-[#D4AF37] text-[24px]">check_circle</span>
+<span class="font-body-lg text-body-lg text-white/90">Montado de estructuras para globos</span>
+</li>
+<li class="flex items-start gap-4">
+<span class="material-symbols-outlined text-[#D4AF37] text-[24px]">check_circle</span>
+<span class="font-body-lg text-body-lg text-white/90">Estrategia de Negocios y Precios</span>
+</li>
+</ul>
+<a class="bg-[#D4AF37] text-[#3c2c32] font-button text-button uppercase py-4 px-10 rounded-full relative z-10 hover:bg-[#E5C158] transition-colors shadow-ambient-md"
+    href="https://wa.me/5216644846470?text=Hola%20Licey,%20me%20gustaría%20cotizar%20un%20evento." 
+    target="_blank" 
+    rel="noopener noreferrer">
+                    Consulta disponibilidad y precios
+                </a>
+</div>
+</div>
+</section>
+<!-- FAQ Accordion -->
+<section class="py-section-padding bg-surface-container-highest" id="faq">
+<div class="max-w-3xl mx-auto px-gutter">
+<div class="mb-12 text-center">
+<span class="font-label-caps text-label-caps text-secondary tracking-widest uppercase">Consultas</span>
+<h2 class="font-headline-md text-headline-md text-on-surface mt-2">Preguntas Comunes</h2>
+</div>
+<div class="flex flex-col gap-4">
+<!-- FAQ Item 1 -->
+<div class="bg-surface rounded-[16px] border border-outline-variant/30 overflow-hidden">
+<button class="faq-btn w-full px-8 py-6 flex justify-between items-center bg-surface text-left hover:bg-surface-container-lowest transition-colors">
+<span class="font-headline-sm text-headline-sm text-on-surface">¿Con cuánta anticipación debo reservar?</span>
+<span class="material-symbols-outlined text-outline transition-transform duration-300">expand_more</span>
+</button>
+<div class="accordion-content bg-surface px-8">
+<p class="pb-6 font-body-md text-body-lg text-on-surface-variant">
+                        Para grandes instalaciones y eventos corporativos, recomendamos reservar con 1-2 meses de anticipación. Para fiestas privadas, 2-4 semanas es ideal para garantizar la disponibilidad de colores y el tiempo de diseño.
+                    </p>
+</div>
+</div>
+<!-- FAQ Item 2 -->
+<div class="bg-surface rounded-[16px] border border-outline-variant/30 overflow-hidden">
+<button class="faq-btn w-full px-8 py-6 flex justify-between items-center bg-surface text-left hover:bg-surface-container-lowest transition-colors">
+<span class="font-headline-sm text-headline-sm text-on-surface">¿Los cursos son para principiantes?</span>
+<span class="material-symbols-outlined text-outline transition-transform duration-300">expand_more</span>
+</button>
+<div class="accordion-content bg-surface px-8">
+<p class="pb-6 font-body-md text-body-lg text-on-surface-variant">
+                        Nuestros talleres y cursos presenciales están diseñados para todos los niveles. Desde principiantes que buscan aprender técnicas básicas hasta profesionales que desean perfeccionar sus habilidades y explorar nuevas tendencias en decoración con globos.
+                        Igualmente contamos con clases personalizadas y mentorías para aquellos que buscan un enfoque más profundo y adaptado a sus necesidades específicas.
+                    </p>
+</div>
+</div>
+<!-- FAQ Item 3 -->
+<div class="bg-surface rounded-[16px] border border-outline-variant/30 overflow-hidden">
+<button class="faq-btn w-full px-8 py-6 flex justify-between items-center bg-surface text-left hover:bg-surface-container-lowest transition-colors">
+<span class="font-headline-sm text-headline-sm text-on-surface">¿En donde trabajan?</span>
+<span class="material-symbols-outlined text-outline transition-transform duration-300">expand_more</span>
+</button>
+<div class="accordion-content bg-surface px-8">
+<p class="pb-6 font-body-md text-body-lg text-on-surface-variant">
+                        Nuestra sede principal de cursos y talleres se encuentra en Tijuana, Baja California, México. Contamos con alcance regional para decoraciones y eventos en los municipios cercanos, y estamos trabajando en expandir la capacitacion y cursos al nivel digital, para llegar a todo México y latam.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-container-low dark:bg-surface-dim w-full py-section-padding border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-2 flex flex-col gap-6">
+<div class="font-display-lg text-headline-md text-primary dark:text-primary-fixed-dim">Globows LM</div>
+<p class="font-body-md text-body-md text-on-surface-variant dark:text-on-secondary-fixed-variant max-w-sm">
+                    Elevando el estilo con globos a la categoría de arte. Educación, Inspiración y Creación. 
+                    Hazlo con amor, dilo con Globows
+                </p>
+</div>
+<div class="col-span-1 flex flex-col gap-4">
+<h4 class="font-label-caps text-label-caps text-secondary uppercase tracking-wider">Explorar</h4>
+<ul class="space-y-3">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#gallery">Portafolio</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#courses">Cursos</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#workshops">Talleres</a></li>
+</ul>
+</div>
+<div class="col-span-1 flex flex-col gap-4">
+<h4 class="font-label-caps text-label-caps text-secondary uppercase tracking-wider">Legal</h4>
+<ul class="space-y-3">
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Política de Privacidad</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Términos de Servicio</a></li>
+<li><a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
+    href="https://wa.me/5216644846470?text=Hola%20Licey,%20me%20gustaría%20cotizar%20un%20evento." 
+    target="_blank" 
+    rel="noopener noreferrer">Contacto</a></li>
+</ul>
+</div>
+<div class="col-span-1 md:col-span-4 pt-8 border-t border-outline-variant/30 mt-4">
+<p class="font-body-md text-[14px] text-outline text-center md:text-left">
+                    © 2019 Globows LM. Hazlo con amor, dilo con Globows
+                </p>
+</div>
+</div>
+</footer>
+<!-- SideNavBar -->
+<div class="fixed right-6 bottom-6 z-50 group flex flex-col items-end">
+<!-- Sub-menu container (hidden by default, shown on group hover) -->
+<div class="flex flex-col gap-4 mb-4 opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
+<!-- WhatsApp -->
+<a class="bg-secondary-fixed text-on-secondary-fixed-variant rounded-[16px] p-4 hover:scale-110 transition-transform shadow-md flex items-center justify-center relative group/item" 
+    href="https://wa.me/5216644846470?text=Hola%20Licey,%20me%20gustaría%20cotizar%20un%20evento." 
+    target="_blank" 
+    rel="noopener noreferrer">
+<span class="material-symbols-outlined text-[24px]">chat</span>
+<span class="absolute right-full mr-4 bg-inverse-surface text-inverse-on-surface font-label-caps text-label-caps px-3 py-1 rounded opacity-0 group-hover/item:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">WhatsApp</span>
+</a>
+<!-- Facebook -->
+<a class="bg-secondary-fixed text-on-secondary-fixed-variant rounded-[16px] p-4 hover:scale-110 transition-transform shadow-md flex items-center justify-center relative group/item" 
+    href="https://www.facebook.com/globowslm"
+    target="_blank" 
+    rel="noopener noreferrer">
+<span class="material-symbols-outlined text-[24px]">facebook</span>
+<span class="absolute right-full mr-4 bg-inverse-surface text-inverse-on-surface font-label-caps text-label-caps px-3 py-1 rounded opacity-0 group-hover/item:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Facebook</span>
+</a>
+<!-- Instagram -->
+<a class="bg-secondary-fixed text-on-secondary-fixed-variant rounded-[16px] p-4 hover:scale-110 transition-transform shadow-md flex items-center justify-center relative group/item" 
+    href="https://www.instagram.com/globows_lm/"
+    target="_blank" 
+    rel="noopener noreferrer">
+<span class="material-symbols-outlined text-[24px]">photo_camera</span>
+<span class="absolute right-full mr-4 bg-inverse-surface text-inverse-on-surface font-label-caps text-label-caps px-3 py-1 rounded opacity-0 group-hover/item:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Instagram</span>
+</a>
+<!-- TikTok -->
+<a class="bg-secondary-fixed text-on-secondary-fixed-variant rounded-[16px] p-4 hover:scale-110 transition-transform shadow-md flex items-center justify-center relative group/item" 
+    href="https://www.tiktok.com/@globows_liceymarquez"
+    target="_blank" 
+    rel="noopener noreferrer">
+<span class="material-symbols-outlined text-[24px]">music_note</span>
+<span class="absolute right-full mr-4 bg-inverse-surface text-inverse-on-surface font-label-caps text-label-caps px-3 py-1 rounded opacity-0 group-hover/item:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">TikTok</span>
+</a>
+</div>
+<!-- Main FAB -->
+<button class="bg-[#B3006D] text-white rounded-full w-16 h-16 flex items-center justify-center shadow-ambient-md hover:scale-110 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[32px] group-hover:rotate-45 transition-transform duration-300">add</span>
+</button>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // FAQ Logic
+            const faqBtns = document.querySelectorAll('.faq-btn');
+            faqBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const content = btn.nextElementSibling;
+                    const icon = btn.querySelector('.material-symbols-outlined');
+                    
+                    // Close others
+                    faqBtns.forEach(otherBtn => {
+                        if (otherBtn !== btn) {
+                            otherBtn.nextElementSibling.classList.remove('open');
+                            otherBtn.querySelector('.material-symbols-outlined').style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    // Toggle current
+                    content.classList.toggle('open');
+                    icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+                });
+            });
+
+            // Carousel Logic
+            const track = document.getElementById('carousel-track');
+            const prevBtn = document.getElementById('carousel-prev');
+            const nextBtn = document.getElementById('carousel-next');
+            const items = document.querySelectorAll('.carousel-item');
+            
+            let currentIndex = 0;
+            
+            const updateCarousel = () => {
+                // Get the width of an item including its gap
+                const itemWidth = items[0].offsetWidth;
+                const gap = parseFloat(getComputedStyle(track).gap) || 32; // fallback to 2rem/32px
+                const moveAmount = itemWidth + gap;
+                
+                track.style.transform = `translateX(-${currentIndex * moveAmount}px)`;
+            };
+
+            nextBtn.addEventListener('click', () => {
+                // visible items calculation (approximate for responsiveness)
+                const visibleItems = window.innerWidth < 768 ? 1 : 3;
+                if (currentIndex < items.length - visibleItems) {
+                    currentIndex++;
+                    updateCarousel();
+                }
+            });
+
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateCarousel();
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', updateCarousel);
+        });
+    </script>
+</body></html>
