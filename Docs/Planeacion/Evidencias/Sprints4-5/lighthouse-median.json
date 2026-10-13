@@ -1,0 +1,44 @@
+[
+  {
+    "formFactor": "mobile",
+    "performanceSamples": [
+      89,
+      92,
+      91
+    ],
+    "scores": {
+      "performance": 91,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 66
+    },
+    "metrics": {
+      "largest-contentful-paint": 3208.581,
+      "cumulative-layout-shift": 0,
+      "total-blocking-time": 132,
+      "total-byte-weight": 431378
+    },
+    "method": "median of three fixed Lighthouse 13.5.0 runs; Windows, Node 22.19.0, local production build, default simulated mobile throttling / documented desktop config; no field INP"
+  },
+  {
+    "formFactor": "desktop",
+    "performanceSamples": [
+      100,
+      100,
+      100
+    ],
+    "scores": {
+      "performance": 100,
+      "accessibility": 100,
+      "best-practices": 100,
+      "seo": 66
+    },
+    "metrics": {
+      "largest-contentful-paint": 743.3321,
+      "cumulative-layout-shift": 0,
+      "total-blocking-time": 3,
+      "total-byte-weight": 521082
+    },
+    "method": "median of three fixed Lighthouse 13.5.0 runs; Windows, Node 22.19.0, local production build, default simulated mobile throttling / documented desktop config; no field INP"
+  }
+]

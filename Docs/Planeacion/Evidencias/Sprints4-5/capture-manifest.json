@@ -1,0 +1,314 @@
+[
+  {
+    "name": "preview",
+    "width": 375,
+    "height": 812,
+    "failures": [],
+    "header": {
+      "position": "fixed",
+      "height": 81
+    },
+    "images": [
+      {
+        "src": "assets/ImagenLicey.jpg",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/KermesDiaCosecha.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/CursoSanValentin.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/BabyShower.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/8marzo.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/XVs.png",
+        "loaded": true
+      }
+    ]
+  },
+  {
+    "name": "final",
+    "width": 375,
+    "height": 812,
+    "failures": [],
+    "header": {
+      "position": "sticky",
+      "height": 81
+    },
+    "images": [
+      {
+        "src": "/_next/image?url=%2Fimages%2Fhero%2Fdecoracion-globows.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fabout%2Flicey-marquez-archivo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fhero%2Fdecoracion-globows.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fabout%2Flicey-marquez-archivo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fbaby-shower.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fxv-anos.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fdecoracion-tematica.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fbaby-shower.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fxv-anos.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fdecoracion-tematica.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2F8-marzo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      }
+    ]
+  },
+  {
+    "name": "preview",
+    "width": 768,
+    "height": 1024,
+    "failures": [],
+    "header": {
+      "position": "fixed",
+      "height": 81
+    },
+    "images": [
+      {
+        "src": "assets/ImagenLicey.jpg",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/KermesDiaCosecha.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/CursoSanValentin.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/BabyShower.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/8marzo.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/XVs.png",
+        "loaded": true
+      }
+    ]
+  },
+  {
+    "name": "final",
+    "width": 768,
+    "height": 1024,
+    "failures": [],
+    "header": {
+      "position": "sticky",
+      "height": 81
+    },
+    "images": [
+      {
+        "src": "/_next/image?url=%2Fimages%2Fhero%2Fdecoracion-globows.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fabout%2Flicey-marquez-archivo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fhero%2Fdecoracion-globows.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fabout%2Flicey-marquez-archivo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fbaby-shower.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fxv-anos.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fdecoracion-tematica.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fbaby-shower.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fxv-anos.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fdecoracion-tematica.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2F8-marzo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      }
+    ]
+  },
+  {
+    "name": "preview",
+    "width": 1440,
+    "height": 900,
+    "failures": [],
+    "header": {
+      "position": "fixed",
+      "height": 81
+    },
+    "images": [
+      {
+        "src": "assets/ImagenLicey.jpg",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/KermesDiaCosecha.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/CursoSanValentin.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/BabyShower.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/8marzo.png",
+        "loaded": true
+      },
+      {
+        "src": "assets/galeria/XVs.png",
+        "loaded": true
+      }
+    ]
+  },
+  {
+    "name": "final",
+    "width": 1440,
+    "height": 900,
+    "failures": [],
+    "header": {
+      "position": "sticky",
+      "height": 81
+    },
+    "images": [
+      {
+        "src": "/_next/image?url=%2Fimages%2Fhero%2Fdecoracion-globows.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fabout%2Flicey-marquez-archivo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fhero%2Fdecoracion-globows.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fabout%2Flicey-marquez-archivo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fbaby-shower.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fxv-anos.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fdecoracion-tematica.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fbaby-shower.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fxv-anos.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2Fdecoracion-tematica.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fgallery%2F8-marzo.webp&w=3840&q=75",
+        "loaded": true
+      },
+      {
+        "src": "/_next/image?url=%2Fimages%2Fcourses%2Fmontaje-san-valentin.webp&w=3840&q=75",
+        "loaded": true
+      }
+    ]
+  }
+]

@@ -2,7 +2,7 @@
 
 **Proyecto:** Plataforma Integral para Globows LM by Licey Márquez  
 **Documento:** `Docs/Planeacion/PlanDeImplementacion.md`  
-**Versión del plan:** 1.3.0 — integración visual y ejecución técnica hasta Sprint 3
+**Versión del plan:** 1.4.0 — hardening y QA de candidata 1.0.0-rc.1
 **Fecha:** 13 de octubre de 2026  
 **Estado:** Plan maestro vigente; el avance comprobado se distingue de trabajo pendiente y condicionado
 
@@ -24,7 +24,8 @@ Dirigir la **implementación real, verificación, despliegue y estabilización**
 - `Docs/`, `assets/` y `legacy/index.html` se conservan como documentación, fuente original de fotografías y referencia histórica, respectivamente.
 - Foundation generada con Next.js **16.4.0**, TypeScript, App Router, Tailwind y npm; dependencias instaladas; `npm run lint` y `npm run build` correctos; `npm run dev` responde HTTP 200.
 - Diagnóstico inicial de `ResumenEjecutivoCodex.md`: los puntos sobre `LayoutProps` y raíz Turbopack describían evidencia previa, pero el estado observado al iniciar esta consolidación ya incluía `next typegen`/typecheck satisfactorios y `turbopack.root` configurado. El seguimiento actualizado de hallazgos se registra en §12. Git y remoto verificados; deployment existente https://globowslm.vercel.app responde HTTP 200 y mantiene noindex. No acredita release V1 ni despliegue de esta rama.
-- El alcance de V1 está aprobado. Los detalles de contenido comercial aún deben confirmarse con la propietaria: fotografías finales, datos de contacto, credenciales, textos, enlaces oficiales y eventual sección de testimonios/FAQ.
+- El cliente confirmó expresamente el preview como fuente comercial aprobada para textos, fotografías, teléfono, WhatsApp y Facebook/Instagram/TikTok. Esta autorización sustituye los pendientes genéricos de cortes anteriores. Siguen ausentes únicamente el correo oficial, las credenciales individualizadas y su imagen representativa; el dominio permanente y release/indexación requieren autorización técnica.
+- Corte Sprint 4–5: base actualizada al merge PR #2 `78d707c97fbb4d2d1af0ed19d2a6a36e5da23b48`. Durante el QA, PR #3 fue integrado externamente a main como `30e8330152e4183a7a4b275fa45da42da8badf83`; el agente no hizo merge ni despliegue manual. La rama de cierre es `feature/sprints-4-5-release-hardening`.
 
 ## 3. Principios de ejecución
 
@@ -41,7 +42,7 @@ Dirigir la **implementación real, verificación, despliegue y estabilización**
 
 **Stack comprometido por MID:** Next.js 16.4.0 (versión instalada al inicio), React, TypeScript, Tailwind CSS, shadcn/ui cuando aporte valor, y Motion/Framer Motion para microinteracciones justificadas. Iconos Lucide. Hosting previsto: Vercel con HTTPS y CDN.
 
-**Propuesta técnica adicional (a confirmar al integrar):** ESLint + TypeScript; Vitest/Testing Library para lógica/componentes que lo requieran; Playwright para flujos E2E; Lighthouse y auditoría manual de accesibilidad; GitHub Actions para CI. No instalar librerías indiscriminadamente durante Foundation.
+**Herramientas adoptadas y ejecutadas:** ESLint + TypeScript, runner nativo Node para unitarias/SSR, Playwright/Chromium para E2E, axe y Lighthouse 13.5.0, GitHub Actions para CI. Node 22.19.0 y npm según engines; no Vitest/Testing Library redundantes ni dependencias sin uso.
 
 **Estructura de destino orientativa:**
 
@@ -130,7 +131,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** evidencia local reproducible + CI y Preview reales + primer commit y remoto revisados, sin secretos ni decisiones de seguridad aceptadas tácitamente.
 
-**Estado real:** Foundation integrada mediante PR #1. Fuentes locales resuelven el bloqueo histórico de Google Fonts; typecheck, lint y build verificados. Repositorio y deployment existentes comprobados. Riesgo dev y aceptación comercial pendientes; historia conservada en §12.
+**Estado real:** Foundation integrada mediante PR #1; fuentes locales y validaciones reproducibles correctas. Repositorio/deployment existentes comprobados. Aprobación del preview vigente; riesgo dev aún no aceptado y datos específicamente ausentes registrados en §13. Historia conservada en §12.
 
 ### Sprint 1 — Design System ejecutable, Layout, Hero y About
 
@@ -159,11 +160,11 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Criterios de salida:** no se visualiza la plantilla Next; no desbordamientos en 320–390 px ni escritorio; Hero usa fotografía única; CTA funciona; navegación con teclado; título y contenido institucional aprobado; build y CI sin fallos.
 
-**Riesgos y bloqueos:** falta de fotografía y copy final; número WhatsApp no validado; fuentes/imagen pueden penalizar LCP.
+**Riesgos y bloqueos:** fotografía/copy/número ya aprobados e integrados; vigilar LCP móvil. El Preview protegido requiere sesión autorizada para QA remoto de esa URL.
 
 **Definition of Done:** Hero y About aprobados comercialmente, navegación y CTA verificados con teclado y móvil, metadata/idioma correctos, evidencias de Preview y CI verde.
 
-**Estado real:** Implementación técnica y corrección visual realizadas, aceptación comercial pendiente. Hero fotográfico dominante con overlay, About editorial, fuentes y tokens conservados. Navbar conecta siete secciones reales; CTA principal a Contacto. Copy, fotos y destinatario comercial pendientes.
+**Estado real:** Implementación y contenido aprobado recuperados. Hero fotográfico con overlay, About editorial y trayectoria del preview, tokens y fuentes locales conservados; ocho destinos reales incluyendo FAQ condicional. WhatsApp contextual activo. QA local correcto; la verificación navegable del Preview protegido requiere acceso del responsable, no sustituye las evidencias locales.
 
 ### Sprint 2 — Servicios, Eventos y Galería
 
@@ -190,11 +191,11 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Criterios de salida:** cinco servicios rastreables, cada uno con cuatro elementos ERV1; categorías funcionales sin resultados mezclados; CTAs operativos; sin imágenes rotas; imágenes optimizadas y sin errores críticos de interacción.
 
-**Riesgos y bloqueos:** catálogo comercial incompleto, fotografías sin permiso o categorías sin evidencias; filtros innecesarios aumentarían código cliente.
+**Riesgos y bloqueos:** falta la imagen representativa de acreditación; las demás fotos/categorías están aprobadas. Mantener filtros y un único carrusel manual, sin mecanismos redundantes.
 
 **Definition of Done:** catálogo y galería aprobados, pruebas de categorías/CTA y accesibilidad exitosas, evidencia móvil/escritorio y CI verde.
 
-**Estado real:** Implementación técnica realizada con aceptación comercial pendiente. Cinco servicios, ocasiones diferenciadas y galería editorial de tres categorías con filtros. Cuatro servicios sin fotografía representativa aprobada y CTA sin destinatario validado: no se declara cumplida la DoD comercial.
+**Estado real:** Catálogo de cinco servicios y CTA activos; cuatro imágenes representativas aprobadas y una dependencia concreta: imagen de acreditación para el servicio certificaciones. Galería: cuatro fotografías, tres categorías, carrusel manual 1/2/3 tarjetas por viewport, filtros y teclado/táctil probados. No se declara cumplido el criterio de cinco imágenes ni el cierre funcional íntegro de ERV1.
 
 ### Sprint 3 — Formación, Certificaciones y Conversión
 
@@ -225,7 +226,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** secciones obligatorias y canales aceptados, timeline horizontal comprobado, contenido acreditado, pruebas de conversión y accesibilidad aprobadas, CI verde.
 
-**Estado real:** Alcance técnico implementado con bloqueos comerciales. CoursesSection, CertificationsSection/HorizontalTimeline, ContactSection, FloatingContactMenu y Footer integrados. Dataset de credenciales vacío, sin entradas fabricadas; cinco canales controlados sin enlaces no aprobados. TrustSupport omitida conforme D04/D09. Aceptación funcional/comercial parcial.
+**Estado real:** Formación y FAQ del preview aprobadas y publicadas; timeline horizontal preparado sin entradas inventadas. Contacto, Footer y menú flotante compacto comparten cuatro canales activos y teléfono aprobado. Solo correo y catálogo individual de acreditaciones permanecen ausentes. Pruebas con fixtures y estado vacío; no se declara aceptación de credenciales inexistentes.
 
 ### Sprint 4 — Hardening transversal, SEO, accesibilidad y rendimiento
 
@@ -257,7 +258,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** defectos bloqueantes cerrados, criterios técnicos medidos con condiciones registradas, aceptación de accesibilidad/SEO/performance y RC preliminar reproducible.
 
-**Estado real:** pendiente, no iniciado formalmente. Base técnica hasta Sprint 3 disponible, con aceptación comercial pendiente.
+**Estado real:** Hardening y QA ejecutados: tipos, lint, build, 27 unitarias y 29 E2E; axe sin violaciones en seis estados móvil/escritorio, nueve anchuras y capturas comparables. Lighthouse 13.5.0: tres corridas optimizadas, mediana Performance 91 móvil/100 desktop, Accessibility/Best Practices 100, SEO 66 por noindex deliberado. LCP móvil mediano 3.21 s: oportunidad de mejora registrada. Metadata, headers y rastreo controlado preparados. No equivale a certificación WCAG completa, medición INP de campo ni aprobación de release.
 
 ### Sprint 5 — QA final, release y producción V1.0.0
 
@@ -273,9 +274,9 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 3. QA funcional contra la matriz ERV1; comparación visual con preview y MID, considerando divergencias autorizadas por ADR.
 4. Ejecutar pruebas de aceptación con contenido final y checklist manual de accesibilidad, enlaces, rendimiento y SEO.
 5. Preparar release: revisión de dependencias, auditoría npm, contenido aprobado, dominio y entorno de producción, cambios registrados y plan de rollback.
-6. Integrar el Release Candidate en rama productiva; desplegar mediante Vercel; verificar HTTPS, ruta principal, imágenes, metadata, enlaces y acceso desde redes móviles/escritorio.
-7. Crear release/tag `v1.0.0` y documentar alcance, limitaciones, pruebas, incidencias conocidas no bloqueantes y procedimiento de rollback.
-8. Configurar observabilidad pertinente (por ejemplo, Web Analytics/Speed Insights si se aprueban) y verificar recolección sin afirmar estadísticas no observadas.
+6. **Solo después de autorización formal de release, fuera de esta ejecución:** integrar el Release Candidate en rama productiva; desplegar mediante Vercel; verificar HTTPS, ruta principal, imágenes, metadata, enlaces y acceso desde redes móviles/escritorio.
+7. **Solo después de autorización formal, fuera de esta ejecución:** crear release/tag `v1.0.0` y documentar alcance, limitaciones, pruebas, incidencias conocidas no bloqueantes y procedimiento de rollback.
+8. **Solo si se autoriza y sin activar analítica en esta ejecución:** configurar observabilidad pertinente (por ejemplo, Web Analytics/Speed Insights si se aprueban) y verificar recolección sin afirmar estadísticas no observadas.
 
 **Componentes/archivos afectados:** workflow CI, pruebas E2E, matriz de aceptación, configuración Vercel/dominio, metadata y documentos de release; cambios de código solo por defectos encontrados.
 
@@ -285,11 +286,11 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Criterios de salida:** cumplimiento de los criterios ERV1; todos los enlaces y acciones críticas verificados; sitio móvil/escritorio funcional; producción HTTPS estable; pruebas y pipeline verdes; sin vulnerabilidades críticas/altas de producción conocidas sin resolución; aprobación formal del release.
 
-**Riesgos y bloqueos:** material comercial no autorizado, vulnerabilidad nueva o excepción sin dueño, falla de dominio/SSL o permisos, divergencia Preview/producción.
+**Riesgos y bloqueos:** correo y acreditaciones concretos ausentes; riesgo dev sin aceptación; dominio/indexación/release pendientes; acceso protegido al Preview. No reabrir aprobación de textos, fotos, teléfono o redes ya confirmados.
 
 **Definition of Done:** aprobación comercial y técnica registrada; matriz obligatoria aceptada; CI/E2E verdes; release tag y producción HTTPS con smoke test, monitoreo mínimo y plan de reversión.
 
-**Estado real:** pendiente; repositorio oficial existente, CI preparado y despliegue productivo V1 no realizado. El estado remoto se registra en §12.
+**Estado real:** QA técnico, CI remoto y candidata 1.0.0-rc.1 preparados. CI de 8e577e8, bd5d6d7 y código final 40bd061 verificado exitoso. Deployment público del merge externo 30e8330 revisado realmente a 375/1440 px; Preview de rama protegido por login Vercel, sin afirmar QA de aplicación tras el login. Draft PR #4 creado para el cierre posterior al merge externo. Release oficial, tag final, indexación y aceptación del riesgo no ejecutados ni autorizados. Puerta de salida pendiente de datos obligatorios específicos y autorizaciones; consultar ReleaseCandidateV1.md.
 
 ### Sprint 6 — Estabilización post-release y transición hacia ERV2
 
@@ -440,3 +441,21 @@ Seis derivados WebP: Hero, Licey, Baby Shower, XV, Kermés y San Valentín. Orig
 ## 13. Política de revisiones del plan
 
 Las decisiones D01–D09 de la auditoría se consideran aprobadas. Este plan no introduce nuevas decisiones de negocio. Las propuestas operativas pendientes de ratificación son: metas cuantitativas Lighthouse, herramientas de analítica y dominio definitivo. Registrar cualquier cambio con fecha, responsable, motivo, impacto y versión del plan.
+
+
+## 13. Corte vigente — Sprints 4–5, 13/10/2026
+
+Los apartados históricos de §12 conservan resultados del momento en que se obtuvieron. Sus referencias a aprobación genérica pendiente, FAQ omitida, canales deshabilitados, tres fotos y 20/22 pruebas fueron superadas por este corte; no deben utilizarse como diagnóstico actual. ERP, ERV1, MID y D01–D09 permanecen intactos.
+
+- **Contenido:** recuperación del preview aprobado (incluidas las afirmaciones de trayectoria allí autorizadas). Cinco nombres ERV1 conservados; cursos/talleres usan copy aprobado con correcciones ortográficas localizadas. FAQ: tres respuestas autorizadas, formación presencial actual y expansión digital expresamente futura. Sin testimonios inventados.
+- **Conversión:** teléfono +52 664 484 6470; wa.me/5216644846470 preservado del preview, seis mensajes codificados. Facebook, Instagram y TikTok activos desde site.ts. Cuatro destinos GET 200 en consulta real, sin enviar mensajes ni iniciar sesión; esto acredita alcance HTTP, no entrega comercial. Correo: ausente.
+- **UI:** carrusel manual categorizado, teclado/Home/End/filtros/táctil/reduced-motion; sin autoplay ni lightbox redundante. Menú flotante circular compacto, columna de iconos, tooltips, Escape/foco y canal correo inactivo explícito.
+- **Assets:** siete derivados WebP, originales y legacy intactos; San Valentín en Formación, 8marzo en decoración según contenido aprobado. La imagen de Licey se mantiene completa, sin extraer un logotipo engañoso. Favicon derivado de fotografía aprobada sustituye el template. No existe acreditación individual inventada.
+- **Validación local final:** Node 22.19.0/npm compatible; typegen/typecheck, ESLint, 27 unitarias, build y 29 E2E correctos. Chromium a 320/375/390/428/640/768/1024/1280/1440 px; capturas preview/Next a 375/768/1440; cero imágenes finales rotas, anclas inexistentes o desborde global en los casos ejecutados. Una falla intermedia Home del carrusel se corrigió eliminando padding inline; un smoke intermedio requería esperar la actualización React del filtro, corregido en el script QA. Sin suprimir comprobaciones.
+- **Accesibilidad:** axe WCAG 2 A/AA, 2.1 A/AA y 2.2 AA, seis combinaciones de viewport/estado, cero violaciones; teclado/Escape/foco y movimiento reducido comprobados. No hubo ensayo con lector de pantalla ni dispositivos Safari/Firefox; no declarar conformidad WCAG integral.
+- **Rendimiento:** Lighthouse 13.5.0/Node 22.19.0, build productivo local; baseline comparable y todas las corridas conservadas. Tres corridas optimizadas del hito bd5d6d7: móvil 89/92/91, desktop 100/100/100; mediana LCP 3208.58/743.33 ms, CLS 0/0, TBT 132/3 ms; SEO 66 intencionalmente por noindex. No son métricas de campo ni se garantiza una puntuación permanente. El corte final posterior solo corrige copy y condición FAQ; CI mide su propio HEAD por separado.
+- **Runtime real:** globowslm.vercel.app del merge externo 30e8330: HTTPS 200, menús/galería/FAQ operables, imágenes cargadas, sin errores JS observados a 375 y 1440. Event Timing observado en laboratorio (hasta 16/48 ms) no es INP de campo. Preview de rama: deployment exitoso en GitHub pero acceso redirigido a Login Vercel; no afirmar QA de esa aplicación.
+- **Seguridad:** audit runtime 0; árbol completo 5 altas dev y 0 críticas. Lighthouse 13.5.0 elimina advisories adicionales de versiones QA descartadas; no se cambia Next/React de major. Excepción braces no aceptada; ver registro de riesgo. Headers y noindex comprobados. CSP permite inline requerido por esta configuración: no es estricta con nonce.
+- **Release:** candidata reproducible, CI con npm ci/tipos/lint/unitarias/build/E2E/axe/Lighthouse y artifacts siete días. Vercel CD existente no se reconfigura. No merge por el agente, tag final, indexación pública, release ni Sprint 6. Rollback documentado, no ejecutado/ensayado en producción.
+
+**Salida:** READY WITH CONDITIONS como candidata técnica; no READY para liberar V1 íntegra. Datos concretos pendientes: correo, credenciales/organismos/evidencias y fotografía representativa de acreditación. Decisiones técnicas: aceptación del riesgo dev, dominio permanente, acceso QA al Preview, autorización formal de release/indexación. Detalle, evidencia y puerta de salida en [ReleaseCandidateV1.md](ReleaseCandidateV1.md) y [Evidencias/Sprints4-5](Evidencias/Sprints4-5/).

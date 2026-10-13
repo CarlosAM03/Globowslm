@@ -1,0 +1,22 @@
+[
+  {
+    "url": "https://wa.me/5216644846470",
+    "status": 200,
+    "finalHost": "api.whatsapp.com"
+  },
+  {
+    "url": "https://www.facebook.com/globowslm",
+    "status": 200,
+    "finalHost": "www.facebook.com"
+  },
+  {
+    "url": "https://www.instagram.com/globows_lm/",
+    "status": 200,
+    "finalHost": "www.instagram.com"
+  },
+  {
+    "url": "https://www.tiktok.com/@globows_liceymarquez",
+    "status": 200,
+    "finalHost": "www.tiktok.com"
+  }
+]
