@@ -2,7 +2,7 @@
 
 **Proyecto:** Plataforma Integral para Globows LM by Licey Márquez  
 **Documento:** `Docs/Planeacion/PlanDeImplementacion.md`  
-**Versión del plan:** 1.1.0 — ejecución consolidada  
+**Versión del plan:** 1.2.0 — ejecución técnica de Sprints 1–2
 **Fecha:** 13 de octubre de 2026  
 **Estado:** Plan maestro vigente; el avance comprobado se distingue de trabajo pendiente y condicionado
 
@@ -23,7 +23,7 @@ Dirigir la **implementación real, verificación, despliegue y estabilización**
 - Nuevo repositorio remoto planeado: `CarlosAM03/GlobowslmV1.0.0` (no se considera creado hasta verificarlo).
 - `Docs/`, `assets/` y `legacy/index.html` se conservan como documentación, fuente original de fotografías y referencia histórica, respectivamente.
 - Foundation generada con Next.js **16.4.0**, TypeScript, App Router, Tailwind y npm; dependencias instaladas; `npm run lint` y `npm run build` correctos; `npm run dev` responde HTTP 200.
-- Diagnóstico inicial de `ResumenEjecutivoCodex.md`: los puntos sobre `LayoutProps` y raíz Turbopack describían evidencia previa, pero el estado observado al iniciar esta consolidación ya incluía `next typegen`/typecheck satisfactorios y `turbopack.root` configurado. El seguimiento actualizado de hallazgos se registra en §12. Siguen pendientes Git, remoto y Preview.
+- Diagnóstico inicial de `ResumenEjecutivoCodex.md`: los puntos sobre `LayoutProps` y raíz Turbopack describían evidencia previa, pero el estado observado al iniciar esta consolidación ya incluía `next typegen`/typecheck satisfactorios y `turbopack.root` configurado. El seguimiento actualizado de hallazgos se registra en §12. Git y remoto se verificaron al iniciar Sprints 1–2; Preview sigue pendiente.
 - El alcance de V1 está aprobado. Los detalles de contenido comercial aún deben confirmarse con la propietaria: fotografías finales, datos de contacto, credenciales, textos, enlaces oficiales y eventual sección de testimonios/FAQ.
 
 ## 3. Principios de ejecución
@@ -46,7 +46,7 @@ Dirigir la **implementación real, verificación, despliegue y estabilización**
 **Estructura de destino orientativa:**
 
 ```text
-GlobowslmV1.0.0/ (directorio local: globowslm/)
+Globowslm/ (directorio local: globowslm/)
 ├── Docs/                          # Especificaciones y ADR existentes
 ├── assets/                        # Material gráfico de origen
 ├── legacy/index.html              # Preview local archivado
@@ -163,7 +163,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** Hero y About aprobados comercialmente, navegación y CTA verificados con teclado y móvil, metadata/idioma correctos, evidencias de Preview y CI verde.
 
-**Estado real:** pendiente; Foundation muestra todavía la plantilla de Next.js.
+**Estado real:** implementación técnica de Sprint 1 realizada con aceptación comercial pendiente. Tokens MID, fuentes locales, Navbar/MobileMenu, Hero único, About, Footer inicial, metadata española y helper contextual tienen código real y pruebas. Anclas limitadas a secciones implementadas. El CTA principal explora servicios; WhatsApp permanece deshabilitado sin número validado. Copy, fotografía Hero y composición promocional de About requieren aprobación. Menú flotante/contacto completo pertenecen a Sprint 3. No se declara cumplida la DoD comercial.
 
 ### Sprint 2 — Servicios, Eventos y Galería
 
@@ -225,7 +225,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** secciones obligatorias y canales aceptados, timeline horizontal comprobado, contenido acreditado, pruebas de conversión y accesibilidad aprobadas, CI verde.
 
-**Estado real:** pendiente; no hay componentes de negocio ni credenciales verificadas.
+**Estado real:** pendiente; existen bases UI, helper y catálogo de Sprints 1–2. No se implementaron CoursesSection, CertificationsSection, FloatingContactMenu ni ContactSection; no hay credenciales verificadas.
 
 ### Sprint 4 — Hardening transversal, SEO, accesibilidad y rendimiento
 
@@ -289,7 +289,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** aprobación comercial y técnica registrada; matriz obligatoria aceptada; CI/E2E verdes; release tag y producción HTTPS con smoke test, monitoreo mínimo y plan de reversión.
 
-**Estado real:** pendiente; aún no existen repo, CI remoto ni despliegue V1.
+**Estado real:** pendiente; repositorio oficial existente, CI preparado y despliegue productivo V1 no realizado. El estado remoto se registra en §12.
 
 ### Sprint 6 — Estabilización post-release y transición hacia ERV2
 
@@ -365,14 +365,30 @@ Una tarea solo se considera terminada cuando satisface su contrato funcional, cu
 
 **La V1.0.0 se libera cuando:** todos los apartados obligatorios de ERV1 están implementados; el sitio funciona en móvil y escritorio; fotografías optimizadas y reales; enlaces y WhatsApp correctos; navegación fluida; despliegue estable en Vercel; la marca se representa profesionalmente; pipeline y pruebas críticas aprobados; no existen incidencias bloqueantes conocidas.
 
-## 12. Estado de ejecución y próximos comandos
+## 12. Estado de ejecución y evidencias
 
-**Sprint 0 — corte 13/10/2026:** documentación y trazabilidad reconciliadas; `package.json`/lockfile usan `globowslm-v1@1.0.0-alpha.0` y contrato Node/npm; README y exclusiones actualizados; estructura vacía creada dos veces con idempotencia; CI **preparado pero aún no ejecutado remotamente**. `next.config.ts`, `tsconfig.json` y el bloque Next.js de `AGENTS.md` se conservaron. `npm ci` terminó satisfactoriamente tras aislar un `node_modules` anterior bloqueado por Windows; `npm run typegen`, `npm run typecheck` y `npm run lint` pasaron. `npm audit --omit=dev` informó cero vulnerabilidades y el reporte completo cinco altas de la misma cadena dev, pendientes de decisión en [RegistroRiesgoDependencias.md](RegistroRiesgoDependencias.md).
+**Registro histórico de consolidación previo a Sprints 1–2 (conservado):** documentación y trazabilidad reconciliadas; `package.json`/lockfile usan `globowslm-v1@1.0.0-alpha.0` y contrato Node/npm; README y exclusiones actualizados; estructura vacía creada dos veces con idempotencia; CI **preparado pero aún no ejecutado remotamente**. `next.config.ts`, `tsconfig.json` y el bloque Next.js de `AGENTS.md` se conservaron. `npm ci` terminó satisfactoriamente tras aislar un `node_modules` anterior bloqueado por Windows; `npm run typegen`, `npm run typecheck` y `npm run lint` pasaron. `npm audit --omit=dev` informó cero vulnerabilidades y el reporte completo cinco altas de la misma cadena dev, pendientes de decisión en [RegistroRiesgoDependencias.md](RegistroRiesgoDependencias.md).
 
-El build nuevo **no está verificado como satisfactorio**: desde `.next` limpio falla al descargar las fuentes Geist/Geist Mono del layout template por falta de conexión a Google Fonts en este entorno; intentos con caché parcial mostraron además un fallo transitorio de proceso de Turbopack. El build exitoso anterior al cambio es evidencia histórica del desarrollador, no validación posterior a este hardening. Las fuentes oficiales Manrope/Cormorant se incorporan en Sprint 1 con insumos aprobados. El árbol anterior de dependencias quedó preservado como `.node_modules-recovery/` e ignorado por Git; su limpieza no forma parte del primer commit.
+En aquella consolidación, el build **no estaba verificado como satisfactorio**: desde `.next` limpio falla al descargar las fuentes Geist/Geist Mono del layout template por falta de conexión a Google Fonts en este entorno; intentos con caché parcial mostraron además un fallo transitorio de proceso de Turbopack. El build exitoso anterior al cambio es evidencia histórica del desarrollador, no validación posterior a este hardening. Las fuentes oficiales Manrope/Cormorant se incorporan en Sprint 1 con insumos aprobados. El árbol anterior de dependencias quedó preservado como `.node_modules-recovery/` e ignorado por Git; su limpieza no forma parte del primer commit.
 
-**Pendiente para cerrar Sprint 0:** validar build exitoso desde checkout limpio en un entorno con acceso a fuentes o resolver su abastecimiento oficial; ejecutar CI real; revisar y autorizar primer commit/remoto; conectar y comprobar Preview de Vercel; decidir tratamiento del riesgo dev. Ninguna de estas operaciones remotas está acreditada por el workflow local. Obtener los datos comerciales faltantes avanza en paralelo y bloquea secciones/release, no obliga a rehacer UX/UI.
+**Pendientes registrados entonces (véase actualización siguiente):** validar build exitoso desde checkout limpio en un entorno con acceso a fuentes o resolver su abastecimiento oficial; ejecutar CI real; revisar y autorizar primer commit/remoto; conectar y comprobar Preview de Vercel; decidir tratamiento del riesgo dev. Ninguna de estas operaciones remotas está acreditada por el workflow local. Obtener los datos comerciales faltantes avanza en paralelo y bloquea secciones/release, no obliga a rehacer UX/UI.
 
+### Actualización operativa — ejecución autónoma de Sprints 1–2, 13/10/2026
+
+- Base verificada: `main`/remoto en `2eaf8a01c2df5fc23b835d4367f370ef566e42ca`, working tree limpio al inicio. CI del primer commit comprobado por API pública: [run 38398984730](https://github.com/CarlosAM03/Globowslm/actions/runs/38398984730), resultado **success**. El conector de runs filtra eventos PR y por eso inicialmente devolvió una lista vacía; esa respuesta no demostraba ausencia de CI de push.
+- Rama: `feature/sprints-1-2-landing-core`, publicada en el repositorio oficial. Hitos: `8589f63` prerrequisitos; `06b525d` Design System; `77e91f4` Layout/Hero/About; `3c22d0b` servicios/eventos; `26c8b89` galería; `7b119a6` pruebas/CI. No merge, tag, release ni despliegue productivo.
+- Reproducibilidad: `npm ci` pasó tras preservar la instalación generada bloqueada por Windows en `.node_modules-recovery/`, ignorada. Manrope y Cormorant Garamond WOFF2 oficiales se incorporaron con licencia OFL, procedencia y SHA-256 en `src/styles/fonts/README.md`; el build no descarga fuentes. Lucide se usa realmente; Playwright y sharp son dev. No se añadieron shadcn/Motion sin necesidad.
+- Validación local posterior: typegen/typecheck y ESLint **exit 0**; build Turbopack **exit 0**, rutas `/` y `/_not-found` prerenderizadas. Cache Components, Partial Prefetching y configuración Turbopack preservados. Un intento encontró fallo de inicio del proceso CSS de Turbopack; preservar `.next/build` y caché Turbopack fallidos y regenerarlos permitió build satisfactorio sin desactivar controles. No equivale a un defecto comercial ni se silenció TypeScript.
+- Pruebas: `npm test` **9/9**; `npm run test:e2e` **14/14** sobre build productivo y Chromium. Casos reales: anclas, semántica/idioma/fuentes locales, menú con teclado/Escape/foco/cierre, cinco fichas y estados pendientes, filtros por categoría, skip link y movimiento reducido. Siete anchos: 320, 375, 390, 428, 768, 1024 y 1440 px; carga de imágenes y controles ≥44 px, sin desbordamiento horizontal. Una prueba inicial falló por reutilizar un selector cuyo nombre cambia al abrir menú; se corrigió el selector y se repitió con éxito.
+- Evidencia visual real: capturas de siete anchos inspeccionadas y capturas específicas de foco del menú a 320 px y filtro móvil. `test-results/` y `playwright-report/` son locales e ignorados; GitHub Actions publica artifacts con esas evidencias. El cierre de los servidores de prueba de Windows requirió detener únicamente los PIDs creados por las pruebas después de completar los casos; el servidor dev preexistente no se detuvo. No se declara Lighthouse, lector de pantalla ni QA WCAG integral ejecutados.
+- Assets: cinco WebP derivados sin recortes, nombres normalizados y `next/image`; repetición de `assets:prepare` preserva originales. Hero 852×856/103418 bytes; About 1200×1200/243388; Baby Shower 472×411/28252; XV 825×555/88364; temática 827×531/74970. `legacy/index.html`, originales, AGENTS y fuentes oficiales ERP/ERV1/MID/UIA/ADR sin diff contra main. Foto promocional About conserva logos/textos; retrato y aprobación siguen pendientes.
+- Galería: categorías respaldadas por contenido visible, sin afirmar cliente/fecha o evento completado no documentado. `CursoSanValentin.png` se reserva para eventual evidencia formativa de Sprint 3; `8marzo.png` con personas no se incorpora sin contexto/permiso. No se crearon categorías sin material ni carrusel/lightbox ornamental.
+- Seguridad actual: `npm audit --omit=dev` **0**; auditoría completa **5 altas**, la misma cadena dev `braces`. Sin hallazgos nuevos reportados al añadir dependencias. La excepción sigue **NO aceptada**; no se ejecutó audit fix ni migración mayor. Lockfile y CI con permisos mínimos/sin secretos en PRs.
+- CI: el [run 38405047745](https://github.com/CarlosAM03/Globowslm/actions/runs/38405047745) de la rama terminó **success**: checkout limpio, npm ci, tipos, lint, 9 unitarias, build, instalación Chromium y 14 E2E; evidencia de navegador publicada como artifact. Esta ejecución acredita reproducibilidad en Ubuntu/Node 22.16 sin caché de dependencias previa del proyecto. El commit documental posterior deberá verificar su propia ejecución remota.
+
+**Pendientes comerciales que impiden cerrar aceptación de Sprints 1–2:** número oficial y aprobación de mensajes; fotografías de cursos/talleres/certificaciones/asesorías; aprobación de copy Hero/About/fichas, uso del montaje promocional About y tres fotos/taxonomía de galería. Hero navega a servicios/galería, no a un destinatario ficticio; cinco CTA están preparados pero deshabilitados con explicación. No se declara satisfacción de las cinco fichas × cuatro campos comerciales.
+
+**Preparación para Sprint 3:** bases UI y helper disponibles. Implementar únicamente en una ejecución posterior: formación real, credenciales verificadas/timeline horizontal, contacto/footer completo y menú flotante de cinco canales. Obtener catálogo formativo, diplomas/organismos y canales autorizados. TrustSupport continúa condicional. Vercel Preview, dominio y autorización del riesgo dev siguen pendientes; la V1 no está liberada.
 ## 13. Política de revisiones del plan
 
-Las decisiones D01–D09 de la auditoría se consideran aprobadas. Este plan no introduce nuevas decisiones de negocio. Las propuestas operativas pendientes de ratificación son: política de ramas, librerías de prueba/CI, metas cuantitativas Lighthouse, herramientas de analítica y dominio definitivo. Registrar cualquier cambio con fecha, responsable, motivo, impacto y versión del plan.
+Las decisiones D01–D09 de la auditoría se consideran aprobadas. Este plan no introduce nuevas decisiones de negocio. Las propuestas operativas pendientes de ratificación son: metas cuantitativas Lighthouse, herramientas de analítica y dominio definitivo. Registrar cualquier cambio con fecha, responsable, motivo, impacto y versión del plan.
