@@ -49,7 +49,7 @@ test("mobile menu supports keyboard, Escape, focus return and link closing", asy
   await expect(trigger).toHaveAttribute("aria-expanded", "false");
 });
 
-for (const width of [320, 375, 390, 428, 768, 1024, 1440]) {
+for (const width of [320, 375, 390, 428, 640, 768, 1024, 1280, 1440]) {
   test(`responsive layout and images at ${width}px`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto("/");
@@ -60,7 +60,7 @@ for (const width of [320, 375, 390, 428, 768, 1024, 1440]) {
       await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBeTruthy();
     }
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-    for (const action of await page.locator("main .button, header a, header button").all()) {
+    for (const action of await page.locator("main .button, header a, header button, footer a, .floating-trigger").all()) {
       if (await action.isVisible()) expect((await action.boundingBox())!.height).toBeGreaterThanOrEqual(44);
     }
     await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
@@ -124,4 +124,90 @@ test("mobile disclosure and skip link have visible keyboard focus", async ({ pag
   await expect(galleryLink).toBeFocused();
   expect(await galleryLink.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe("solid");
   await page.screenshot({ path: testInfo.outputPath("mobile-menu-320.png"), fullPage: false });
+});
+
+test("complete landing navigation has no broken anchors or sticky header obstruction", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  for (const id of ["inicio", "sobre-licey", "servicios", "galeria", "formacion", "certificaciones", "contacto"]) await expect(page.locator(`section#${id}`)).toHaveCount(1);
+  for (const link of await page.locator('a[href^="#"]').all()) {
+    const href = await link.getAttribute("href");
+    await expect(page.locator(href!)).toHaveCount(1);
+  }
+  for (const name of ["Formación", "Certificaciones", "Contacto"]) {
+    await page.getByRole("navigation", { name: "Navegación principal" }).getByRole("link", { name, exact: true }).click();
+    const href = await page.getByRole("navigation", { name: "Navegación principal" }).getByRole("link", { name, exact: true }).getAttribute("href");
+    const title = page.locator(`${href} h2`).first();
+    expect((await title.boundingBox())!.y).toBeGreaterThanOrEqual((await page.locator("header").boundingBox())!.height);
+  }
+  await expect(page.locator('#faq, #confianza')).toHaveCount(0);
+  await page.locator('#inicio .button').first().click();
+  await expect(page).toHaveURL(/#contacto$/);
+});
+
+test("formation is contextual and does not claim unverified teaching or schedules", async ({ page }) => {
+  await page.goto("/#formacion");
+  await expect(page.locator("#formacion .training-card")).toHaveCount(4);
+  await expect(page.locator("#formacion img")).toHaveCount(1);
+  await expect(page.locator("#formacion figcaption")).toContainText("no acredita docencia");
+  await expect(page.locator("#formacion")).toContainText("temarios, fechas");
+  for (const button of await page.locator("#formacion .button").all()) await expect(button).toBeDisabled();
+  await expect(page.locator("#formacion")).not.toContainText("8marzo");
+});
+
+test("certifications disclose absent verified credentials without fictional timeline entries", async ({ page }) => {
+  await page.goto("/#certificaciones");
+  await expect(page.getByRole("heading", { name: "Credenciales en validación" })).toBeVisible();
+  await expect(page.locator(".certification-card, .timeline-controls")).toHaveCount(0);
+  await expect(page.locator("#certificaciones img")).toHaveCount(0);
+});
+
+test("contact and footer share five controlled channels with no fictitious destinations", async ({ page }) => {
+  await page.goto("/#contacto");
+  for (const scope of [page.locator("#contacto"), page.locator("footer")]) {
+    await expect(scope.locator(".contact-channels li")).toHaveCount(5);
+    for (const button of await scope.locator(".contact-channels button").all()) await expect(button).toBeDisabled();
+  }
+  await expect(page.locator('#contacto')).toContainText("Teléfono oficial pendiente");
+  await expect(page.locator('a[href^="https://wa.me"], a[href^="tel:"], a[href^="mailto:"]')).toHaveCount(0);
+  await expect(page.getByRole("navigation", { name: "Navegación del pie de página" }).getByRole("link")).toHaveCount(7);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  await expect(page.locator('form')).toHaveCount(0);
+});
+
+test("floating menu supports keyboard, Escape and outside closing with controlled channels", async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/");
+  const trigger = page.locator('button[aria-controls="floating-contact-panel"]');
+  await trigger.focus();
+  await page.keyboard.press("Enter");
+  await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  const panel = page.getByRole("region", { name: "Contacto rápido" });
+  await expect(panel.locator(".contact-channels li")).toHaveCount(5);
+  for (const button of await panel.locator(".contact-channels button").all()) await expect(button).toBeDisabled();
+  const box = (await panel.boundingBox())!;
+  expect(box.x).toBeGreaterThanOrEqual(0);
+  expect(box.x + box.width).toBeLessThanOrEqual(375);
+  expect(box.y).toBeGreaterThanOrEqual(0);
+  await page.screenshot({ path: testInfo.outputPath("floating-menu-375.png") });
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+  await expect(trigger).toHaveAttribute("aria-expanded", "false");
+  await trigger.click();
+  await page.locator(".brand-link").click();
+  await expect(trigger).toHaveAttribute("aria-expanded", "false");
+  await page.locator('button[aria-controls="mobile-navigation"]').click();
+  await trigger.click();
+  await expect(page.locator('button[aria-controls="mobile-navigation"]')).toHaveAttribute("aria-expanded", "false");
+});
+
+test("Hero is photographic background with readable editorial overlay, not a two-column card", async ({ page }) => {
+  await page.goto("/");
+  const image = page.locator("#inicio > img");
+  await expect(image).toHaveCount(1);
+  await expect(image).toHaveAttribute("fetchpriority", "high");
+  expect(await image.evaluate((element) => getComputedStyle(element).position)).toBe("absolute");
+  await expect(page.locator("#inicio .hero-subtitle")).toBeVisible();
+  await expect(page.locator("#inicio figure, #inicio .hero-grid")).toHaveCount(0);
 });

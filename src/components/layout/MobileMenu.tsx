@@ -7,6 +7,7 @@ import type { NavigationItem } from "@/config/site";
 export function MobileMenu({ items }: { items: readonly NavigationItem[] }) {
   const [open, setOpen] = useState(false);
   const trigger = useRef<HTMLButtonElement>(null);
+  const root = useRef<HTMLDivElement>(null);
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape" && open) {
@@ -14,18 +15,21 @@ export function MobileMenu({ items }: { items: readonly NavigationItem[] }) {
         trigger.current?.focus();
       }
     }
-    const desktop = window.matchMedia("(min-width: 1024px)");
+    function onOutsideClick(event: PointerEvent) { if (open && !root.current?.contains(event.target as Node)) setOpen(false); }
+    const desktop = window.matchMedia("(min-width: 1280px)");
     function onViewportChange() { if (desktop.matches) setOpen(false); }
     document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onOutsideClick);
     desktop.addEventListener("change", onViewportChange);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onOutsideClick);
       desktop.removeEventListener("change", onViewportChange);
     };
   }, [open]);
 
   return (
-    <div className="mobile-menu">
+    <div ref={root} className="mobile-menu" onBlur={(event) => { if (event.relatedTarget && !event.currentTarget.contains(event.relatedTarget as Node)) setOpen(false); }}>
       <button ref={trigger} type="button" className="menu-trigger" aria-expanded={open} aria-controls="mobile-navigation" aria-label={open ? "Cerrar menú" : "Abrir menú"} onClick={() => setOpen(!open)}>
         {open ? <X strokeWidth={1.75} aria-hidden="true" /> : <Menu strokeWidth={1.75} aria-hidden="true" />}
       </button>

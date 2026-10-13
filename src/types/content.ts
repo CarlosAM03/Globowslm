@@ -25,3 +25,24 @@ export type GalleryImage = ContentImage & {
 };
 
 export type GalleryCategory = { id: string; label: string };
+
+export type ContactChannelId = "whatsapp" | "facebook" | "instagram" | "tiktok" | "email";
+export type ContactChannel = {
+  id: ContactChannelId;
+  label: string;
+  status: "approved" | "candidate" | "missing";
+  destination: string | null;
+  source: string;
+};
+export type ContactLink = Pick<ContactChannel, "id" | "label" | "status"> & { href: string | null };
+
+export type Certification = {
+  id: string;
+  name: string;
+  organization?: string;
+  date?: string;
+  description?: string;
+  image?: ContentImage;
+  verified: boolean;
+  verificationSource: string;
+};

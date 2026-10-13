@@ -2,7 +2,7 @@
 
 **Proyecto:** Plataforma Integral para Globows LM by Licey Márquez  
 **Documento:** `Docs/Planeacion/PlanDeImplementacion.md`  
-**Versión del plan:** 1.2.0 — ejecución técnica de Sprints 1–2
+**Versión del plan:** 1.3.0 — integración visual y ejecución técnica hasta Sprint 3
 **Fecha:** 13 de octubre de 2026  
 **Estado:** Plan maestro vigente; el avance comprobado se distingue de trabajo pendiente y condicionado
 
@@ -20,10 +20,10 @@ Dirigir la **implementación real, verificación, despliegue y estabilización**
 
 - Preview público: `https://carlosam03.github.io/globows-preview/`; fuente: `https://github.com/CarlosAM03/globows-preview`.
 - Directorio local definitivo: `C:\Users\Carl0\Desktop\Globows\globowslm`.
-- Nuevo repositorio remoto planeado: `CarlosAM03/GlobowslmV1.0.0` (no se considera creado hasta verificarlo).
+- Repositorio oficial verificado: `CarlosAM03/Globowslm`. Base: main, merge PR #1, `f74a7bc098363c7d034e0a3a27d6d0a36d42d09c`.
 - `Docs/`, `assets/` y `legacy/index.html` se conservan como documentación, fuente original de fotografías y referencia histórica, respectivamente.
 - Foundation generada con Next.js **16.4.0**, TypeScript, App Router, Tailwind y npm; dependencias instaladas; `npm run lint` y `npm run build` correctos; `npm run dev` responde HTTP 200.
-- Diagnóstico inicial de `ResumenEjecutivoCodex.md`: los puntos sobre `LayoutProps` y raíz Turbopack describían evidencia previa, pero el estado observado al iniciar esta consolidación ya incluía `next typegen`/typecheck satisfactorios y `turbopack.root` configurado. El seguimiento actualizado de hallazgos se registra en §12. Git y remoto se verificaron al iniciar Sprints 1–2; Preview sigue pendiente.
+- Diagnóstico inicial de `ResumenEjecutivoCodex.md`: los puntos sobre `LayoutProps` y raíz Turbopack describían evidencia previa, pero el estado observado al iniciar esta consolidación ya incluía `next typegen`/typecheck satisfactorios y `turbopack.root` configurado. El seguimiento actualizado de hallazgos se registra en §12. Git y remoto verificados; deployment existente https://globowslm.vercel.app responde HTTP 200 y mantiene noindex. No acredita release V1 ni despliegue de esta rama.
 - El alcance de V1 está aprobado. Los detalles de contenido comercial aún deben confirmarse con la propietaria: fotografías finales, datos de contacto, credenciales, textos, enlaces oficiales y eventual sección de testimonios/FAQ.
 
 ## 3. Principios de ejecución
@@ -115,7 +115,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 8. Conservar/adaptar `AGENTS.md` para instrucciones específicas, sin borrar el bloque regenerado por Next.js 16.
 9. Verificar con la propietaria qué fotografías, fichas de servicios, credenciales, textos, datos de contacto y permisos comerciales faltan; registrar bloqueos sin inventar contenido.
 10. Crear la estructura vacía autorizada con script PowerShell idempotente; preparar GitHub Actions con checkout, Node, `npm ci`, typegen/typecheck, ESLint y build, sin secretos.
-11. Inicializar Git **solo en `globowslm/`**. Crear repositorio remoto vacío `GlobowslmV1.0.0`, primer commit y push, después de revisar `git status` y tamaño de los archivos.
+11. Inicializar Git **solo en `globowslm/`**. Revisar el repositorio oficial `CarlosAM03/Globowslm`, primer commit y push, después de revisar `git status` y tamaño de los archivos.
 12. Configurar Vercel a partir del nuevo repositorio, con Preview conectado a PRs/ramas; comprobar URL y build de la Foundation.
 
 **Componentes/archivos afectados:** `package.json`, lockfile, `README.md`, `.gitignore`, `src/app/globals.css`, `scripts/Initialize-ProjectStructure.ps1`, `.github/workflows/`, documentación de riesgo y matriz; `next.config.ts` solo si aparece defecto demostrado.
@@ -130,7 +130,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** evidencia local reproducible + CI y Preview reales + primer commit y remoto revisados, sin secretos ni decisiones de seguridad aceptadas tácitamente.
 
-**Estado real:** **en curso / parcialmente verificado**. `npm ci`, typegen, typecheck y lint se verificaron directamente tras la consolidación. El build exitoso, dev y HTTP 200 constan como evidencia histórica del desarrollador; el build posterior a los cambios permanece bloqueado por la descarga de fuentes del template (§12). Git, CI remoto y Preview siguen pendientes; no declarar Sprint 0 cerrado antes de ello.
+**Estado real:** Foundation integrada mediante PR #1. Fuentes locales resuelven el bloqueo histórico de Google Fonts; typecheck, lint y build verificados. Repositorio y deployment existentes comprobados. Riesgo dev y aceptación comercial pendientes; historia conservada en §12.
 
 ### Sprint 1 — Design System ejecutable, Layout, Hero y About
 
@@ -163,7 +163,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** Hero y About aprobados comercialmente, navegación y CTA verificados con teclado y móvil, metadata/idioma correctos, evidencias de Preview y CI verde.
 
-**Estado real:** implementación técnica de Sprint 1 realizada con aceptación comercial pendiente. Tokens MID, fuentes locales, Navbar/MobileMenu, Hero único, About, Footer inicial, metadata española y helper contextual tienen código real y pruebas. Anclas limitadas a secciones implementadas. El CTA principal explora servicios; WhatsApp permanece deshabilitado sin número validado. Copy, fotografía Hero y composición promocional de About requieren aprobación. Menú flotante/contacto completo pertenecen a Sprint 3. No se declara cumplida la DoD comercial.
+**Estado real:** Implementación técnica y corrección visual realizadas, aceptación comercial pendiente. Hero fotográfico dominante con overlay, About editorial, fuentes y tokens conservados. Navbar conecta siete secciones reales; CTA principal a Contacto. Copy, fotos y destinatario comercial pendientes.
 
 ### Sprint 2 — Servicios, Eventos y Galería
 
@@ -194,7 +194,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** catálogo y galería aprobados, pruebas de categorías/CTA y accesibilidad exitosas, evidencia móvil/escritorio y CI verde.
 
-**Estado real:** pendiente; solo existen fotos candidatas en `assets/` y decisión estructural documentada.
+**Estado real:** Implementación técnica realizada con aceptación comercial pendiente. Cinco servicios, ocasiones diferenciadas y galería editorial de tres categorías con filtros. Cuatro servicios sin fotografía representativa aprobada y CTA sin destinatario validado: no se declara cumplida la DoD comercial.
 
 ### Sprint 3 — Formación, Certificaciones y Conversión
 
@@ -225,7 +225,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** secciones obligatorias y canales aceptados, timeline horizontal comprobado, contenido acreditado, pruebas de conversión y accesibilidad aprobadas, CI verde.
 
-**Estado real:** pendiente; existen bases UI, helper y catálogo de Sprints 1–2. No se implementaron CoursesSection, CertificationsSection, FloatingContactMenu ni ContactSection; no hay credenciales verificadas.
+**Estado real:** Alcance técnico implementado con bloqueos comerciales. CoursesSection, CertificationsSection/HorizontalTimeline, ContactSection, FloatingContactMenu y Footer integrados. Dataset de credenciales vacío, sin entradas fabricadas; cinco canales controlados sin enlaces no aprobados. TrustSupport omitida conforme D04/D09. Aceptación funcional/comercial parcial.
 
 ### Sprint 4 — Hardening transversal, SEO, accesibilidad y rendimiento
 
@@ -257,7 +257,7 @@ Cada trabajo funcional deberá cerrar con: (a) código en repositorio; (b) `lint
 
 **Definition of Done:** defectos bloqueantes cerrados, criterios técnicos medidos con condiciones registradas, aceptación de accesibilidad/SEO/performance y RC preliminar reproducible.
 
-**Estado real:** pendiente; no hay Landing completa que endurecer.
+**Estado real:** pendiente, no iniciado formalmente. Base técnica hasta Sprint 3 disponible, con aceptación comercial pendiente.
 
 ### Sprint 5 — QA final, release y producción V1.0.0
 
@@ -389,6 +389,54 @@ En aquella consolidación, el build **no estaba verificado como satisfactorio**:
 **Pendientes comerciales que impiden cerrar aceptación de Sprints 1–2:** número oficial y aprobación de mensajes; fotografías de cursos/talleres/certificaciones/asesorías; aprobación de copy Hero/About/fichas, uso del montaje promocional About y tres fotos/taxonomía de galería. Hero navega a servicios/galería, no a un destinatario ficticio; cinco CTA están preparados pero deshabilitados con explicación. No se declara satisfacción de las cinco fichas × cuatro campos comerciales.
 
 **Preparación para Sprint 3:** bases UI y helper disponibles. Implementar únicamente en una ejecución posterior: formación real, credenciales verificadas/timeline horizontal, contacto/footer completo y menú flotante de cinco canales. Obtener catálogo formativo, diplomas/organismos y canales autorizados. TrustSupport continúa condicional. Vercel Preview, dominio y autorización del riesgo dev siguen pendientes; la V1 no está liberada.
+
+### Actualización operativa — integración visual y Sprint 3, 13/10/2026
+
+Supersede los estados operativos anteriores conservados como historia. Rama feature/sprints-2-3-visual-integration creada desde main actualizado al merge PR #1. Existía una modificación ajena en la auditoría de consistencia documental: se preserva sin incluirla en estos commits. ERP, ERV1, MID, UIA, ADR D01–D09, AGENTS, legacy y originales permanecen intactos.
+
+#### Matriz de paridad visual
+
+Render real del HTML local y build productivo Next.js a 375×812, 768×1024 y 1440×900. Capturas comparables en Evidencias/Sprints2-3/; script scripts/capture-visual-reference.mjs y capturas completas/por sección en .visual-evidence/ (ignorado). Baseline corresponde al merge PR #1.
+
+| Área | Preview / baseline | Resultado y clasificación |
+|---|---|---|
+| Navbar | Sticky editorial / cuatro destinos | Sticky translúcido, siete destinos y menú móvil. Diferencia por alcance; logo independiente apto pendiente |
+| Hero | Fotografía dominante / dos columnas | Corregido a fondo único con overlay, jerarquía editorial y dos CTA. Paridad compositiva con tokens/copy oficiales |
+| About | Nombre protagonista e imagen/texto / jerarquía reducida | Título en columna editorial, nombre de gran jerarquía y foto íntegra; paridad razonable |
+| Servicios | Tarjetas fotográficas | Cinco tarjetas armonizadas, cabecera centrada; cuatro imágenes pendientes impiden paridad fotográfica completa |
+| Eventos | Bloque separado | Ocasiones diferenciadas dentro de ServicesEvents por D02; diferencia intencional |
+| Galería | Carrusel | Grid editorial con proporciones reales y filtro categorizado D05; sin exploración redundante |
+| Formación | Oscuro, foto y CTA / ausente | CoursesSection oscura con acento oficial y cuatro ofertas. Foto de archivo no acredita docencia |
+| Certificaciones | Sin catálogo individual verificable | Timeline técnico y estado editorial sin entradas ficticias; pendiente de insumos |
+| Contacto | Destinos candidatos / parcial | Sección completa con cinco canales controlados, enlaces pendientes de aprobación |
+| Footer y flotante | Footer editorial y botón / parcial | Footer con marca/navegación/contacto y disclosure accesible de cinco canales |
+
+#### Validación de contenido
+
+| Candidato | Clasificación | Tratamiento |
+|---|---|---|
+| FAQ legacy: anticipación 1–2 meses / 2–4 semanas | Política no respaldada | Pendiente de aprobación, no publicada |
+| FAQ: todos los niveles, clases privadas y mentoría | Formación general respaldada; respuesta específica pendiente | No publicada como política |
+| FAQ: Tijuana/cobertura regional y oferta digital | Cobertura no verificada; digital fuera de V1 actual | No publicada; TrustSupport omitida sin ancla inexistente |
+| WhatsApp / teléfono del preview | Candidato sin aprobación | Número productivo null y CTA preparado/deshabilitado |
+| Facebook, Instagram, TikTok del MID/preview | Candidatos coincidentes sin aprobación registrada | Fuente única site.ts, destinos no activados |
+| Correo | No disponible | Sin mailto ficticio |
+
+Cinco servicios conservan nombre, descripción y CTA contextual; solo decoración tiene foto candidata. Cursos, talleres, certificaciones y asesorías esperan fotografía representativa aprobada. Formación muestra montaje de San Valentín como archivo con contexto/autorización pendientes: no acredita docencia ni alumnos. 8marzo no demuestra formación y no se usa. No se inventan temarios, precios, fechas, inscripciones ni Academia acreditada.
+
+Seis derivados WebP: Hero, Licey, Baby Shower, XV, Kermés y San Valentín. Originales preservados. Sin diplomas o catálogo individual verificado, el timeline se prueba mediante render semántico con fixtures aislados y lógica de límites/avance de una tarjeta. QA en navegador del timeline con credenciales reales permanece pendiente.
+
+#### Pruebas y límites
+
+- npm run typecheck (incluye next typegen), npm run lint, npm test y npm run build: satisfactorios. 20 unitarias reales; build Next.js 16.4.0 con Turbopack, Cache Components y Partial Prefetching conserva rutas estáticas / y /_not-found.
+- npm run test:e2e: 22 casos Chromium satisfactorios. Nueve anchos: 320, 375, 390, 428, 640, 768, 1024, 1280 y 1440. Anclas, menús/teclado/Escape/foco, cinco servicios, filtros, formación, estado sin credenciales, contacto/footer, noindex, imágenes y movimiento reducido.
+- Capturas comparables: cero solicitudes fallidas en preview y aplicación a los tres tamaños. Inspección visual real; no equivale a Lighthouse, auditoría WCAG completa ni lector de pantalla.
+- Se corrigió overflow del CTA de Navbar por especificidad CSS. Año dinámico con Date retirado por restricciones de prerender Cache Components. ESLint ignora reportes/evidencia generados, conserva reglas fuente. Ninguna comprobación desactivada.
+- npm audit --omit=dev: 0; npm audit: 5 altas dev de la cadena registrada. Sin nuevas dependencias, downgrade, fix --force ni aceptación del riesgo.
+- Workflow mantiene npm ci, typecheck, lint, unitarias, build y Chromium/E2E. Resultado remoto se consulta al publicar y se informa en PR/entrega; no se simula por existir el workflow.
+
+**Salida:** Sprints 2 y 3 técnicamente implementados para los insumos disponibles; aceptación funcional/comercial parcial. Noindex permanece. Sprint 4 pendiente: Lighthouse/contraste/lector, credenciales reales, logo/favicon/SEO con dominio aprobado, validación comercial y decisión del responsable sobre riesgo dev. Sin release ni autorización de producción comercial.
+
 ## 13. Política de revisiones del plan
 
 Las decisiones D01–D09 de la auditoría se consideran aprobadas. Este plan no introduce nuevas decisiones de negocio. Las propuestas operativas pendientes de ratificación son: metas cuantitativas Lighthouse, herramientas de analítica y dominio definitivo. Registrar cualquier cambio con fecha, responsable, motivo, impacto y versión del plan.
