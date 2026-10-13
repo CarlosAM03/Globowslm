@@ -23,7 +23,7 @@ export function CertificationsSection({ entries = verifiedContent }: { entries?:
           {entry.image?.approval === "approved" && <Image src={entry.image.src} width={entry.image.width} height={entry.image.height} alt={entry.image.alt} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />}
         </li>)}</HorizontalTimeline> : <div className="certification-empty" role="note">
           <FileCheck size={32} strokeWidth={1.75} aria-hidden="true" />
-          <div><h3>Credenciales en validación</h3><p>No hay certificaciones individuales verificadas disponibles para publicar. El timeline horizontal mostrará únicamente nombres, organismos y evidencias confirmados.</p></div>
+          <div><h3>Credenciales en validación</h3><p>Los nombres, organismos y evidencias de las credenciales se incorporarán una vez verificados.</p></div>
         </div>}
       </SectionContainer>
     </section>

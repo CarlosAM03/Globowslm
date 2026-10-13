@@ -8,3 +8,7 @@ export function getTimelineScrollState(scrollLeft: number, clientWidth: number, 
   const maximum = Math.max(0, scrollWidth - clientWidth);
   return { previous: scrollLeft > 1, next: scrollLeft < maximum - 1 };
 }
+
+export function getTimelineScrollDistance(cardWidth: number, gap: number, viewportWidth: number) {
+  return cardWidth > 0 ? cardWidth + gap : viewportWidth;
+}

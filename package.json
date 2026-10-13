@@ -13,7 +13,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/unit/whatsapp.test.mjs",
+    "test": "node --experimental-strip-types --test tests/unit/*.test.mjs",
     "test:e2e": "playwright test",
     "assets:prepare": "node scripts/prepare-images.mjs"
   },
