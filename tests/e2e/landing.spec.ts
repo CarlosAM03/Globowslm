@@ -73,3 +73,55 @@ test("reduced motion disables smooth scrolling", async ({ page }) => {
   await page.goto("/");
   expect(await page.locator("html").evaluate((el) => getComputedStyle(el).scrollBehavior)).toBe("auto");
 });
+
+test("five services disclose missing commercial assets and do not invent recipients", async ({ page }) => {
+  await page.goto("/");
+  const cards = page.locator(".service-card");
+  await expect(cards).toHaveCount(5);
+  for (const name of ["Decoraciones profesionales", "Cursos presenciales", "Talleres intensivos", "Certificaciones", "Asesorías"]) {
+    const card = cards.filter({ has: page.getByRole("heading", { name, exact: true }) });
+    await expect(card.locator(".service-body > p")).not.toBeEmpty();
+    await expect(card.getByRole("button")).toBeDisabled();
+    await expect(card.getByRole("button")).toHaveAttribute("aria-describedby", "contact-channel-status");
+    expect(await card.locator("img, .service-image--pending").count()).toBe(1);
+  }
+  await expect(page.locator('.service-image--pending')).toHaveCount(4);
+  await expect(page.locator('a[href*="wa.me"], a[href*="api.whatsapp"]')).toHaveCount(0);
+});
+
+test("gallery filters match categories and work by keyboard on mobile", async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/#galeria");
+  const filters = page.getByRole("group", { name: "Filtrar decoraciones por categoría" });
+  await expect(page.locator("#gallery-results figure")).toHaveCount(3);
+  for (const [label, category] of [["Baby Shower", "baby-shower"], ["XV años", "xv-anos"], ["Decoraciones temáticas", "tematicas"]]) {
+    const button = filters.getByRole("button", { name: label, exact: true });
+    await button.focus();
+    await page.keyboard.press("Enter");
+    await expect(button).toHaveAttribute("aria-pressed", "true");
+    await expect(filters.locator('[aria-pressed="true"]')).toHaveCount(1);
+    await expect(page.locator("#gallery-results figure")).toHaveCount(1);
+    await expect(page.locator("#gallery-results figure")).toHaveAttribute("data-category", category);
+    await expect(page.getByRole("status")).toContainText("1 decoración");
+  }
+  await page.locator("#galeria").screenshot({ path: testInfo.outputPath("gallery-filter-mobile.png") });
+  await filters.getByRole("button", { name: "Todas", exact: true }).click();
+  await expect(page.locator("#gallery-results figure")).toHaveCount(3);
+  await expect(page.locator('#galeria img[src*="curso"], #galeria img[src*="8marzo"]')).toHaveCount(0);
+});
+
+test("mobile disclosure and skip link have visible keyboard focus", async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 320, height: 812 });
+  await page.goto("/");
+  await page.keyboard.press("Tab");
+  await expect(page.getByRole("link", { name: "Saltar al contenido" })).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("main")).toBeFocused();
+  await page.locator('button[aria-controls="mobile-navigation"]').focus();
+  await page.keyboard.press("Enter");
+  for (let i = 0; i < 4; i++) await page.keyboard.press("Tab");
+  const galleryLink = page.getByRole("navigation", { name: "Navegación móvil" }).getByRole("link", { name: "Galería" });
+  await expect(galleryLink).toBeFocused();
+  expect(await galleryLink.evaluate((element) => getComputedStyle(element).outlineStyle)).toBe("solid");
+  await page.screenshot({ path: testInfo.outputPath("mobile-menu-320.png"), fullPage: false });
+});

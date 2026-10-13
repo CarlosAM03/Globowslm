@@ -28,5 +28,20 @@ jobs:
         run: npm run typecheck
       - name: ESLint
         run: npm run lint
+      - name: Unit tests
+        run: npm test
       - name: Build
         run: npm run build
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Functional and responsive tests
+        run: npm run test:e2e
+      - name: Upload browser evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: landing-browser-evidence
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7
