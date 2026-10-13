@@ -1,0 +1,16 @@
+.training-section { background: var(--color-neutral-900); color: white; }
+.training-section .eyebrow { color: var(--color-accent); }
+.training-section .section-description, .training-section .editorial-note { color: var(--color-neutral-300); }
+.training-section .section-heading { margin-bottom: var(--space-8); }
+.training-editorial, .training-grid { display: grid; gap: var(--space-8); }
+.training-editorial { align-items: center; }
+.training-figure { margin: 0; }
+.training-figure img { width: 100%; height: auto; border-radius: var(--radius-lg); }
+.training-figure figcaption { margin-top: var(--space-4); }
+.training-grid { margin-top: var(--space-12); }
+.training-card { display: flex; flex-direction: column; gap: var(--space-6); padding: var(--space-8); border: 1px solid rgb(212 175 55 / 48%); border-radius: var(--radius-lg); background: rgb(255 255 255 / 4%); }
+.training-card h3 { color: var(--color-accent); }
+.training-card > p { font-size: var(--type-small); color: var(--color-neutral-300); }
+.training-card .button { margin-top: auto; align-self: start; }
+.training-section :focus-visible { outline-color: var(--color-accent); }
+@media (min-width: 768px) { .training-editorial { grid-template-columns: 1fr 1fr; gap: var(--space-12); } .training-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
