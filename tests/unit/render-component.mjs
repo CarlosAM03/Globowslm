@@ -6,7 +6,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-const output = path.join(root, ".visual-evidence", "unit-components");
+const output = path.join(root, ".visual-evidence", "unit-components", String(process.pid));
 const compiled = new Map();
 
 async function compile(relative) {

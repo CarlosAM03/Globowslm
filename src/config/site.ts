@@ -1,3 +1,4 @@
+import { faq } from "@/content/faq";
 import type { ContactChannel, ContactLink } from "@/types/content";
 import { getApprovedDestination } from "@/lib/contact";
 import { createWhatsappUrl, type WhatsappInterest } from "@/lib/whatsapp";
@@ -36,7 +37,7 @@ export const navigation = [
   { href: "#galeria", label: "Galería" },
   { href: "#formacion", label: "Formación" },
   { href: "#certificaciones", label: "Certificaciones" },
-  { href: "#confianza", label: "FAQ" },
+  ...(faq.length > 0 ? [{ href: "#confianza", label: "FAQ" }] : []),
   { href: "#contacto", label: "Contacto" },
 ] as const;
 

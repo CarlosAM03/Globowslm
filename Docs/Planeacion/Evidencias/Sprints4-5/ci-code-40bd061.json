@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-13T16:55:51.3339421Z",
+  "jobs": [
+    {
+      "name": "validate",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Checkout",
+          "conclusion": "success"
+        },
+        {
+          "name": "Setup Node.js",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install from lockfile",
+          "conclusion": "success"
+        },
+        {
+          "name": "Generate types and typecheck",
+          "conclusion": "success"
+        },
+        {
+          "name": "ESLint",
+          "conclusion": "success"
+        },
+        {
+          "name": "Unit tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install Chromium",
+          "conclusion": "success"
+        },
+        {
+          "name": "Functional and responsive tests",
+          "conclusion": "success"
+        },
+        {
+          "name": "Lighthouse measurements",
+          "conclusion": "success"
+        },
+        {
+          "name": "Upload browser evidence",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Setup Node.js",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Checkout",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "conclusion": "success"
+    }
+  ],
+  "run": {
+    "id": 38433918227,
+    "head_sha": "40bd061f222ed23cafa3e0069a4f4d3392c2c845",
+    "event": "push",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/CarlosAM03/Globowslm/actions/runs/38433918227"
+  }
+}
