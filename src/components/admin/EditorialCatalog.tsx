@@ -29,6 +29,7 @@ type Props<T extends Named> = {
   fields: (draft: T, change: (next: T) => void) => ReactNode;
   preview: (draft: T) => ReactNode;
   normalize?: (draft: T) => T;
+  customSlug?: boolean;
 };
 
 function available(action: ContentAction, row: CmsDraft<Named>) {
@@ -36,7 +37,7 @@ function available(action: ContentAction, row: CmsDraft<Named>) {
   return !row.archived && (action !== "withdraw" || row.state === "PUBLISHED");
 }
 
-export function EditorialCatalog<T extends Named>({ kind, noun, empty, fields, preview, normalize }: Props<T>) {
+export function EditorialCatalog<T extends Named>({ kind, noun, empty, fields, preview, normalize, customSlug }: Props<T>) {
   const csrf = useCsrfToken();
   const [page, setPage] = useState(1);
   const [revision, setRevision] = useState(0);
@@ -44,13 +45,14 @@ export function EditorialCatalog<T extends Named>({ kind, noun, empty, fields, p
   const [current, setCurrent] = useState<CmsDraft<T>>();
   const [form, setForm] = useState<T>();
   const [position, setPosition] = useState(0);
+  const [slug, setSlug] = useState("");
   const [sample, setSample] = useState<T>();
   const [working, setWorking] = useState(false);
   const [notice, setNotice] = useState("");
   const [error, setError] = useState<CmsRequestError>();
 
   const dirty = form !== undefined && current !== undefined &&
-    (form !== current.payload || position !== current.position);
+    (form !== current.payload || position !== current.position || slug !== current.slug);
 
   useEffect(() => {
     const abort = new AbortController();
@@ -66,6 +68,7 @@ export function EditorialCatalog<T extends Named>({ kind, noun, empty, fields, p
     setCurrent(row);
     setForm(row?.payload ?? empty);
     setPosition(row?.position ?? 0);
+    setSlug(row?.slug ?? "");
     setSample(undefined);
     setNotice("");
     setError(undefined);
@@ -95,7 +98,7 @@ export function EditorialCatalog<T extends Named>({ kind, noun, empty, fields, p
     if (!form) return;
     void operation(async () => {
       const input = { ...form, title: form.title.trim() };
-      const entrySlug = current?.slug ?? slugFor(input.title);
+      const entrySlug = slug.trim() || current?.slug || slugFor(input.title);
       if (!entrySlug) throw new CmsRequestError(422, "Escribe un nombre que incluya letras o números.");
       store(await writeDraft(kind, { slug: entrySlug, position, payload: normalize?.(input) ?? input }, csrf, current), "Borrador guardado.");
     });
@@ -137,6 +140,9 @@ export function EditorialCatalog<T extends Named>({ kind, noun, empty, fields, p
         <legend>{current ? "Editar" : "Crear"} {noun}</legend>
         <Field id="editorial-title" label="Nombre" value={form.title} required maxLength={160}
           onChange={(event) => setForm({ ...form, title: event.target.value })} />
+        {customSlug ? <Field id="editorial-slug" label="Slug" maxLength={100} value={slug}
+          hint="Se genera desde el nombre si está vacío. El slug se conserva desde la primera publicación."
+          onChange={(event) => setSlug(event.target.value)} /> : null}
         <Field id="editorial-position" label="Orden" type="number" min={0} max={2147483647} required value={position}
           onChange={(event) => setPosition(event.currentTarget.valueAsNumber || 0)} />
         {fields(form, setForm)}
