@@ -125,3 +125,41 @@ test("an audit write failure rolls back the new revision and leaves the previous
   assert.equal(await db.revision.count({ where: { entryId: initial.id } }), 1);
   assert.equal(await db.auditEvent.count({ where: { entityId: initial.id, action: "PUBLISH" } }), 1);
 });
+
+test("gallery photo order is snapshotted and one image can be reused in several decoration galleries", async (t) => {
+  const { db, cms } = fixture(t);
+  const category = await cms.create(ContentKind.GALLERY_CATEGORY, {
+    slug: uniqueSlug("decoracion"), payload: { title: "Decoraciones de prueba" },
+  }, actor());
+  await cms.transition(category, category.version, "PUBLISH", actor());
+  const photos = await Promise.all(["Rosa", "Temática"].map(async (alt) => {
+    const asset = await db.media.create({ data: {
+      storageKey: randomUUID(), originalName: "fixture.png", mime: "image/png",
+      sha256: "1".repeat(64), size: 100, status: "READY",
+    } });
+    return { mediaRef: asset.id, alt };
+  }));
+  const input = {
+    slug: uniqueSlug("orden"), position: 6,
+    payload: { title: "Orden de montaje", categoryRef: category.id, featured: true, orderedPhotoRefs: photos },
+  };
+  const initial = await cms.create(ContentKind.GALLERY, input, actor());
+  const original = await cms.transition(initial, initial.version, "PUBLISH", actor());
+  const reordered = { ...input, payload: { ...input.payload, orderedPhotoRefs: [...photos].reverse() } };
+  const draft = await cms.edit(initial, original.version, reordered, actor());
+  assert.deepEqual((await cms.published(initial.kind, initial.slug))?.payload, input.payload);
+  const published = await cms.transition(initial, draft.version, "PUBLISH", actor());
+  assert.deepEqual((await cms.published(initial.kind, initial.slug))?.payload, reordered.payload);
+  const refs = await db.revisionMediaRef.findMany({
+    where: { revisionId: published.publishedRevisionId! }, orderBy: { position: "asc" },
+  });
+  assert.deepEqual(refs.map(({ mediaId }) => mediaId), [photos[1].mediaRef, photos[0].mediaRef]);
+  const reused = await cms.create(ContentKind.GALLERY, {
+    ...input, slug: uniqueSlug("reuso"), position: 1, payload: { ...input.payload, orderedPhotoRefs: [photos[0]] },
+  }, actor());
+  await cms.transition(reused, reused.version, "PUBLISH", actor());
+  assert.ok(await cms.published(reused.kind, reused.slug));
+  await assert.rejects(cms.create(ContentKind.GALLERY, {
+    ...input, slug: uniqueSlug("duplicada"), payload: { ...input.payload, orderedPhotoRefs: [photos[0], photos[0]] },
+  }, actor()), (error: unknown) => error instanceof EditorialError && error.getStatus() === 422);
+});

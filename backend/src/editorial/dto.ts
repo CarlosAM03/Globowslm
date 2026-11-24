@@ -50,7 +50,8 @@ const payloads = {
   GALLERY_CATEGORY: category,
   GALLERY: z.strictObject({
     title, categoryRef: uuid, featured: z.boolean().default(false),
-    orderedPhotoRefs: z.array(z.strictObject({ mediaRef: uuid, alt, caption: title.optional() })).max(100),
+    orderedPhotoRefs: z.array(z.strictObject({ mediaRef: uuid, alt, caption: title.optional() })).max(100)
+      .refine((photos) => new Set(photos.map(({ mediaRef }) => mediaRef)).size === photos.length, "Fotografías duplicadas."),
   }),
   TRAINING: z.strictObject({
     title, description, trainingType: z.enum(["COURSE", "WORKSHOP", "ADVICE", "CERTIFICATION"]),

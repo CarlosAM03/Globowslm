@@ -1,4 +1,4 @@
-export const enabledContent = ["site", "service", "event_type"] as const;
+export const enabledContent = ["site", "service", "event_type", "gallery", "gallery_category"] as const;
 export type ContentKind = typeof enabledContent[number];
 export const contentActions = ["publish", "withdraw", "archive", "restore"] as const;
 export type ContentAction = typeof contentActions[number];

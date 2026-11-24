@@ -2,7 +2,7 @@ import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
   testDir: ".",
-  testMatch: ["login.spec.ts", "institution.spec.ts", "catalog.spec.ts", "media.spec.ts"],
+  testMatch: ["login.spec.ts", "institution.spec.ts", "catalog.spec.ts", "media.spec.ts", "galleries.spec.ts"],
   workers: 1,
   forbidOnly: true,
   use: { ...devices["Desktop Chrome"], baseURL: "http://127.0.0.1:3100", trace: "off" },
