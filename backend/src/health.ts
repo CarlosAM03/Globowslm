@@ -2,6 +2,7 @@ import {
   Controller, Get, Header, Module, ServiceUnavailableException,
 } from "@nestjs/common";
 import { ApiOkResponse, ApiProperty, ApiServiceUnavailableResponse, ApiTags } from "@nestjs/swagger";
+import { Public } from "./auth/access.js";
 import { DatabaseModule, DatabaseService } from "./database.js";
 import { ApiError } from "./http.js";
 import { MediaStorage, StorageModule } from "./storage.js";
@@ -17,6 +18,7 @@ class ReadyStatus {
 }
 
 @ApiTags("health")
+@Public()
 @Controller("health")
 export class HealthController {
   constructor(

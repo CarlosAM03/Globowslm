@@ -91,3 +91,68 @@ img { display: block; max-width: 100%; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+.admin-surface {
+  min-height: 100vh;
+  background: #fff8fb;
+  color: #251821;
+}
+
+.admin-login {
+  width: min(100% - 2rem, 27rem);
+  margin: auto;
+  padding-block: clamp(2rem, 10vh, 6rem);
+}
+
+.admin-login h1 {
+  margin-block-end: 1.25rem;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 750;
+}
+
+.admin-login-form {
+  display: grid;
+  gap: .65rem;
+  padding: clamp(1rem, 5vw, 1.75rem);
+  border: 1px solid #e8c5d8;
+  border-radius: 1rem;
+  background: white;
+}
+
+.admin-login-form input {
+  min-height: 44px;
+  min-width: 0;
+  padding: .65rem;
+  border: 1px solid #836073;
+  border-radius: .5rem;
+  margin-block-end: .55rem;
+}
+
+.admin-surface button {
+  min-height: 44px;
+  padding: .65rem 1rem;
+  border-radius: .5rem;
+  background: #9c005f;
+  color: white;
+  font-weight: 700;
+}
+
+.admin-surface :focus-visible {
+  outline: 3px solid #721347;
+  outline-offset: 3px;
+}
+
+.admin-surface [role="alert"] {
+  color: #8c1245;
+}
+
+.admin-session {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 4rem;
+  gap: 1rem;
+  padding: .75rem 1.5rem;
+  border-bottom: 1px solid #e8c5d8;
+}

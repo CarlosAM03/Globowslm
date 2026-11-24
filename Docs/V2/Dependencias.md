@@ -68,3 +68,7 @@ Prisma 7.10.1 solicitaba Effect 3.20.0 en @prisma/config. El override aplica Eff
 ## P03
 
 Zod 4.6.7 (MIT) valida formas estrictas, límites y tipos del dominio editorial. Es una dependencia directa de runtime fijada con integridad en el lock del backend. La resolución npm del lock reportó cero hallazgos.
+
+## P04
+
+El backend fija @node-rs/argon2 2.2.2 (MIT) para hash Argon2id. El lock conserva la integridad del paquete y sus binarios opcionales. La resolución npm reportó cero vulnerabilidades.

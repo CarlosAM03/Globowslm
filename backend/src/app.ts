@@ -3,12 +3,14 @@ import { Module, type INestApplication } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import type { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import express from "express";
+import { AuthModule } from "./auth/auth.module.js";
 import { ConfigModule } from "./config.js";
 import { EditorialModule } from "./editorial/editorial.js";
 import { HealthModule } from "./health.js";
-import { ApiErrorFilter, requestContext } from "./http.js";
+import { ApiErrorFilter, jsonErrors, requestContext } from "./http.js";
 
-@Module({ imports: [ConfigModule, HealthModule, EditorialModule] })
+@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule] })
 class AppModule {}
 
 export async function createApp(): Promise<INestApplication> {
@@ -19,6 +21,8 @@ export async function createApp(): Promise<INestApplication> {
   });
   app.disable("x-powered-by");
   app.use(requestContext);
+  app.use(express.json({ limit: 1024 * 1024, strict: true }));
+  app.use(jsonErrors);
   app.setGlobalPrefix("api/v1");
   app.useGlobalFilters(new ApiErrorFilter());
   app.enableShutdownHooks();
@@ -26,6 +30,7 @@ export async function createApp(): Promise<INestApplication> {
   const config = new DocumentBuilder()
     .setTitle("Globows LM API")
     .setVersion("1.0")
+    .addBearerAuth({ type: "http", scheme: "bearer" }, "ownerSession")
     .build();
   SwaggerModule.setup("api/v1/openapi", app, () => SwaggerModule.createDocument(app, config), {
     ui: false,

@@ -170,3 +170,49 @@ model AuditEvent {
   @@index([entityId, at])
   @@map("audit_events")
 }
+
+model Owner {
+  id              String   @id @default(uuid()) @db.Uuid
+  singleton       Boolean  @unique @default(true)
+  emailNormalized String   @unique
+  passwordHash    String
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  sessions        Session[]
+
+  @@map("owners")
+}
+
+model Session {
+  id         String     @id @default(uuid()) @db.Uuid
+  tokenHash  String     @unique @db.Char(64)
+  ownerId    String     @db.Uuid
+  createdAt  DateTime   @default(now())
+  lastSeenAt DateTime   @default(now())
+  expiresAt  DateTime
+  revokedAt  DateTime?
+  csrfHash   String     @db.Char(64)
+  owner      Owner      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+
+  @@index([ownerId, revokedAt])
+  @@map("sessions")
+}
+
+model LoginChallenge {
+  tokenHash String   @id @db.Char(64)
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  @@index([expiresAt])
+  @@map("login_challenges")
+}
+
+model RateLimitBucket {
+  key     String   @id @db.Char(64)
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
+  @@map("rate_limit_buckets")
+}

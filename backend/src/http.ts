@@ -73,3 +73,15 @@ export class ApiErrorFilter implements ExceptionFilter {
     res.status(status).json({ code, message, requestId });
   }
 }
+
+export function jsonErrors(error: unknown, _req: Request, res: Response, next: NextFunction): void {
+  if (res.headersSent) {
+    next(error);
+    return;
+  }
+  const oversized = typeof error === "object" && error !== null &&
+    "type" in error && error.type === "entity.too.large";
+  const status = oversized ? 413 : 400;
+  const [code, message] = publicErrors[status];
+  res.status(status).json({ code, message, requestId: res.locals.requestId });
+}

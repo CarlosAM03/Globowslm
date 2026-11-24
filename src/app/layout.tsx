@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { FloatingContactMenu } from "@/components/layout/FloatingContactMenu";
 import "./globals.css";
 import { canonicalOrigin, seo } from "@/config/seo";
 
@@ -39,11 +36,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${manrope.variable} ${cormorant.variable} h-full antialiased`}
     >
       <body>
-        <a className="skip-link" href="#contenido">Saltar al contenido</a>
-        <Navbar />
         {children}
-        <Footer />
-        <FloatingContactMenu />
       </body>
     </html>
   );
