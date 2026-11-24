@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "patch": "P10",
+  "base": "48ced53d0465deb937a9f031404c52832bd6fbf3",
+  "branch": "patch/v2/P10",
+  "verified_at": "2026-11-24T09:14:32.595290+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R08"
+  ],
+  "paths": [
+    "Docs/V2/Evidencias/P10.md",
+    "backend/src/editorial/content.module.ts",
+    "backend/tests/integration/training.test.ts",
+    "src/app/(admin)/admin/(protected)/formacion/page.tsx",
+    "src/components/admin/AdminNavigation.tsx",
+    "src/components/admin/EditorialMediaPreview.tsx",
+    "src/components/admin/TrainingCatalog.tsx",
+    "src/lib/cms/content-path.ts"
+  ],
+  "fingerprint": "231029f0d1c7ec6f354830908bd129f6b0308928221be050bbd97b56636597ec",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 127.38,
+      "log_sha256": "353f808a03d8250742af1e104732610a89bdd7c5a15d1d5a37a473a8614a714d",
+      "log_bytes": 15846,
+      "truncated": false,
+      "log_relative": "logs/P10/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 49.03,
+      "log_sha256": "43b89e73e8c935ab44f0f22311d0fcc7c85f8ff6f975b0e766fe9b99845969e3",
+      "log_bytes": 21695,
+      "truncated": false,
+      "log_relative": "logs/P10/1-2.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

@@ -8,6 +8,7 @@ const links = [
   { href: "/admin/institucional", title: "Institucional" },
   { href: "/admin/servicios", title: "Servicios" },
   { href: "/admin/galerias", title: "Galerías" },
+  { href: "/admin/formacion", title: "Formación" },
   { href: "/admin/multimedia", title: "Multimedia" },
   { href: "/", title: "Ver sitio" },
 ] as const;

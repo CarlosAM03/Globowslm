@@ -10,7 +10,7 @@ import { ContentKind, type ContentEntry } from "../generated/prisma/client.js";
 import { contentInput, validationError, version } from "./dto.js";
 import { EditorialModule, EditorialService, editorialState } from "./editorial.js";
 
-const enabled: readonly ContentKind[] = [ContentKind.SITE, ContentKind.SERVICE, ContentKind.EVENT_TYPE, ContentKind.GALLERY, ContentKind.GALLERY_CATEGORY];
+const enabled: readonly ContentKind[] = [ContentKind.SITE, ContentKind.SERVICE, ContentKind.EVENT_TYPE, ContentKind.GALLERY, ContentKind.GALLERY_CATEGORY, ContentKind.TRAINING];
 const transitions = {
   publish: "PUBLISH",
   withdraw: "WITHDRAW",
