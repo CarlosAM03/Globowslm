@@ -32,7 +32,8 @@ export function loadConfig(env: NodeJS.ProcessEnv): ApiConfig {
     throw new Error("DATABASE_URL inválida");
   }
 
-  const appOrigin = parseUrl(env.APP_ORIGIN, "APP_ORIGIN");
+  const isolatedStack = mode === "local" && /^globows-v2-[0-9a-f]{10}$/.test(env.STACK_QA_PROJECT ?? "");
+  const appOrigin = parseUrl(isolatedStack ? "http://web:3100" : env.APP_ORIGIN, "APP_ORIGIN");
   if (!["http:", "https:"].includes(appOrigin.protocol) || appOrigin.username ||
       appOrigin.password || appOrigin.href !== `${appOrigin.origin}/` ||
       (mode === "production" && appOrigin.protocol !== "https:")) {

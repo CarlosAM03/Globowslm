@@ -5,6 +5,7 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates openssl ffmpeg=7:5.1.9-0+deb12u1 \
     && rm -rf /var/lib/apt/lists/* \
     && chown node:node /app
+RUN install -d -o node -g node /var/lib/globows/media
 
 FROM base AS qa
 USER node
@@ -18,10 +19,10 @@ RUN npm run prisma:generate && npm run build && npm prune --omit=dev --no-audit 
 
 FROM base AS runtime
 ENV NODE_ENV=production
-RUN install -d -o node -g node /var/lib/globows/media
 COPY --from=build --chown=node:node /app/package.json ./
 COPY --from=build --chown=node:node /app/node_modules ./node_modules
 COPY --from=build --chown=node:node /app/dist/src ./dist/src
+COPY --from=build --chown=node:node /app/fixtures ./fixtures
 USER node
 EXPOSE 3101
 CMD ["node", "dist/src/main.js"]

@@ -48,6 +48,9 @@ model ContentEntry {
   withdrawnAt         DateTime?
   publishedRevisionId String?      @db.Uuid
   sourceKey           String?      @unique
+  sourceHash          String?      @db.Char(64)
+  sourceLabel         String?      @db.VarChar(250)
+  sourceVersion       Int?
   publishedRevision   Revision?    @relation("ActiveRevision", fields: [id, publishedRevisionId], references: [entryId, id], onDelete: Restrict, onUpdate: NoAction)
   revisions           Revision[]   @relation("EntryRevisions")
   draftMedia          DraftMediaRef[]

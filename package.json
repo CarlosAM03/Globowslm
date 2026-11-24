@@ -15,7 +15,8 @@
     "lint": "eslint",
     "test": "node --experimental-strip-types --test tests/unit/*.test.mjs",
     "test:e2e": "playwright test",
-    "gate:web": "npm run typecheck && npm run lint && npm test && npm run build && npm run test:e2e",
+    "gate:stack": "playwright test --config tests/stack/playwright.config.ts",
+    "gate:web": "node scripts/build-v1-fixture.mjs --check && npm run typecheck && npm run lint && npm test && npm run build && npm run test:e2e",
     "assets:prepare": "node scripts/prepare-images.mjs",
     "audit:lighthouse": "node scripts/audit-lighthouse.mjs"
   },

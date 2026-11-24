@@ -453,3 +453,13 @@ img { display: block; max-width: 100%; }
   overflow-wrap: anywhere;
   white-space: pre-wrap;
 }
+
+.training-card img,
+.training-card video,
+.certification-card img,
+.certification-card video,
+.about-figure img,
+.event-card img {
+  max-width: 100%;
+  height: auto;
+}

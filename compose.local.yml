@@ -12,6 +12,7 @@ x-api-environment: &api-environment
   DATABASE_URL: postgresql://globows:${POSTGRES_PASSWORD:?Genera el entorno local del harness}@db:5432/globows
   MEDIA_ROOT: /var/lib/globows/media
   PORT: "3101"
+  STACK_QA_PROJECT: ${HARNESS_COMPOSE_PROJECT:-}
 
 services:
   web-qa:
@@ -21,6 +22,11 @@ services:
     profiles: [qa]
     init: true
     shm_size: "512mb"
+    environment:
+      CMS_BASELINE_FIXTURE: "1"
+      STACK_QA_PROJECT: ${HARNESS_COMPOSE_PROJECT:-}
+      OWNER_TEST_EMAIL: ${HARNESS_OWNER_EMAIL:-owner@example.invalid}
+      OWNER_TEST_PASSWORD: ${HARNESS_OWNER_PASSWORD:-}
 
   db:
     image: *postgres-image
@@ -37,8 +43,23 @@ services:
     build:
       context: backend
       target: qa
-    command: ["npm", "run", "db:deploy"]
-    environment: *api-environment
+    command:
+      - sh
+      - -ec
+      - |
+        npm run db:deploy
+        if [ -n "$$STACK_QA_PROJECT" ]; then
+          npm run prisma:generate
+          npm run build
+          node dist/src/editorial/qa-bootstrap.js
+        fi
+    environment:
+      <<: *api-environment
+      HARNESS_OWNER_EMAIL: ${HARNESS_OWNER_EMAIL:-owner@example.invalid}
+      HARNESS_OWNER_PASSWORD: ${HARNESS_OWNER_PASSWORD:-}
+    volumes:
+      - media-data:/var/lib/globows/media
+      - ./public/images:/seed/public/images:ro
     depends_on:
       db:
         condition: service_healthy
@@ -63,6 +84,44 @@ services:
       retries: 12
     init: true
     mem_limit: 512m
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        STACK_QA_PROJECT: ${HARNESS_COMPOSE_PROJECT:-}
+    environment:
+      STACK_QA_PROJECT: ${HARNESS_COMPOSE_PROJECT:-}
+      CMS_API_INTERNAL_URL: http://api:3101
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3100:3100"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3100/api/health').then(r=>{if(!r.ok)process.exitCode=1},()=>{process.exitCode=1})"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    init: true
+    mem_limit: 1g
+
+  import-v1:
+    profiles: [tools]
+    build:
+      context: backend
+      target: runtime
+    environment: *api-environment
+    entrypoint: ["node", "dist/src/editorial/import-v1-cli.js"]
+    command: ["--dry-run"]
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - media-data:/var/lib/globows/media
+      - ./public/images:/seed/public/images:ro
+    init: true
 
   db-qa:
     image: *postgres-image
@@ -92,6 +151,8 @@ services:
         condition: service_healthy
     init: true
     networks: [qa]
+    volumes:
+      - ./public/images:/seed/public/images:ro
     mem_limit: 1g
 
 networks:

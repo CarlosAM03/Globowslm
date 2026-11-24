@@ -19,6 +19,7 @@
     "gate:api": "npm run prisma:generate && npm run typecheck && npm run lint && npm run build && npm test && npm run db:deploy && npm run test:integration",
     "owner:provision": "node dist/src/auth/owner-cli.js provision",
     "owner:recover": "node dist/src/auth/owner-cli.js recover",
+    "import:v1": "node dist/src/editorial/import-v1-cli.js",
     "media:cleanup": "node dist/src/media/cleanup-cli.js"
   },
   "dependencies": {

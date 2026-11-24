@@ -8,13 +8,14 @@ import { AuthModule } from "./auth/auth.module.js";
 import { API_CONFIG, ConfigModule, type ApiConfig } from "./config.js";
 import { DashboardModule } from "./dashboard.js";
 import { ContentAdminModule } from "./editorial/content.module.js";
+import { PublicSiteModule } from "./editorial/public-site.js";
 import { PublicBlogModule } from "./editorial/public-blog.js";
 import { EditorialModule } from "./editorial/editorial.js";
 import { MediaModule, mediaCors } from "./media/media.module.js";
 import { HealthModule } from "./health.js";
 import { ApiErrorFilter, jsonErrors, requestContext } from "./http.js";
 
-@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule, ContentAdminModule, MediaModule, PublicBlogModule] })
+@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule, ContentAdminModule, MediaModule, PublicBlogModule, PublicSiteModule] })
 class AppModule {}
 
 export async function createApp(): Promise<INestApplication> {

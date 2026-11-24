@@ -3,6 +3,7 @@ import { parseMediaOrigin } from "./src/lib/cms/media-origin";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  ...(process.env.GLOBOWS_STANDALONE === "1" && { output: "standalone" as const }),
   async headers() {
     const headers = [
       { key: "X-Content-Type-Options", value: "nosniff" },
