@@ -1,0 +1,14 @@
+.git
+.env*
+**/.env*
+**/node_modules
+**/.next
+**/coverage
+**/playwright-report
+**/test-results
+.node_modules-recovery
+.visual-evidence
+*.tsbuildinfo
+*.log
+*.pem
+audit-report*.json

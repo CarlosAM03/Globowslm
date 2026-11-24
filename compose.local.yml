@@ -1,0 +1,8 @@
+services:
+  web-qa:
+    build:
+      context: .
+      dockerfile: Dockerfile.qa
+    profiles: [qa]
+    init: true
+    shm_size: "512mb"
