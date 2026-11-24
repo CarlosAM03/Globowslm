@@ -10,6 +10,7 @@ type EntryKey = { id: string; kind: ContentKind };
 type Transaction = Prisma.TransactionClient;
 type References = ReturnType<typeof collectReferences>;
 type Action = "PUBLISH" | "WITHDRAW" | "ARCHIVE" | "RESTORE";
+export type PublicationState = ReturnType<typeof editorialState>;
 
 const gone = () => new EditorialError("NOT_FOUND", "Contenido no encontrado.", 404);
 const conflict = (message: string) => new EditorialError("CONFLICT", message, 409);
@@ -110,6 +111,62 @@ export class EditorialService {
     return entry;
   }
 
+  async listPublications(kinds: readonly ContentKind[], page: number, state?: PublicationState) {
+    const pageSize = 20;
+    const filter: Record<PublicationState, Prisma.ContentEntryWhereInput> = {
+      DRAFT: { publishedRevisionId: null, archivedAt: null, withdrawnAt: null },
+      PUBLISHED: { publishedRevisionId: { not: null } },
+      WITHDRAWN: { publishedRevisionId: null, OR: [{ archivedAt: { not: null } }, { withdrawnAt: { not: null } }] },
+    };
+    const where = { kind: { in: [...kinds] }, ...(state && filter[state]) };
+    const [items, total] = await this.database.$transaction([
+      this.database.contentEntry.findMany({
+        where, orderBy: [{ updatedAt: "desc" }, { id: "asc" }], skip: (page - 1) * pageSize, take: pageSize,
+      }),
+      this.database.contentEntry.count({ where }),
+    ]);
+    return { items, total, page, pageSize };
+  }
+
+  async revisions(key: EntryKey, page: number) {
+    const entry = await this.draft(key);
+    const pageSize = 20;
+    const where = { entryId: key.id };
+    const [rows, total] = await this.database.$transaction([
+      this.database.revision.findMany({
+        where, orderBy: { revisionNo: "desc" }, skip: (page - 1) * pageSize, take: pageSize,
+        select: { id: true, revisionNo: true, slug: true, position: true, publishedAt: true, actorId: true },
+      }),
+      this.database.revision.count({ where }),
+    ]);
+    return { page, pageSize, total, items: rows.map(({ id, publishedAt, ...row }) => ({
+      ...row, active: id === entry.publishedRevisionId, publishedAt: publishedAt.toISOString(),
+    })) };
+  }
+
+  async revision(key: EntryKey, revisionNo: number) {
+    const entry = await this.draft(key);
+    const row = await this.database.revision.findUnique({ where: { entryId_revisionNo: { entryId: key.id, revisionNo } } });
+    if (!row) throw gone();
+    return {
+      revisionNo, slug: row.slug, position: row.position, payload: row.payload,
+      publishedAt: row.publishedAt.toISOString(), actorId: row.actorId, active: row.id === entry.publishedRevisionId,
+    };
+  }
+
+  async restoreRevision(key: EntryKey, expected: number, revisionNo: number, actor: Actor) {
+    return this.change(key, expected, actor, "RESTORE_REVISION", async (tx, entry) => {
+      if (entry.archivedAt) throw conflict("Restaura primero el borrador archivado.");
+      const row = await tx.revision.findUnique({ where: { entryId_revisionNo: { entryId: entry.id, revisionNo } } });
+      if (!row) throw gone();
+      const payload = parsePayload(entry.kind, row.payload);
+      const references = collectReferences(payload);
+      await this.assertReferences(tx, references, false);
+      await this.replaceDraftReferences(tx, entry.id, references);
+      return { draftPayload: payload.data, position: row.position, withdrawnAt: null };
+    });
+  }
+
   async published(kind: ContentKind, slug: string) {
     const entry = await this.database.contentEntry.findUnique({
       where: { kind_slug: { kind, slug } },
@@ -125,7 +182,7 @@ export class EditorialService {
     key: EntryKey,
     expected: number,
     actor: Actor,
-    action: Action | "EDIT",
+    action: Action | "EDIT" | "RESTORE_REVISION",
     update: (tx: Transaction, entry: ContentEntry) => Promise<Prisma.ContentEntryUncheckedUpdateInput>,
   ) {
     const parsed = version.safeParse(expected);

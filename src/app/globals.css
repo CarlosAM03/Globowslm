@@ -447,3 +447,9 @@ img { display: block; max-width: 100%; }
 .blog-article figcaption {
   margin-block-start: .5rem;
 }
+
+.admin-revision-data {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}

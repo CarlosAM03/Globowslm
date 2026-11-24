@@ -50,7 +50,7 @@ async function handle(request: NextRequest, context: RouteContext<"/api/cms/admi
     const query = request.nextUrl.searchParams;
     if (query.size) {
       const raw = query.get("page");
-      if (method !== "GET" || parts.length !== 1 || query.size !== 1 || !raw || !/^[1-9]\d{0,4}$/.test(raw) || Number(raw) > 10_000) {
+      if (method !== "GET" || (parts.length !== 1 && !endpoint.endsWith("/revisions")) || query.size !== 1 || !raw || !/^[1-9]\d{0,4}$/.test(raw) || Number(raw) > 10_000) {
         return fail(400);
       }
       page = Number(raw);
