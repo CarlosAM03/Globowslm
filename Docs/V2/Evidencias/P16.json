@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "patch": "P16",
+  "base": "5d2528bda3b97a092514458c585df16da40b636c",
+  "branch": "patch/v2/P16",
+  "verified_at": "2026-11-24T11:13:34.492075+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R11",
+    "R12"
+  ],
+  "paths": [
+    ".env.local.example",
+    "Dockerfile",
+    "Docs/V2/Evidencias/P16.md",
+    "Docs/V2/Manual-OWNER.md",
+    "Docs/V2/Multimedia-local.md",
+    "Docs/V2/Operacion-local-y-produccion.md",
+    "Docs/V2/Revision-local.md",
+    "backend/package.json",
+    "backend/src/editorial/seed-demo.ts",
+    "backend/src/resilience-probe.ts",
+    "docker/compose.resilience.yml",
+    "scripts/v2-resilience.py"
+  ],
+  "fingerprint": "ebd99ac2c2e3c364739f2db19bf0c407f10150209e9bdc2d0706b37931543aac",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 134.17,
+      "log_sha256": "3e27377594c15163d1df19f2657a6aaf081dcb6f0de447917610fdaac272ea48",
+      "log_bytes": 18026,
+      "truncated": false,
+      "log_relative": "logs/P16/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 52.7,
+      "log_sha256": "6499474e82a74d3d126adb9b8568589eee759e48d28f7af6d61ce766d4c1599d",
+      "log_bytes": 25077,
+      "truncated": false,
+      "log_relative": "logs/P16/1-2.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "up",
+        "-d",
+        "--build",
+        "--wait",
+        "--wait-timeout",
+        "120",
+        "db",
+        "api",
+        "web"
+      ],
+      "exit_code": 0,
+      "duration_s": 95.36,
+      "log_sha256": "91c0e8b49c1f01b5c710e13d917ad5b56739da22c3e53f6d97ed9018918e3097",
+      "log_bytes": 9348,
+      "truncated": false,
+      "log_relative": "logs/P16/1-3.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:stack"
+      ],
+      "exit_code": 0,
+      "duration_s": 22.89,
+      "log_sha256": "f33c7ebe02abee47f148e6982becb12583233c8e2b09f31c3b502d05e0e0a1e7",
+      "log_bytes": 288,
+      "truncated": false,
+      "log_relative": "logs/P16/1-4.log"
+    },
+    {
+      "command": [
+        "python",
+        "scripts/v2-resilience.py"
+      ],
+      "exit_code": 0,
+      "duration_s": 84.89,
+      "log_sha256": "539d14add572166541f23859c8d1c73d184cafd967c338fed79a405f2794b703",
+      "log_bytes": 556,
+      "truncated": false,
+      "log_relative": "logs/P16/1-5.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

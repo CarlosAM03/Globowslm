@@ -8,6 +8,8 @@ COPY src ./src
 COPY public ./public
 COPY docker/web-env.sh ./docker/web-env.sh
 ARG STACK_QA_PROJECT
+ARG APP_ORIGIN
+ARG CMS_MEDIA_ORIGIN
 RUN sed -i 's/\r$//' ./docker/web-env.sh \
     && . ./docker/web-env.sh \
     && npm run build

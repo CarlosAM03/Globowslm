@@ -20,6 +20,7 @@
     "owner:provision": "node dist/src/auth/owner-cli.js provision",
     "owner:recover": "node dist/src/auth/owner-cli.js recover",
     "import:v1": "node dist/src/editorial/import-v1-cli.js",
+    "seed:demo": "node dist/src/editorial/seed-demo.js",
     "media:cleanup": "node dist/src/media/cleanup-cli.js"
   },
   "dependencies": {

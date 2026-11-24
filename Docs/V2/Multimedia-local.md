@@ -16,7 +16,7 @@ La API publica bytes solo cuando el archivo está disponible y pertenece a una p
 Para inspeccionar archivos huérfanos con más de 24 horas, ejecuta en el contenedor de la API
 
 ```powershell
-docker compose -f compose.local.yml --env-file .env.harness.local exec api node dist/src/media/cleanup-cli.js
+docker compose -f compose.local.yml --env-file .env.harness.local exec api node dist/src/media/cleanup-cli.js --dry-run
 ```
 
 La salida JSON enumera candidatos sin modificar archivos. Verifica cada candidato frente al inventario y respaldo antes de cualquier retiro operativo.

@@ -1,0 +1,7 @@
+services:
+  api:
+    image: ${RESILIENCE_API_IMAGE:?Indica la imagen local del backend}
+  migrate:
+    image: ${RESILIENCE_MIGRATE_IMAGE:?Indica la imagen local de migraciones}
+  import-v1:
+    image: ${RESILIENCE_API_IMAGE:?Indica la imagen local del backend}
