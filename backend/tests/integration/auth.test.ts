@@ -120,6 +120,47 @@ test("provisions, authenticates, revokes and recovers the only OWNER through rea
   assert.ok(updated.recent.some((row: { entityId: string }) => row.entityId === draft.id));
   assert.ok(updated.recent.every((row: { entityId: string }) => row.entityId !== removed.id));
 
+  const siteUrl = `${api.replace(/auth$/, "")}admin/content/site`;
+  assert.equal((await fetch(siteUrl)).status, 401);
+  const authHeaders = { Authorization: `Bearer ${credentials.sessionToken}` };
+  const writes = { ...authHeaders, Origin: origin, "Content-Type": "application/json", "X-Csrf-Token": credentials.csrfToken };
+  const sendSite = (url: string, method: string, body: object, headers = writes) =>
+    fetch(url, { method, headers, body: JSON.stringify(body) });
+  const sitePayload = {
+    brandName: "Fixture institucional", founderName: "Propietaria de prueba",
+    hero: { title: "Presentación" }, about: { title: "Historia", history: "Texto de prueba" },
+    contact: {}, faq: [], seo: { title: "Fixture SEO", description: "Descripción de prueba" },
+  };
+  const siteInput = { slug: "site", position: 0, payload: sitePayload };
+  const listed = await (await fetch(siteUrl, { headers: authHeaders })).json();
+  const existing = listed.items[0];
+  const target = existing ? `${siteUrl}/${existing.id}` : siteUrl;
+  const method = existing ? "PATCH" : "POST";
+  const writeBody = existing ? { ...siteInput, version: existing.version } : siteInput;
+  assert.equal((await sendSite(target, method, writeBody, { ...writes, "X-Csrf-Token": "" })).status, 403);
+  const invalidSite = await sendSite(target, method, {
+    ...writeBody, payload: { ...sitePayload, contact: { facebook: "https://example.invalid/perfil" } },
+  });
+  assert.equal(invalidSite.status, 422);
+  assert.ok((await invalidSite.json()).fieldErrors["contact.facebook"]);
+  const savedSite = await sendSite(target, method, writeBody);
+  assert.equal(savedSite.status, existing ? 200 : 201);
+  const saved = await savedSite.json();
+  assert.deepEqual(saved.payload.contact, {});
+  const detailUrl = `${siteUrl}/${saved.id}`;
+  const publishResponse = await sendSite(`${detailUrl}/publish`, "POST", { version: saved.version });
+  assert.equal(publishResponse.status, 200);
+  const currentSite = await publishResponse.json();
+  const snapshot = await cms.published("SITE", "site");
+  assert.deepEqual(snapshot?.payload, sitePayload);
+  const changed = { ...siteInput, version: currentSite.version, payload: { ...sitePayload, brandName: "Borrador nuevo" } };
+  const edits = await Promise.all([sendSite(detailUrl, "PATCH", changed), sendSite(detailUrl, "PATCH", changed)]);
+  assert.deepEqual(edits.map((result) => result.status).sort(), [200, 409]);
+  const preview = await fetch(`${detailUrl}/preview`, { headers: authHeaders });
+  assert.equal(preview.headers.get("Cache-Control"), "no-store");
+  assert.equal((await preview.json()).payload.brandName, "Borrador nuevo");
+  assert.deepEqual(await cms.published("SITE", "site"), snapshot);
+
   const logout = (csrfToken: string, source = origin) => fetch(`${api}/logout`, {
     method: "POST",
     headers: { Authorization: `Bearer ${credentials.sessionToken}`, Origin: source, "X-Csrf-Token": csrfToken },

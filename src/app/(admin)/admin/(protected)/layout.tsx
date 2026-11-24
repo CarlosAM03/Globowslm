@@ -1,5 +1,6 @@
 import { Suspense, type ReactNode } from "react";
 import { redirect } from "next/navigation";
+import { AdminSession } from "@/components/admin/AdminSession";
 import { AdminNavigation } from "@/components/admin/AdminNavigation";
 import { SignOut } from "@/components/admin/SignOut";
 import { readOwnerSession } from "@/lib/cms/auth-server";
@@ -17,7 +18,7 @@ async function ProtectedContent({ children }: { children: ReactNode }) {
         <AdminNavigation />
         <SignOut csrfToken={session.data.csrfToken} />
       </header>
-      {children}
+      <AdminSession token={session.data.csrfToken}>{children}</AdminSession>
     </>
   );
 }

@@ -74,7 +74,7 @@ test("OpenAPI describes both probes and errors while unknown routes are sanitize
   assert.ok(spec.paths["/api/v1/health/ready"].get.responses["503"]);
   assert.equal(spec.components.schemas.ApiError.properties.requestId.format, "uuid");
 
-  const response = await fetch(`${api}/admin/content/service`, { headers: { "X-Request-Id": "invalid-fixture" } });
+  const response = await fetch(`${api}/unregistered`, { headers: { "X-Request-Id": "invalid-fixture" } });
   const body = await response.json();
   assert.equal(response.status, 404);
   assert.deepEqual(Object.keys(body).sort(), ["code", "message", "requestId"]);

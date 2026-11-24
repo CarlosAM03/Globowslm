@@ -287,3 +287,58 @@ img { display: block; max-width: 100%; }
     flex-basis: 100%;
   }
 }
+
+.admin-editor {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: 1.5rem;
+}
+
+.admin-editor fieldset, .admin-preview {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid #e8c5d8;
+  border-radius: .75rem;
+  background: white;
+}
+
+.admin-editor legend {
+  padding-inline: .4rem;
+  font-weight: 700;
+}
+
+.admin-editor input, .admin-editor textarea, .admin-editor select {
+  min-height: 44px;
+  min-width: 0;
+  padding: .65rem;
+  border: 1px solid #836073;
+  border-radius: .5rem;
+}
+
+.admin-editor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+}
+
+.admin-editor button:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
+.admin-preview {
+  margin-block-start: 1.5rem;
+}
+
+.admin-preview p {
+  white-space: pre-line;
+}
+
+.admin-faq-row {
+  display: grid;
+  gap: .75rem;
+  padding-block-end: 1rem;
+  border-bottom: 1px solid #e8c5d8;
+}

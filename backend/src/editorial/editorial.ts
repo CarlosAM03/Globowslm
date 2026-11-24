@@ -92,6 +92,18 @@ export class EditorialService {
     });
   }
 
+  async listDrafts(kind: ContentKind, page: number) {
+    const pageSize = 20;
+    const where = { kind };
+    const [items, total] = await this.database.$transaction([
+      this.database.contentEntry.findMany({
+        where, orderBy: [{ position: "asc" }, { id: "asc" }], skip: (page - 1) * pageSize, take: pageSize,
+      }),
+      this.database.contentEntry.count({ where }),
+    ]);
+    return { items, total, pageSize };
+  }
+
   async draft(key: EntryKey) {
     const entry = await this.database.contentEntry.findUnique({ where: { id: key.id, kind: key.kind } });
     if (!entry) throw gone();

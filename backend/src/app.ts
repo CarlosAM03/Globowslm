@@ -7,11 +7,12 @@ import express from "express";
 import { AuthModule } from "./auth/auth.module.js";
 import { ConfigModule } from "./config.js";
 import { DashboardModule } from "./dashboard.js";
+import { ContentAdminModule } from "./editorial/content.module.js";
 import { EditorialModule } from "./editorial/editorial.js";
 import { HealthModule } from "./health.js";
 import { ApiErrorFilter, jsonErrors, requestContext } from "./http.js";
 
-@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule] })
+@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule, ContentAdminModule] })
 class AppModule {}
 
 export async function createApp(): Promise<INestApplication> {

@@ -104,9 +104,13 @@ export class AuthService {
     };
   }
 
-  async logout(session: Authenticated, origin: string | undefined, csrfToken: string | undefined) {
+  assertMutation(session: Authenticated, origin: string | undefined, csrfToken: string | undefined) {
     this.assertOrigin(origin);
     if (!matchesHash(csrfToken, session.csrfHash)) throw new ForbiddenException();
+  }
+
+  async logout(session: Authenticated, origin: string | undefined, csrfToken: string | undefined) {
+    this.assertMutation(session, origin, csrfToken);
     await this.db.session.updateMany({
       where: { id: session.sessionId, revokedAt: null }, data: { revokedAt: new Date() },
     });

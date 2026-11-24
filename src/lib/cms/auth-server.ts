@@ -5,6 +5,7 @@ import { cookies } from "next/headers";
 import { connection } from "next/server";
 import type { OwnerSession } from "@/types/cms/auth";
 import type { AuthAction } from "./auth-path";
+import type { ContentEndpoint } from "./content-path";
 
 export const ownerCookie = "globows_owner";
 export const loginCookie = "globows_login_challenge";
@@ -22,8 +23,8 @@ export function getCmsConfig() {
   return { appOrigin: app.origin, apiOrigin: api.origin, secure: app.protocol === "https:" };
 }
 
-type CmsOptions = { method: "GET" | "POST"; requestId: string; token?: string; csrf?: string; body?: string };
-type CmsEndpoint = `auth/${AuthAction}` | "admin/dashboard";
+type CmsOptions = { method: "GET" | "POST" | "PATCH"; page?: number; requestId: string; token?: string; csrf?: string; body?: string };
+type CmsEndpoint = `auth/${AuthAction}` | "admin/dashboard" | ContentEndpoint;
 
 export function requestCms(
   config: ReturnType<typeof getCmsConfig>,
@@ -34,7 +35,9 @@ export function requestCms(
   if (options.token) headers.set("Authorization", `Bearer ${options.token}`);
   if (options.csrf) headers.set("X-Csrf-Token", options.csrf);
   if (options.body) headers.set("Content-Type", "application/json");
-  return fetch(`${config.apiOrigin}/api/v1/${endpoint}`, {
+  const url = new URL(`/api/v1/${endpoint}`, config.apiOrigin);
+  if (options.page !== undefined) url.searchParams.set("page", String(options.page));
+  return fetch(url, {
     headers,
     method: options.method,
     body: options.body,
