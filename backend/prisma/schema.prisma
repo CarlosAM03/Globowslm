@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma"
+  moduleFormat = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model DatabaseInitialization {
+  id String @id
+  initializedAt DateTime @default(now())
+
+  @@map("database_initialization")
+}

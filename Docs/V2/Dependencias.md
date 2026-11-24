@@ -58,3 +58,9 @@ Next 16.4.6 corrige los avisos críticos y altos de runtime observados en P00. L
 
 Repetir auditoría runtime y completa para web y backend en P17. Un hallazgo alto o crítico en runtime requiere remediación compatible antes de cerrar la candidata. Para nuevas dependencias se registra la necesidad y se agrega la versión exacta junto con su lockfile.
 El ajuste compatible del lockfile de P01 actualizó las cadenas de desarrollo a `fast-uri@3.1.9` (BSD-3-Clause), `minimatch@3.1.5` (ISC) y `typescript-eslint@8.74.0` (MIT) en la raíz del árbol. La auditoría completa devuelta por npm tras ajustar el lock reportó cero hallazgos.
+
+## P02
+
+El backend usa Express 5.3.0, @types/express 5.0.6 y @types/node 22.20.5, todos MIT. El paquete PostgreSQL pg está fijado a 8.23.1. El lock conserva la integridad de cada entrada. Las imágenes PostgreSQL y Node usan los digests verificados en P01.
+
+Prisma 7.10.1 solicitaba Effect 3.20.0 en @prisma/config. El override aplica Effect 3.22.1 (MIT) solo en esa cadena y conserva el major de Prisma. El lock corregido pasó las auditorías npm de runtime y completa con cero hallazgos. Revisar el override cuando Prisma adopte una versión parcheada. [Aviso GHSA-7589-6fvf-x4pw](https://github.com/advisories/GHSA-7589-6fvf-x4pw)

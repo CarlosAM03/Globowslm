@@ -1,3 +1,18 @@
+x-postgres-image: &postgres-image postgres:16.16-bookworm@sha256:ce3efec6bc404f6b15ebf5d9bed6b45a9d4655aea238d7dacc3467ccb05a1175
+
+x-db-healthcheck: &db-healthcheck
+  test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+  interval: 3s
+  timeout: 3s
+  retries: 20
+
+x-api-environment: &api-environment
+  HARNESS_MODE: local
+  APP_ORIGIN: http://127.0.0.1:3100
+  DATABASE_URL: postgresql://globows:${POSTGRES_PASSWORD:?Genera el entorno local del harness}@db:5432/globows
+  MEDIA_ROOT: /var/lib/globows/media
+  PORT: "3101"
+
 services:
   web-qa:
     build:
@@ -6,3 +21,82 @@ services:
     profiles: [qa]
     init: true
     shm_size: "512mb"
+
+  db:
+    image: *postgres-image
+    environment:
+      POSTGRES_DB: globows
+      POSTGRES_USER: globows
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Genera el entorno local del harness}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck: *db-healthcheck
+    mem_limit: 1g
+
+  migrate:
+    build:
+      context: backend
+      target: qa
+    command: ["npm", "run", "db:deploy"]
+    environment: *api-environment
+    depends_on:
+      db:
+        condition: service_healthy
+    init: true
+
+  api:
+    build:
+      context: backend
+      target: runtime
+    environment: *api-environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "127.0.0.1:3101:3101"
+    volumes:
+      - media-data:/var/lib/globows/media
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3101/api/v1/health/ready').then(r=>{if(!r.ok)process.exitCode=1},()=>{process.exitCode=1})"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    init: true
+    mem_limit: 512m
+
+  db-qa:
+    image: *postgres-image
+    profiles: [qa]
+    environment:
+      POSTGRES_DB: globows_qa
+      POSTGRES_USER: globows_qa
+      POSTGRES_PASSWORD: globows-qa-fixture
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck: *db-healthcheck
+    networks: [qa]
+    mem_limit: 768m
+
+  api-qa:
+    build:
+      context: backend
+      target: qa
+    profiles: [qa]
+    environment:
+      HARNESS_MODE: test
+      APP_ORIGIN: http://web:3100
+      DATABASE_URL: postgresql://globows_qa:globows-qa-fixture@db-qa:5432/globows_qa
+      MEDIA_ROOT: /tmp/globows-media
+    depends_on:
+      db-qa:
+        condition: service_healthy
+    init: true
+    networks: [qa]
+    mem_limit: 1g
+
+networks:
+  qa:
+
+volumes:
+  postgres-data:
+  media-data:
