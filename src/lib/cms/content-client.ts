@@ -1,5 +1,5 @@
 import type { CmsDraft, CmsList } from "@/types/cms/content";
-import type { ContentKind } from "./content-path";
+import type { ContentAction, ContentKind } from "./content-path";
 
 export class CmsRequestError extends Error {
   constructor(
@@ -42,10 +42,16 @@ export function writeDraft<T>(
   });
 }
 
-export function publishContent<T>(kind: ContentKind, draft: Pick<CmsDraft<T>, "id" | "version">, csrf: string) {
-  return json<CmsDraft<T>>(contentUrl(kind, draft.id, "publish"), {
+export function changeContent<T>(
+  kind: ContentKind, draft: Pick<CmsDraft<T>, "id" | "version">, action: ContentAction, csrf: string,
+) {
+  return json<CmsDraft<T>>(contentUrl(kind, draft.id, action), {
     method: "POST",
     headers: { "Content-Type": "application/json", "X-CSRF-Token": csrf },
     body: JSON.stringify({ version: draft.version }),
   });
+}
+
+export function publishContent<T>(kind: ContentKind, draft: Pick<CmsDraft<T>, "id" | "version">, csrf: string) {
+  return changeContent<T>(kind, draft, "publish", csrf);
 }

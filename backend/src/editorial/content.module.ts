@@ -10,7 +10,13 @@ import { ContentKind, type ContentEntry } from "../generated/prisma/client.js";
 import { contentInput, validationError, version } from "./dto.js";
 import { EditorialModule, EditorialService, editorialState } from "./editorial.js";
 
-const enabled: readonly ContentKind[] = [ContentKind.SITE];
+const enabled: readonly ContentKind[] = [ContentKind.SITE, ContentKind.SERVICE, ContentKind.EVENT_TYPE];
+const transitions = {
+  publish: "PUBLISH",
+  withdraw: "WITHDRAW",
+  archive: "ARCHIVE",
+  restore: "RESTORE",
+} as const;
 const updateInput = contentInput.extend({ version });
 const transitionInput = z.strictObject({ version });
 
@@ -76,16 +82,20 @@ class ContentController {
     return formEntry(await this.cms.edit({ kind: kindFor(name), id }, expected, draft, this.actor(req)));
   }
 
-  @Post(":id/publish")
+  @Post(":id/:action")
   @HttpCode(200)
-  async publish(
-    @Param("kind") name: string, @Param("id", ParseUUIDPipe) id: string, @Body() body: unknown,
+  async transition(
+    @Param("kind") name: string, @Param("id", ParseUUIDPipe) id: string, @Param("action") action: string,
+    @Body() body: unknown,
     @Req() req: OwnerRequest, @Headers("origin") origin: string | undefined, @Headers("x-csrf-token") csrf: string | undefined,
   ) {
     this.auth.assertMutation(req.ownerSession, origin, csrf);
     const update = transitionInput.safeParse(body);
     if (!update.success) throw validationError(update.error);
-    return formEntry(await this.cms.transition({ kind: kindFor(name), id }, update.data.version, "PUBLISH", this.actor(req)));
+    if (!Object.hasOwn(transitions, action)) throw new NotFoundException();
+    return formEntry(await this.cms.transition({
+      kind: kindFor(name), id,
+    }, update.data.version, transitions[action as keyof typeof transitions], this.actor(req)));
   }
 
   private actor(req: OwnerRequest) {
