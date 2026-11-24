@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "patch": "P03",
+  "base": "0057851e705093c9c96feb05a0d8284d10d55f51",
+  "branch": "patch/v2/P03",
+  "verified_at": "2026-11-24T07:27:31.742379+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R10"
+  ],
+  "paths": [
+    "Docs/V2/Dependencias.md",
+    "Docs/V2/Evidencias/P03.md",
+    "backend/package-lock.json",
+    "backend/package.json",
+    "backend/prisma/migrations/20261124000100_editorial_domain/migration.sql",
+    "backend/prisma/schema.prisma",
+    "backend/src/app.ts",
+    "backend/src/editorial/dto.ts",
+    "backend/src/editorial/editorial.ts",
+    "backend/src/editorial/references.ts",
+    "backend/src/http.ts",
+    "backend/tests/integration/editorial.test.ts",
+    "backend/tests/integration/health.test.ts",
+    "backend/tests/unit/editorial.test.ts"
+  ],
+  "fingerprint": "6de1096d3df2fdcf56fa397577c5c928004bb43144813b252024c69a9146370d",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 71.67,
+      "log_sha256": "9505f9e5229cfce1dfb1d3a2f12b2ae2128bedf6992a0169f62a90268de98608",
+      "log_bytes": 8988,
+      "truncated": false,
+      "log_relative": "logs/P03/1-1.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

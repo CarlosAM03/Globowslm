@@ -6,6 +6,8 @@ import {
 import { ApiProperty } from "@nestjs/swagger";
 import type { NextFunction, Request, Response } from "express";
 
+import { EditorialError } from "./editorial/dto.js";
+
 const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
 
 export class ApiError {
@@ -60,6 +62,14 @@ export class ApiErrorFilter implements ExceptionFilter {
     const status = Object.hasOwn(publicErrors, candidate) ? candidate : 500;
     const [code, message] = publicErrors[status];
     const requestId = typeof res.locals.requestId === "string" ? res.locals.requestId : randomUUID();
+    if (error instanceof EditorialError) {
+      res.status(status).json({
+        code: error.code, message: error.message, requestId,
+        ...(error.fieldErrors && { fieldErrors: error.fieldErrors }),
+        ...(error.currentVersion && { currentVersion: error.currentVersion }),
+      });
+      return;
+    }
     res.status(status).json({ code, message, requestId });
   }
 }

@@ -15,3 +15,158 @@ model DatabaseInitialization {
 
   @@map("database_initialization")
 }
+
+enum ContentKind {
+  SITE
+  SERVICE
+  EVENT_TYPE
+  GALLERY_CATEGORY
+  GALLERY
+  TRAINING
+  CERTIFICATION
+  BLOG_CATEGORY
+  POST
+}
+
+enum MediaStatus {
+  STAGED
+  READY
+  RETIRED
+  DELETING
+}
+
+model ContentEntry {
+  id                  String       @id @default(uuid()) @db.Uuid
+  kind                ContentKind
+  slug                String       @db.VarChar(100)
+  position            Int          @default(0)
+  version             Int          @default(1)
+  draftPayload        Json
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+  archivedAt          DateTime?
+  withdrawnAt         DateTime?
+  publishedRevisionId String?      @db.Uuid
+  sourceKey           String?      @unique
+  publishedRevision   Revision?    @relation("ActiveRevision", fields: [id, publishedRevisionId], references: [entryId, id], onDelete: Restrict, onUpdate: NoAction)
+  revisions           Revision[]   @relation("EntryRevisions")
+  draftMedia          DraftMediaRef[]
+  draftOutgoing       DraftEntryRef[] @relation("DraftSource")
+  draftIncoming       DraftEntryRef[] @relation("DraftTarget")
+  revisionIncoming    RevisionEntryRef[]
+
+  @@unique([kind, slug])
+  @@unique([id, publishedRevisionId])
+  @@index([kind, position, id])
+  @@map("content_entries")
+}
+
+model Revision {
+  id           String      @id @default(uuid()) @db.Uuid
+  entryId      String      @db.Uuid
+  revisionNo   Int
+  payload      Json
+  slug         String      @db.VarChar(100)
+  position     Int
+  publishedAt  DateTime    @default(now())
+  actorId      String      @db.Uuid
+  entry        ContentEntry @relation("EntryRevisions", fields: [entryId], references: [id], onDelete: Restrict)
+  publishedFor ContentEntry? @relation("ActiveRevision")
+  media        RevisionMediaRef[]
+  entries      RevisionEntryRef[]
+
+  @@unique([entryId, revisionNo])
+  @@unique([entryId, id])
+  @@map("content_revisions")
+}
+
+model Media {
+  id           String      @id @default(uuid()) @db.Uuid
+  storageKey   String      @unique
+  originalName String
+  mime         String
+  size         Int
+  sha256       String      @db.Char(64)
+  width        Int?
+  height       Int?
+  duration     Float?
+  alt          String      @default("")
+  title        String      @default("")
+  status       MediaStatus @default(STAGED)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  version      Int         @default(1)
+  draftRefs    DraftMediaRef[]
+  revisionRefs RevisionMediaRef[]
+
+  @@index([status, createdAt])
+  @@map("media")
+}
+
+model DraftMediaRef {
+  entryId  String       @db.Uuid
+  mediaId  String       @db.Uuid
+  role     String
+  position Int
+  entry    ContentEntry @relation(fields: [entryId], references: [id], onDelete: Restrict)
+  media    Media        @relation(fields: [mediaId], references: [id], onDelete: Restrict)
+
+  @@id([entryId, role, position])
+  @@index([mediaId])
+  @@map("draft_media_refs")
+}
+
+model RevisionMediaRef {
+  revisionId String   @db.Uuid
+  mediaId    String   @db.Uuid
+  role       String
+  position   Int
+  revision   Revision @relation(fields: [revisionId], references: [id], onDelete: Restrict)
+  media      Media    @relation(fields: [mediaId], references: [id], onDelete: Restrict)
+
+  @@id([revisionId, role, position])
+  @@index([mediaId])
+  @@map("revision_media_refs")
+}
+
+model DraftEntryRef {
+  entryId  String       @db.Uuid
+  targetId String       @db.Uuid
+  role     String
+  position Int
+  entry    ContentEntry @relation("DraftSource", fields: [entryId], references: [id], onDelete: Restrict)
+  target   ContentEntry @relation("DraftTarget", fields: [targetId], references: [id], onDelete: Restrict)
+
+  @@id([entryId, role, position])
+  @@index([targetId])
+  @@map("draft_entry_refs")
+}
+
+model RevisionEntryRef {
+  revisionId String       @db.Uuid
+  targetId   String       @db.Uuid
+  role       String
+  position   Int
+  revision   Revision     @relation(fields: [revisionId], references: [id], onDelete: Restrict)
+  target     ContentEntry @relation(fields: [targetId], references: [id], onDelete: Restrict)
+
+  @@id([revisionId, role, position])
+  @@index([targetId])
+  @@map("revision_entry_refs")
+}
+
+model AuditEvent {
+  id            String   @id @default(uuid()) @db.Uuid
+  actorId       String   @db.Uuid
+  action        String
+  entityType    String
+  entityId      String   @db.Uuid
+  requestId     String   @db.Uuid
+  at            DateTime @default(now())
+  changedFields String[]
+  outcome       String
+
+  @@index([at, id])
+  @@index([entityId, at])
+  @@map("audit_events")
+}

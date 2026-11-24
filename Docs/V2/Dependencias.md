@@ -64,3 +64,7 @@ El ajuste compatible del lockfile de P01 actualizó las cadenas de desarrollo a 
 El backend usa Express 5.3.0, @types/express 5.0.6 y @types/node 22.20.5, todos MIT. El paquete PostgreSQL pg está fijado a 8.23.1. El lock conserva la integridad de cada entrada. Las imágenes PostgreSQL y Node usan los digests verificados en P01.
 
 Prisma 7.10.1 solicitaba Effect 3.20.0 en @prisma/config. El override aplica Effect 3.22.1 (MIT) solo en esa cadena y conserva el major de Prisma. El lock corregido pasó las auditorías npm de runtime y completa con cero hallazgos. Revisar el override cuando Prisma adopte una versión parcheada. [Aviso GHSA-7589-6fvf-x4pw](https://github.com/advisories/GHSA-7589-6fvf-x4pw)
+
+## P03
+
+Zod 4.6.7 (MIT) valida formas estrictas, límites y tipos del dominio editorial. Es una dependencia directa de runtime fijada con integridad en el lock del backend. La resolución npm del lock reportó cero hallazgos.

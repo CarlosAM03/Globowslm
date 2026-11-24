@@ -4,10 +4,11 @@ import { NestFactory } from "@nestjs/core";
 import type { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { ConfigModule } from "./config.js";
+import { EditorialModule } from "./editorial/editorial.js";
 import { HealthModule } from "./health.js";
 import { ApiErrorFilter, requestContext } from "./http.js";
 
-@Module({ imports: [ConfigModule, HealthModule] })
+@Module({ imports: [ConfigModule, HealthModule, EditorialModule] })
 class AppModule {}
 
 export async function createApp(): Promise<INestApplication> {
