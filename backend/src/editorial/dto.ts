@@ -30,7 +30,7 @@ const blogBlock = z.discriminatedUnion("type", [
 ]);
 
 const category = z.strictObject({ title, description: description.optional() });
-const payloads = {
+export const editorialPayloadSchemas = {
   SITE: z.strictObject({
     brandName: title, founderName: title,
     hero: z.strictObject({ title, subtitle: description.optional(), photoRef: uuid.optional() }),
@@ -79,7 +79,7 @@ export const contentInput = z.strictObject({
 });
 
 export type ValidatedPayload = {
-  [K in ContentKind]: { kind: K; data: z.output<(typeof payloads)[K]> };
+  [K in ContentKind]: { kind: K; data: z.output<(typeof editorialPayloadSchemas)[K]> };
 }[ContentKind];
 
 export class EditorialError extends HttpException {
@@ -106,7 +106,7 @@ export function parsePayload(kind: ContentKind, raw: unknown): ValidatedPayload 
   if (Buffer.byteLength(JSON.stringify(raw) ?? "") > 1024 * 1024) {
     throw new EditorialError("PAYLOAD_TOO_LARGE", "El contenido excede 1 MiB.", 413);
   }
-  const result = payloads[kind].safeParse(raw);
+  const result = editorialPayloadSchemas[kind].safeParse(raw);
   if (!result.success) throw validationError(result.error);
   return { kind, data: result.data } as ValidatedPayload;
 }

@@ -14,6 +14,7 @@ import { EditorialModule } from "./editorial/editorial.js";
 import { MediaModule, mediaCors } from "./media/media.module.js";
 import { HealthModule } from "./health.js";
 import { ApiErrorFilter, jsonErrors, requestContext } from "./http.js";
+import { documentApi } from "./openapi.js";
 
 @Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule, ContentAdminModule, MediaModule, PublicBlogModule, PublicSiteModule] })
 class AppModule {}
@@ -37,8 +38,9 @@ export async function createApp(): Promise<INestApplication> {
     .setTitle("Globows LM API")
     .setVersion("1.0")
     .addBearerAuth({ type: "http", scheme: "bearer" }, "ownerSession")
+    .addBearerAuth({ type: "http", scheme: "bearer" }, "uploadTicket")
     .build();
-  SwaggerModule.setup("api/v1/openapi", app, () => SwaggerModule.createDocument(app, config), {
+  SwaggerModule.setup("api/v1/openapi", app, () => documentApi(SwaggerModule.createDocument(app, config)), {
     ui: false,
     raw: ["json"],
     jsonDocumentUrl: "api/v1/openapi.json",

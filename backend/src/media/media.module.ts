@@ -13,11 +13,11 @@ import { validationError, version } from "../editorial/dto.js";
 import { StorageModule } from "../storage.js";
 import { MediaService } from "./media.service.js";
 
-const ticket = z.strictObject({ mime: z.string().max(80), size: z.int().positive(), filename: z.string().trim().min(1).max(180) });
-const edit = z.strictObject({
+export const ticket = z.strictObject({ mime: z.string().max(80), size: z.int().positive(), filename: z.string().trim().min(1).max(180) });
+export const edit = z.strictObject({
   version, title: z.string().trim().max(160), alt: z.string().trim().max(300), retire: z.boolean().optional(),
 });
-const remove = z.strictObject({ version });
+export const remove = z.strictObject({ version });
 const list = z.strictObject({
   page: z.coerce.number().int().min(1).max(10000).default(1),
   type: z.enum(["image", "video"]).optional(),

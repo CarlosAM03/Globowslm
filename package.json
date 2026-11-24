@@ -1,6 +1,6 @@
 {
-  "name": "globowslm-v1",
-  "version": "1.0.0-rc.1",
+  "name": "globowslm",
+  "version": "2.0.0-rc.1",
   "private": true,
   "engines": {
     "node": ">=22.19.0 <23",
@@ -15,6 +15,7 @@
     "lint": "eslint",
     "test": "node --experimental-strip-types --test tests/unit/*.test.mjs",
     "test:e2e": "playwright test",
+    "gate:audit": "node backend/scripts/gate-audit.mjs",
     "gate:stack": "playwright test --config tests/stack/playwright.config.ts",
     "gate:web": "node scripts/build-v1-fixture.mjs --check && npm run typecheck && npm run lint && npm test && npm run build && npm run test:e2e",
     "assets:prepare": "node scripts/prepare-images.mjs",

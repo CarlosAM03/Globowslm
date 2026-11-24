@@ -17,6 +17,9 @@ CMD ["npm", "run", "gate:api"]
 FROM qa AS build
 RUN npm run prisma:generate && npm run build && npm prune --omit=dev --no-audit --no-fund
 
+FROM qa AS migration
+COPY --from=build --chown=node:node /app/dist/src ./dist/src
+
 FROM base AS runtime
 ENV NODE_ENV=production
 COPY --from=build --chown=node:node /app/package.json ./

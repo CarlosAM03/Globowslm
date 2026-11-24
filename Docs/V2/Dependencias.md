@@ -76,3 +76,11 @@ El backend fija @node-rs/argon2 2.2.2 (MIT) para hash Argon2id. El lock conserva
 ## P08
 
 Sharp 0.35.5 (Apache-2.0) se fija en el backend para decodificar imágenes y limitar píxeles. Su lock registra integridad de los binarios opcionales de libvips. Debian Bookworm fija FFmpeg en `7:5.1.9-0+deb12u1` para inspeccionar contenedores de video en un subproceso con tiempo, salida y protocolos limitados. Revisar avisos de ambos decodificadores al actualizar el lock o la imagen. La resolución del lock de npm reportó cero vulnerabilidades. [Documentación de Sharp](https://sharp.pixelplumbing.com/api-input/) [Documentación de ffprobe](https://ffmpeg.org/ffprobe.html)
+
+## P17 — Congelamiento de la candidata
+
+`globowslm` y `globowslm-api` declaran `2.0.0-rc.1`. Los dos locks fijan las versiones e integridades de los árboles npm. El cambio de versión de la candidata conserva todas las entradas de dependencias.
+
+El preflight del registro público de npm devolvió cero vulnerabilidades en web y API, tanto en runtime como en el árbol completo. Los gates finales repiten ambas consultas desde Docker Compose. El resultado se limita al registro npm y a los locks inspeccionados. El inventario de paquetes de Debian, el fin de soporte de ESLint 9 y la deuda histórica de V1 siguen bajo seguimiento.
+
+Las versiones de QA usadas son Python 3.12.14 para el runner, Docker Engine 29.9.2 y Compose 5.6.1. Los contenedores usan Node 22.23.5, npm 10.9.9, PostgreSQL 16.16 y Chromium 156.0.8078.4.

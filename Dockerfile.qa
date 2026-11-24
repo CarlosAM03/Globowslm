@@ -13,6 +13,7 @@ RUN npm ci --no-audit --no-fund \
 COPY --chown=node:node AGENTS.md eslint.config.mjs next.config.ts playwright.config.ts tsconfig.json ./
 COPY --chown=node:node public ./public
 COPY --chown=node:node backend/fixtures/v1.json ./backend/fixtures/v1.json
+COPY --chown=node:node backend/scripts/gate-audit.mjs ./backend/scripts/gate-audit.mjs
 COPY --chown=node:node scripts ./scripts
 COPY --chown=node:node src ./src
 COPY --chown=node:node tests ./tests

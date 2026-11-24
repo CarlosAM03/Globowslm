@@ -1,4 +1,13 @@
-# Globows LM V1.0.0
+# Globows LM V2 `2.0.0-rc.1`
+
+Sitio público con CMS editorial, panel OWNER, API NestJS, PostgreSQL y almacenamiento multimedia durable. La candidata se valida íntegramente en Docker Compose local.
+
+- [Levantar la plataforma y provisionar el OWNER](Docs/V2/Revision-local.md)
+- [Comprobar los siete gates, matriz y evidencia](Docs/V2/Candidata-2.0.0-rc.1.md)
+- [Operación, respaldo, recuperación y configuración productiva posterior](Docs/V2/Operacion-local-y-produccion.md)
+- [Versiones y riesgos de dependencias](Docs/V2/Dependencias.md)
+
+## Referencia histórica de la V1
 
 Aplicación institucional de **Globows LM by Licey Márquez**. La V1 será una Landing Page productiva para presentar la marca, la trayectoria de su fundadora, cinco servicios, trabajos decorativos por categorías, formación, certificaciones verificadas y canales oficiales de contacto. Se implementará por los sprints del [plan maestro](Docs/Planeacion/PlanDeImplementacion.md); **la V1 aún no está publicada**.
 

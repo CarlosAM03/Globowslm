@@ -73,6 +73,15 @@ test("OpenAPI describes both probes and errors while unknown routes are sanitize
   assert.ok(spec.paths["/api/v1/health/live"].get.responses["200"]);
   assert.ok(spec.paths["/api/v1/health/ready"].get.responses["503"]);
   assert.equal(spec.components.schemas.ApiError.properties.requestId.format, "uuid");
+  const admin = spec.paths["/api/v1/admin/content/{kind}"].post;
+  assert.deepEqual(admin.security, [{ ownerSession: [] }]);
+  assert.ok(admin.parameters.some((parameter: { name: string }) => parameter.name === "X-CSRF-Token"));
+  assert.ok(admin.requestBody.content["application/json"].schema.properties.payload.anyOf.length >= 9);
+  assert.ok(spec.components.schemas.EditorialPayload_POST.properties.blocks);
+  const upload = spec.paths["/api/v1/media/upload"].post;
+  assert.deepEqual(upload.security, [{ uploadTicket: [] }]);
+  assert.equal(upload.requestBody.content["video/mp4"].schema.format, "binary");
+  assert.ok(spec.paths["/api/v1/media/public/{id}"].get.responses["206"]);
 
   const response = await fetch(`${api}/unregistered`, { headers: { "X-Request-Id": "invalid-fixture" } });
   const body = await response.json();

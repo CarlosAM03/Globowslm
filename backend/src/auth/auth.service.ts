@@ -8,7 +8,7 @@ const MINUTE = 60_000;
 const SESSION_LENGTH = 8 * 60 * MINUTE;
 const SESSION_IDLE = 30 * MINUTE;
 const CHALLENGE_LENGTH = 5 * MINUTE;
-const loginSchema = z.strictObject({
+export const loginSchema = z.strictObject({
   email,
   password: z.string().min(1).refine((password) => Buffer.byteLength(password) <= 1024),
 });

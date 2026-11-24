@@ -1,6 +1,6 @@
 {
   "name": "globowslm-api",
-  "version": "2.0.0-rc.0",
+  "version": "2.0.0-rc.1",
   "private": true,
   "type": "module",
   "engines": {
@@ -16,6 +16,7 @@
     "start": "node dist/src/main.js",
     "test": "node --test dist/tests/unit/*.test.js",
     "test:integration": "node --test --test-concurrency=1 dist/tests/integration/*.test.js",
+    "gate:audit": "node scripts/gate-audit.mjs",
     "gate:api": "npm run prisma:generate && npm run typecheck && npm run lint && npm run build && npm test && npm run db:deploy && npm run test:integration",
     "owner:provision": "node dist/src/auth/owner-cli.js provision",
     "owner:recover": "node dist/src/auth/owner-cli.js recover",

@@ -42,15 +42,13 @@ services:
   migrate:
     build:
       context: backend
-      target: qa
+      target: migration
     command:
       - sh
       - -ec
       - |
         npm run db:deploy
         if [ -n "$$STACK_QA_PROJECT" ]; then
-          npm run prisma:generate
-          npm run build
           node dist/src/editorial/qa-bootstrap.js
         fi
     environment:
