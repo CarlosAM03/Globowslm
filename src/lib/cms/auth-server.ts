@@ -22,16 +22,19 @@ export function getCmsConfig() {
   return { appOrigin: app.origin, apiOrigin: api.origin, secure: app.protocol === "https:" };
 }
 
-export function requestAuth(
+type CmsOptions = { method: "GET" | "POST"; requestId: string; token?: string; csrf?: string; body?: string };
+type CmsEndpoint = `auth/${AuthAction}` | "admin/dashboard";
+
+export function requestCms(
   config: ReturnType<typeof getCmsConfig>,
-  action: AuthAction,
-  options: { method: "GET" | "POST"; requestId: string; token?: string; csrf?: string; body?: string },
+  endpoint: CmsEndpoint,
+  options: CmsOptions,
 ) {
   const headers = new Headers({ Accept: "application/json", Origin: config.appOrigin, "X-Request-Id": options.requestId });
   if (options.token) headers.set("Authorization", `Bearer ${options.token}`);
   if (options.csrf) headers.set("X-Csrf-Token", options.csrf);
   if (options.body) headers.set("Content-Type", "application/json");
-  return fetch(`${config.apiOrigin}/api/v1/auth/${action}`, {
+  return fetch(`${config.apiOrigin}/api/v1/${endpoint}`, {
     headers,
     method: options.method,
     body: options.body,
@@ -39,6 +42,10 @@ export function requestAuth(
     redirect: "error",
     signal: AbortSignal.timeout(5000),
   });
+}
+
+export function requestAuth(config: ReturnType<typeof getCmsConfig>, action: AuthAction, options: CmsOptions) {
+  return requestCms(config, `auth/${action}`, options);
 }
 
 export function isRecord(value: unknown): value is Record<string, unknown> {

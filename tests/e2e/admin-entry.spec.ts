@@ -14,4 +14,5 @@ test("anonymous admin redirects to the accessible login without public navigatio
   expect(landing.headers()["content-security-policy"]).toContain("form-action 'none'");
   expect(login.headers()["x-robots-tag"]).toBe("noindex, nofollow");
   expect((await request.get("/api/cms/other/route")).status()).toBe(404);
+  expect((await request.get("/api/cms/admin/dashboard")).status()).toBe(401);
 });

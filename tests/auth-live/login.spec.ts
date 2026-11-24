@@ -1,3 +1,4 @@
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 test("owner signs in through the real BFF, resists cross-origin logout and can sign out", async ({ page, context }) => {
@@ -5,6 +6,7 @@ test("owner signs in through the real BFF, resists cross-origin logout and can s
   const password = process.env.OWNER_TEST_PASSWORD;
   if (!email || !password) throw new Error("Se requieren fixtures de QA de acceso.");
 
+  await page.setViewportSize({ width: 375, height: 812 });
   const pageResponse = await page.goto("/admin/login");
   expect(pageResponse?.headers()["cache-control"]).toContain("no-store");
   await page.getByLabel("Correo electrónico").fill(email);
@@ -20,6 +22,29 @@ test("owner signs in through the real BFF, resists cross-origin logout and can s
   expect((await login).status()).toBe(200);
   await expect(page).toHaveURL(/\/admin$/);
   await expect(page.getByRole("heading", { name: "Administración de Globows LM" })).toBeVisible();
+  await expect(page.getByText("Aún no hay contenido editorial.")).toBeVisible();
+  await expect(page.getByText("Aún no hay operaciones propias.")).toBeVisible();
+  await page.locator("summary").focus();
+  await page.keyboard.press("Enter");
+  await expect(page.getByRole("navigation", { name: "Administración" }).getByRole("link", { name: "Panel" }))
+    .toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("link", { name: "Ver sitio" })).toHaveAttribute("href", "/");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  const accessibility = await new AxeBuilder({ page }).analyze();
+  expect(accessibility.violations.filter(({ impact }) => impact === "critical" || impact === "serious")).toEqual([]);
+
+  let releaseDashboard: () => void = () => {};
+  const waitForLoading = new Promise<void>((resolve) => { releaseDashboard = resolve; });
+  await page.route("**/api/cms/admin/dashboard", async (route) => {
+    await waitForLoading;
+    await route.fulfill({ status: 503, json: { code: "UNAVAILABLE" } });
+  }, { times: 1 });
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect(page.getByText("Cargando el resumen…")).toBeVisible();
+  releaseDashboard();
+  await expect(page.getByText("No se pudo cargar el resumen.")).toBeVisible();
+  await page.getByRole("button", { name: "Reintentar" }).click();
+  await expect(page.getByText("Aún no hay contenido editorial.")).toBeVisible();
 
   const cookie = (await context.cookies()).find(({ name }) => name === "globows_owner");
   expect(cookie && { httpOnly: cookie.httpOnly, secure: cookie.secure, path: cookie.path, sameSite: cookie.sameSite })

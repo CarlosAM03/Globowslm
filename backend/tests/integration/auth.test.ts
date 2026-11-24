@@ -6,6 +6,7 @@ import { test } from "node:test";
 import { promisify } from "node:util";
 import { createApp } from "../../src/app.js";
 import { hashToken } from "../../src/auth/credentials.js";
+import { EditorialService } from "../../src/editorial/editorial.js";
 import { loadConfig } from "../../src/config.js";
 import { DatabaseService } from "../../src/database.js";
 
@@ -87,6 +88,37 @@ test("provisions, authenticates, revokes and recovers the only OWNER through rea
   assert.equal(sessionResponse.status, 200);
   assert.equal(sessionResponse.headers.get("Cache-Control"), "no-store");
   assert.deepEqual(await sessionResponse.json(), { owner: credentials.owner, csrfToken: credentials.csrfToken });
+
+  const dashboardUrl = `${api.replace(/auth$/, "")}admin/dashboard`;
+  assert.equal((await fetch(dashboardUrl)).status, 401);
+  const dashboard = async () => {
+    const response = await fetch(dashboardUrl, { headers: { Authorization: `Bearer ${credentials.sessionToken}` } });
+    assert.equal(response.status, 200);
+    assert.equal(response.headers.get("Cache-Control"), "no-store");
+    return response.json();
+  };
+  const before = await dashboard();
+  const cms = app.get(EditorialService);
+  const own = { actorId: owners[0].id, requestId: randomUUID() };
+  const outsider = { actorId: randomUUID(), requestId: randomUUID() };
+  const create = (who: typeof own) => cms.create("EVENT_TYPE", {
+    slug: `dashboard-${randomUUID()}`, payload: { title: "Fixture local" },
+  }, who);
+  const draft = await create(own);
+  const publication = await create(own);
+  await cms.transition(publication, publication.version, "PUBLISH", own);
+  const removed = await create(outsider);
+  const publishedForWithdrawal = await cms.transition(removed, removed.version, "PUBLISH", outsider);
+  await cms.transition(removed, publishedForWithdrawal.version, "WITHDRAW", outsider);
+  const updated = await dashboard();
+  assert.deepEqual(updated.totals, {
+    draft: before.totals.draft + 1,
+    published: before.totals.published + 1,
+    withdrawn: before.totals.withdrawn + 1,
+  });
+  assert.ok(updated.byKind.some((row: { kind: string }) => row.kind === "EVENT_TYPE"));
+  assert.ok(updated.recent.some((row: { entityId: string }) => row.entityId === draft.id));
+  assert.ok(updated.recent.every((row: { entityId: string }) => row.entityId !== removed.id));
 
   const logout = (csrfToken: string, source = origin) => fetch(`${api}/logout`, {
     method: "POST",

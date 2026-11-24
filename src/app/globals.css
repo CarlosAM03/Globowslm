@@ -156,3 +156,134 @@ img { display: block; max-width: 100%; }
   padding: .75rem 1.5rem;
   border-bottom: 1px solid #e8c5d8;
 }
+
+.admin-field {
+  display: grid;
+  gap: .4rem;
+}
+
+.admin-field-error {
+  color: #8c1245;
+}
+
+.admin-navigation-mobile {
+  display: flex;
+  flex: 1;
+}
+
+.admin-navigation-mobile summary {
+  cursor: pointer;
+  min-height: 44px;
+  padding: .65rem .85rem;
+}
+
+.admin-navigation-mobile nav, .admin-navigation-desktop {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+}
+
+.admin-session nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: .85rem;
+  border-radius: .5rem;
+}
+
+.admin-session nav a[aria-current="page"] {
+  background: #f9e1ee;
+  color: #741443;
+  font-weight: 700;
+}
+
+.admin-dashboard {
+  width: min(100% - 2rem, 75rem);
+  margin-inline: auto;
+  padding-block: 2.5rem;
+}
+
+.admin-dashboard h1 {
+  font-size: clamp(1.8rem, 5vw, 2.65rem);
+  font-weight: 750;
+}
+
+.admin-dashboard h2 {
+  margin-block: 1.5rem .75rem;
+  font-size: 1.2rem;
+  font-weight: 750;
+}
+
+.admin-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(10rem, 100%), 1fr));
+  gap: .8rem;
+  margin-block: 1.5rem;
+}
+
+.admin-metrics > div, .admin-status, .admin-table-scroll, .admin-activity {
+  padding: 1rem;
+  border: 1px solid #e8c5d8;
+  border-radius: .75rem;
+  background: white;
+}
+
+.admin-metrics dd {
+  margin: .25rem 0 0;
+  font-size: 2rem;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-status button {
+  margin-block-start: .75rem;
+}
+
+.admin-table-scroll {
+  overflow-x: auto;
+}
+
+.admin-table-scroll table {
+  width: 100%;
+  text-align: start;
+}
+
+.admin-table-scroll th, .admin-table-scroll td {
+  padding: .6rem;
+  text-align: start;
+  border-bottom: 1px solid #ead6e1;
+}
+
+.admin-activity li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .35rem 1rem;
+  padding-block: .5rem;
+}
+
+.admin-navigation-desktop {
+  display: none;
+}
+
+@media (min-width: 48rem) {
+  .admin-navigation-mobile {
+    display: none;
+  }
+
+  .admin-navigation-desktop {
+    display: flex;
+    flex: 1;
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .admin-session {
+    align-items: flex-start;
+  }
+
+  .admin-navigation-mobile {
+    order: 3;
+    flex-basis: 100%;
+  }
+}

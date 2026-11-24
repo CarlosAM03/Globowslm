@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "patch": "P05",
+  "base": "e504c4fb3f2db61dfbd172c2a1a099f137766280",
+  "branch": "patch/v2/P05",
+  "verified_at": "2026-11-24T08:11:38.048348+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R02"
+  ],
+  "paths": [
+    "Docs/V2/Evidencias/P05.md",
+    "backend/src/app.ts",
+    "backend/src/dashboard.ts",
+    "backend/tests/integration/auth.test.ts",
+    "src/app/(admin)/admin/(protected)/layout.tsx",
+    "src/app/(admin)/admin/(protected)/page.tsx",
+    "src/app/api/cms/admin/dashboard/route.ts",
+    "src/app/globals.css",
+    "src/components/admin/AdminNavigation.tsx",
+    "src/components/admin/Dashboard.tsx",
+    "src/components/admin/Field.tsx",
+    "src/components/admin/LoginForm.tsx",
+    "src/components/admin/StatusPanel.tsx",
+    "src/lib/cms/auth-server.ts",
+    "src/types/cms/dashboard.ts",
+    "tests/auth-live/login.spec.ts",
+    "tests/e2e/admin-entry.spec.ts"
+  ],
+  "fingerprint": "b411f87b624fd8988a13523f97bb2581c1a910ab5aa6911e09da0c80d7a6f3b7",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 115.24,
+      "log_sha256": "4a4ccb180378f05f609aa9f673ab4a74021ac8939b057f158dcda21bbc044ae9",
+      "log_bytes": 15239,
+      "truncated": false,
+      "log_relative": "logs/P05/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 39.69,
+      "log_sha256": "304cfa72bdb645471336e0efecc5752b552815167db91bbea6f82f54c24742c6",
+      "log_bytes": 13503,
+      "truncated": false,
+      "log_relative": "logs/P05/1-2.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

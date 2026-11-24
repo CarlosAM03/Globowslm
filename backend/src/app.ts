@@ -6,11 +6,12 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import express from "express";
 import { AuthModule } from "./auth/auth.module.js";
 import { ConfigModule } from "./config.js";
+import { DashboardModule } from "./dashboard.js";
 import { EditorialModule } from "./editorial/editorial.js";
 import { HealthModule } from "./health.js";
 import { ApiErrorFilter, jsonErrors, requestContext } from "./http.js";
 
-@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule] })
+@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule] })
 class AppModule {}
 
 export async function createApp(): Promise<INestApplication> {

@@ -2,6 +2,7 @@
 
 import { useState, useSyncExternalStore, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Field } from "./Field";
 
 const subscribe = () => () => {};
 const clientReady = () => true;
@@ -47,10 +48,8 @@ export function LoginForm() {
 
   return (
     <form className="admin-login-form" method="post" onSubmit={submit}>
-      <label htmlFor="admin-email">Correo electrónico</label>
-      <input id="admin-email" name="email" type="email" autoComplete="username" maxLength={254} required />
-      <label htmlFor="admin-password">Contraseña</label>
-      <input id="admin-password" name="password" type="password" autoComplete="current-password" maxLength={1024} required />
+      <Field label="Correo electrónico" id="admin-email" name="email" type="email" autoComplete="username" maxLength={254} required />
+      <Field label="Contraseña" id="admin-password" name="password" type="password" autoComplete="current-password" maxLength={1024} required />
       {error && <p role="alert">{error}</p>}
       <button type="submit" disabled={!hydrated || pending}>{pending ? "Ingresando…" : "Entrar"}</button>
     </form>
