@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { previewMedia } from "@/lib/cms/media-client";
+import { getMedia, previewMedia } from "@/lib/cms/media-client";
 import { useCsrfToken } from "./AdminSession";
 import { StatusPanel } from "./StatusPanel";
 
-export function EditorialMediaPreview({ id, type, label }: { id: string; type: "image" | "video"; label: string }) {
+export function EditorialMediaPreview({ id, type, label }: { id: string; type?: "image" | "video"; label: string }) {
   const csrf = useCsrfToken();
-  const [url, setUrl] = useState<string>();
+  const [asset, setAsset] = useState<{ url: string; type: "image" | "video" }>();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState(false);
 
@@ -16,7 +16,10 @@ export function EditorialMediaPreview({ id, type, label }: { id: string; type: "
     setPending(true);
     setError(false);
     try {
-      setUrl((await previewMedia(id, csrf)).url);
+      const [ticket, category] = await Promise.all([
+        previewMedia(id, csrf), type ?? getMedia(id).then(({ mime }) => mime.startsWith("image/") ? "image" as const : "video" as const),
+      ]);
+      setAsset({ url: ticket.url, type: category });
     } catch {
       setError(true);
     } finally {
@@ -26,10 +29,10 @@ export function EditorialMediaPreview({ id, type, label }: { id: string; type: "
 
   return <div className="admin-preview">
     {error ? <StatusPanel kind="error">El archivo no está disponible para previsualización.</StatusPanel> : null}
-    {url && type === "image" ? <Image src={url} width={420} height={280} alt={label} unoptimized /> : null}
-    {url && type === "video" ? <video src={url} controls preload="metadata" aria-label={label} /> : null}
+    {asset?.type === "image" ? <Image src={asset.url} width={420} height={280} alt={label} unoptimized /> : null}
+    {asset?.type === "video" ? <video src={asset.url} controls preload="metadata" aria-label={label} /> : null}
     <button type="button" disabled={pending} onClick={() => void load()}>
-      {url ? "Actualizar" : "Ver"} {label}
+      {asset ? "Actualizar" : "Ver"} {label}
     </button>
   </div>;
 }

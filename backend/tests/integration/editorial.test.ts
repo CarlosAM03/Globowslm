@@ -163,3 +163,38 @@ test("gallery photo order is snapshotted and one image can be reused in several 
     ...input, slug: uniqueSlug("duplicada"), payload: { ...input.payload, orderedPhotoRefs: [photos[0], photos[0]] },
   }, actor()), (error: unknown) => error instanceof EditorialError && error.getStatus() === 422);
 });
+
+test("credential timeline stays empty until issuer and verification are confirmed", async (t) => {
+  const { db, cms } = fixture(t);
+  const source = await db.media.create({ data: {
+    storageKey: randomUUID(), originalName: "evidence-fixture.png", mime: "image/png",
+    sha256: "3".repeat(64), size: 100, status: "READY",
+  } });
+  const slug = uniqueSlug("credencial-fixture");
+  const input = {
+    slug, position: 3,
+    payload: { title: "Credencial de prueba", evidenceMediaRefs: [source.id], verified: false },
+  };
+  const draft = await cms.create(ContentKind.CERTIFICATION, input, actor());
+  const rejected = (error: unknown) => error instanceof EditorialError &&
+    error.getStatus() === 422 && Object.hasOwn(error.fieldErrors ?? {}, "verified");
+  assert.equal(await cms.published(draft.kind, slug), null);
+  await assert.rejects(cms.transition(draft, draft.version, "PUBLISH", actor()), rejected);
+  assert.equal(await cms.published(draft.kind, slug), null);
+  const noIssuer = await cms.edit(draft, draft.version, {
+    ...input, payload: { ...input.payload, verified: true },
+  }, actor());
+  await assert.rejects(cms.transition(draft, noIssuer.version, "PUBLISH", actor()), rejected);
+
+  const payload = { ...input.payload, verified: true, issuer: "Organismo de prueba", date: "2025-03-01" };
+  const valid = await cms.edit(draft, noIssuer.version, { ...input, payload }, actor());
+  const published = await cms.transition(draft, valid.version, "PUBLISH", actor());
+  const snapshot = await cms.published(draft.kind, slug);
+  assert.deepEqual(snapshot?.payload, payload);
+  assert.equal(snapshot?.position, 3);
+  assert.ok(published.publishedRevisionId);
+  const refs = await db.revisionMediaRef.findMany({ where: { revisionId: published.publishedRevisionId } });
+  assert.deepEqual(refs.map(({ mediaId, role }) => [mediaId, role]), [[source.id, "evidence"]]);
+  await cms.transition(draft, published.version, "WITHDRAW", actor());
+  assert.equal(await cms.published(draft.kind, slug), null);
+});

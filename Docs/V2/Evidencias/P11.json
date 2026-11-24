@@ -1,0 +1,73 @@
+{
+  "schema": 1,
+  "patch": "P11",
+  "base": "82d711b45241634118f3d67398e6a7072aa3c1cc",
+  "branch": "patch/v2/P11",
+  "verified_at": "2026-11-24T09:18:49.490123+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R09"
+  ],
+  "paths": [
+    "Docs/V2/Evidencias/P11.md",
+    "backend/src/editorial/content.module.ts",
+    "backend/tests/integration/editorial.test.ts",
+    "src/app/(admin)/admin/(protected)/certificaciones/page.tsx",
+    "src/components/admin/AdminNavigation.tsx",
+    "src/components/admin/CertificationCatalog.tsx",
+    "src/components/admin/EditorialMediaPreview.tsx",
+    "src/lib/cms/content-path.ts",
+    "src/lib/cms/media-client.ts"
+  ],
+  "fingerprint": "388799f6efc6aac147692155f886866bcdb80b74789c7c165115eb7112ad7fc3",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 121.25,
+      "log_sha256": "9d6ce4ef0ee9f801dfcd02375942a9f2ad493fbb179309e8d602d2c6a4018f32",
+      "log_bytes": 16010,
+      "truncated": false,
+      "log_relative": "logs/P11/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 42.22,
+      "log_sha256": "5c760f7162ac77ea2cad883ad1df25a3972d24384211dafdc9fe26e402a58f5f",
+      "log_bytes": 21906,
+      "truncated": false,
+      "log_relative": "logs/P11/1-2.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

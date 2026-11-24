@@ -38,6 +38,10 @@ export async function uploadMedia(file: File, csrf: string) {
   return read<Asset>(response);
 }
 
+export function getMedia(id: string) {
+  return api<Asset>(`/${id}`);
+}
+
 export function previewMedia(id: string, csrf: string) {
   return api<{ url: string }>(`/${id}/preview-ticket`, request("POST", {}, csrf));
 }
