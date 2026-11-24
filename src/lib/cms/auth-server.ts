@@ -6,6 +6,7 @@ import { connection } from "next/server";
 import type { OwnerSession } from "@/types/cms/auth";
 import type { AuthAction } from "./auth-path";
 import type { ContentEndpoint } from "./content-path";
+import type { MediaEndpoint } from "./media-path";
 
 export const ownerCookie = "globows_owner";
 export const loginCookie = "globows_login_challenge";
@@ -23,8 +24,8 @@ export function getCmsConfig() {
   return { appOrigin: app.origin, apiOrigin: api.origin, secure: app.protocol === "https:" };
 }
 
-type CmsOptions = { method: "GET" | "POST" | "PATCH"; page?: number; requestId: string; token?: string; csrf?: string; body?: string };
-type CmsEndpoint = `auth/${AuthAction}` | "admin/dashboard" | ContentEndpoint;
+type CmsOptions = { method: "GET" | "POST" | "PATCH" | "DELETE"; page?: number; mediaType?: "image" | "video"; requestId: string; token?: string; csrf?: string; body?: string };
+type CmsEndpoint = `auth/${AuthAction}` | "admin/dashboard" | ContentEndpoint | MediaEndpoint;
 
 export function requestCms(
   config: ReturnType<typeof getCmsConfig>,
@@ -37,6 +38,7 @@ export function requestCms(
   if (options.body) headers.set("Content-Type", "application/json");
   const url = new URL(`/api/v1/${endpoint}`, config.apiOrigin);
   if (options.page !== undefined) url.searchParams.set("page", String(options.page));
+  if (options.mediaType) url.searchParams.set("type", options.mediaType);
   return fetch(url, {
     headers,
     method: options.method,

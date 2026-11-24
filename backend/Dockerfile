@@ -2,7 +2,7 @@ FROM node:22.23.5-bookworm-slim@sha256:e9f565d32859f0cbfb52125eafe8be39390f24dac
 
 WORKDIR /app
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates openssl \
+    && apt-get install -y --no-install-recommends ca-certificates openssl ffmpeg=7:5.1.9-0+deb12u1 \
     && rm -rf /var/lib/apt/lists/* \
     && chown node:node /app
 

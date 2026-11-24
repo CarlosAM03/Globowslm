@@ -18,7 +18,8 @@
     "test:integration": "node --test --test-concurrency=1 dist/tests/integration/*.test.js",
     "gate:api": "npm run prisma:generate && npm run typecheck && npm run lint && npm run build && npm test && npm run db:deploy && npm run test:integration",
     "owner:provision": "node dist/src/auth/owner-cli.js provision",
-    "owner:recover": "node dist/src/auth/owner-cli.js recover"
+    "owner:recover": "node dist/src/auth/owner-cli.js recover",
+    "media:cleanup": "node dist/src/media/cleanup-cli.js"
   },
   "dependencies": {
     "@nestjs/common": "12.6.0",
@@ -32,7 +33,8 @@
     "reflect-metadata": "0.2.2",
     "rxjs": "7.8.2",
     "zod": "4.6.7",
-    "@node-rs/argon2": "2.2.2"
+    "@node-rs/argon2": "2.2.2",
+    "sharp": "0.35.5"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

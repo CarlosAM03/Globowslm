@@ -72,3 +72,7 @@ Zod 4.6.7 (MIT) valida formas estrictas, límites y tipos del dominio editorial.
 ## P04
 
 El backend fija @node-rs/argon2 2.2.2 (MIT) para hash Argon2id. El lock conserva la integridad del paquete y sus binarios opcionales. La resolución npm reportó cero vulnerabilidades.
+
+## P08
+
+Sharp 0.35.5 (Apache-2.0) se fija en el backend para decodificar imágenes y limitar píxeles. Su lock registra integridad de los binarios opcionales de libvips. Debian Bookworm fija FFmpeg en `7:5.1.9-0+deb12u1` para inspeccionar contenedores de video en un subproceso con tiempo, salida y protocolos limitados. Revisar avisos de ambos decodificadores al actualizar el lock o la imagen. La resolución del lock de npm reportó cero vulnerabilidades. [Documentación de Sharp](https://sharp.pixelplumbing.com/api-input/) [Documentación de ffprobe](https://ffmpeg.org/ffprobe.html)

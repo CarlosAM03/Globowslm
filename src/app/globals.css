@@ -363,3 +363,20 @@ img { display: block; max-width: 100%; }
   appearance: auto;
   accent-color: #9c005f;
 }
+
+.admin-catalog select {
+  min-height: 44px;
+  width: min(100%, 28rem);
+  padding: .6rem;
+  border: 1px solid #836073;
+  border-radius: .5rem;
+  background: white;
+}
+
+.admin-preview img, .admin-preview video {
+  max-width: 100%;
+  max-height: 30rem;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}

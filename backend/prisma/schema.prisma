@@ -100,6 +100,8 @@ model Media {
   revisionRefs RevisionMediaRef[]
 
   @@index([status, createdAt])
+  previewTickets MediaPreviewTicket[]
+
   @@map("media")
 }
 
@@ -196,6 +198,9 @@ model Session {
   owner      Owner      @relation(fields: [ownerId], references: [id], onDelete: Restrict)
 
   @@index([ownerId, revokedAt])
+  uploadTickets UploadTicket[]
+  previewTickets MediaPreviewTicket[]
+
   @@map("sessions")
 }
 
@@ -215,4 +220,34 @@ model RateLimitBucket {
 
   @@index([resetAt])
   @@map("rate_limit_buckets")
+}
+
+
+model UploadTicket {
+  tokenHash    String   @id @db.Char(64)
+  ownerId      String   @db.Uuid
+  sessionId    String   @db.Uuid
+  expectedMime String
+  maxBytes     Int
+  originalName String
+  expiresAt    DateTime
+  usedAt       DateTime?
+  session      Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@index([sessionId])
+  @@map("upload_tickets")
+}
+
+model MediaPreviewTicket {
+  tokenHash String   @id @db.Char(64)
+  mediaId   String   @db.Uuid
+  sessionId String   @db.Uuid
+  expiresAt DateTime
+  media     Media    @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  session   Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+  @@index([sessionId])
+  @@map("media_preview_tickets")
 }

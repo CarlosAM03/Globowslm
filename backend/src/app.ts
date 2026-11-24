@@ -5,14 +5,15 @@ import type { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import express from "express";
 import { AuthModule } from "./auth/auth.module.js";
-import { ConfigModule } from "./config.js";
+import { API_CONFIG, ConfigModule, type ApiConfig } from "./config.js";
 import { DashboardModule } from "./dashboard.js";
 import { ContentAdminModule } from "./editorial/content.module.js";
 import { EditorialModule } from "./editorial/editorial.js";
+import { MediaModule, mediaCors } from "./media/media.module.js";
 import { HealthModule } from "./health.js";
 import { ApiErrorFilter, jsonErrors, requestContext } from "./http.js";
 
-@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule, ContentAdminModule] })
+@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule, ContentAdminModule, MediaModule] })
 class AppModule {}
 
 export async function createApp(): Promise<INestApplication> {
@@ -23,6 +24,7 @@ export async function createApp(): Promise<INestApplication> {
   });
   app.disable("x-powered-by");
   app.use(requestContext);
+  app.use(mediaCors(app.get<ApiConfig>(API_CONFIG).appOrigin));
   app.use(express.json({ limit: 1024 * 1024, strict: true }));
   app.use(jsonErrors);
   app.setGlobalPrefix("api/v1");

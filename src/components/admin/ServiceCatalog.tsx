@@ -8,6 +8,7 @@ import type { ContentAction } from "@/lib/cms/content-path";
 import type { CmsDraft, CmsList } from "@/types/cms/content";
 import { useCsrfToken } from "./AdminSession";
 import { Field } from "./Field";
+import { MediaSelect } from "./MediaSelect";
 import { StatusPanel } from "./StatusPanel";
 
 type Kind = "service" | "event_type";
@@ -176,6 +177,8 @@ function CatalogEditor({ kind }: { kind: Kind }) {
               <textarea id="catalog-description" rows={3} required={isService} maxLength={4000} value={form.description ?? ""}
                 onChange={(event) => setForm({ ...form, description: event.target.value })} />
             </div>
+            <MediaSelect id="catalog-image" label="Imagen representativa" type="image" value={form.imageRef}
+              onChange={(imageRef) => setForm({ ...form, imageRef })} />
             <Field id="catalog-position" label="Orden" type="number" min={0} max={2147483647} required value={position}
               onChange={(event) => setPosition(event.currentTarget.valueAsNumber || 0)} />
             {isService ? <>

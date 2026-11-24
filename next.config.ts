@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { parseMediaOrigin } from "./src/lib/cms/media-origin";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -14,8 +15,15 @@ const nextConfig: NextConfig = {
     const baseline = [{ source: "/:path*", headers }];
     const csp = headers.find(({ key }) => key === "Content-Security-Policy");
     if (!csp) return baseline;
+    let adminPolicy = csp.value.replace("form-action 'none'", "form-action 'self'");
+    if (process.env.CMS_MEDIA_ORIGIN) {
+      const media = parseMediaOrigin(process.env.CMS_MEDIA_ORIGIN, process.env.APP_ORIGIN ?? "");
+      adminPolicy = adminPolicy.replace("img-src 'self' data: blob:", `img-src 'self' data: blob: ${media}`)
+        .replace("connect-src 'self'", `connect-src 'self' ${media}`);
+      adminPolicy += `; media-src 'self' ${media}`;
+    }
     const adminHeaders = [
-      { ...csp, value: csp.value.replace("form-action 'none'", "form-action 'self'") },
+      { ...csp, value: adminPolicy },
       { key: "Cache-Control", value: "no-store" },
     ];
     return [

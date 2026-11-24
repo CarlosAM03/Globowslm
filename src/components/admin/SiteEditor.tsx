@@ -7,6 +7,7 @@ import {
 import type { CmsDraft, SitePayload } from "@/types/cms/content";
 import { useCsrfToken } from "./AdminSession";
 import { Field } from "./Field";
+import { MediaSelect } from "./MediaSelect";
 import { StatusPanel } from "./StatusPanel";
 
 const emptySite: SitePayload = {
@@ -171,6 +172,10 @@ export function SiteEditor() {
           <legend>Presentación e historia</legend>
           <Field id="hero-title" label="Título principal" required maxLength={160} value={form.hero.title}
             error={errors["hero.title"]} onChange={(event) => change("hero", { ...form.hero, title: event.target.value })} />
+          <MediaSelect id="hero-photo" label="Foto principal" type="image" value={form.hero.photoRef}
+            onChange={(photoRef) => change("hero", { ...form.hero, photoRef })} />
+          <MediaSelect id="about-photo" label="Retrato institucional" type="image" value={form.about.portraitRef}
+            onChange={(portraitRef) => change("about", { ...form.about, portraitRef })} />
           <LongField id="hero-summary" label="Subtítulo" value={form.hero.subtitle ?? ""}
             error={errors["hero.subtitle"]} onChange={(value) => change("hero", { ...form.hero, subtitle: value })} />
           <Field id="about-title" label="Título de historia" required maxLength={160} value={form.about.title}
