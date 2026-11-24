@@ -1,12 +1,12 @@
-import Image from "next/image";
+import { PublishedImage } from "@/components/shared/PublishedImage";
 import Link from "next/link";
 import type { PostBlock, PostPage, PublicAsset, PublicPost } from "@/types/cms/public-blog";
 
 const dateFormat = new Intl.DateTimeFormat("es-MX", { dateStyle: "long", timeZone: "America/Tijuana" });
 
-export function AssetImage({ asset, alt }: { asset: PublicAsset; alt?: string }) {
-  return <Image src={`/api/cms/public/media/${asset.id}`} width={asset.width ?? 720} height={asset.height ?? 480}
-    alt={alt ?? asset.alt} sizes="(max-width: 760px) 100vw, 720px" unoptimized />;
+export function AssetImage({ asset, alt, sizes = "(max-width: 760px) 100vw, 720px" }: { asset: PublicAsset; alt?: string; sizes?: string }) {
+  return <PublishedImage src={`/api/cms/public/media/${asset.id}`} width={asset.width ?? 720} height={asset.height ?? 480}
+    alt={alt ?? asset.alt} sizes={sizes} />;
 }
 
 function Block({ block }: { block: PostBlock }) {

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { PublishedImage } from "@/components/shared/PublishedImage";
 import { BadgeCheck, Compass, GraduationCap, PartyPopper, Users } from "lucide-react";
 import { ContextualContact } from "@/components/shared/ContextualContact";
 import type { Service } from "@/types/content";
@@ -9,7 +9,7 @@ export function ServiceCard({ service, number }: { service: Service; number?: st
   const Icon = icons[service.interest];
   return (
     <article className="service-card" aria-labelledby={`service-${service.id}`}>
-      {service.image ? <div className="service-image"><Image {...{ src: service.image.src, width: service.image.width, height: service.image.height, alt: service.image.alt }} unoptimized={service.image.src.startsWith("/api/")} sizes="(min-width: 1440px) 410px, (min-width: 1024px) calc((100vw - 208px) / 3), (min-width: 768px) calc((100vw - 120px) / 2), calc(100vw - 48px)" /></div> :
+      {service.image ? <div className="service-image"><PublishedImage {...{ src: service.image.src, width: service.image.width, height: service.image.height, alt: service.image.alt }} sizes="(min-width: 1440px) 410px, (min-width: 1024px) calc((100vw - 208px) / 3), (min-width: 768px) calc((100vw - 120px) / 2), calc(100vw - 48px)" /></div> :
         <div className="service-image service-image--pending"><Icon size={32} strokeWidth={1.75} aria-hidden="true" /><span className="service-line">Formación y orientación</span><p className="editorial-note">Imagen de acreditación no disponible.</p></div>}
       <div className="service-body">
         <h3 id={`service-${service.id}`}>{service.name}</h3>

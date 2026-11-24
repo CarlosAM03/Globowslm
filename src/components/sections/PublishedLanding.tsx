@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { PublishedImage } from "@/components/shared/PublishedImage";
 import Link from "next/link";
 import { ArrowDown, BadgeCheck, Check, FileCheck } from "lucide-react";
 import { ContextualContact } from "@/components/shared/ContextualContact";
@@ -24,8 +24,8 @@ const videoSource = (asset: PublicAsset) => `/api/cms/public/media/${asset.id}`;
 function hero(site: SiteView) {
   const { hero: cover, contact } = site;
   return <section id="inicio" className="hero section" aria-labelledby="hero-title">
-    {cover.photo ? <Image src={videoSource(cover.photo)} fill alt={cover.photo.alt} sizes="100vw"
-      loading="eager" fetchPriority="high" className="hero-image" unoptimized /> : null}
+    {cover.photo ? <PublishedImage src={videoSource(cover.photo)} fill alt={cover.photo.alt} sizes="100vw"
+      loading="eager" fetchPriority="high" className="hero-image" /> : null}
     <div className="hero-overlay" aria-hidden="true" />
     <SectionContainer className="hero-editorial">
       <div className="hero-copy">
@@ -48,7 +48,7 @@ function about(site: SiteView) {
   return <section id="sobre-licey" className="section" aria-labelledby="about-title">
     <SectionContainer>
       <div className={section.portrait ? "about-grid" : undefined}>
-        {section.portrait ? <figure className="about-figure"><AssetImage asset={section.portrait} /></figure> : null}
+        {section.portrait ? <figure className="about-figure"><AssetImage asset={section.portrait} sizes="(min-width: 1024px) 520px, (min-width: 768px) 45vw, calc(100vw - 48px)" /></figure> : null}
         <div className="about-copy">
           <SectionTitle id="about-title" eyebrow={section.title}>{site.founderName}</SectionTitle>
           <p>{section.history}</p>{section.philosophy ? <p>{section.philosophy}</p> : null}
@@ -86,7 +86,7 @@ function sections(content: PublicSite, site: SiteView) {
           <div className="events-grid">{events.map((event) => {
             const photo = images.find((image) => image.category === event.slug);
             return <figure className="event-card" key={event.slug}>
-              {event.image ? <AssetImage asset={event.image} /> : photo ? <Image src={photo.src} width={photo.width} height={photo.height} alt={photo.alt} unoptimized /> : null}
+              {event.image ? <AssetImage asset={event.image} /> : photo ? <PublishedImage src={photo.src} width={photo.width} height={photo.height} alt={photo.alt} /> : null}
               <figcaption>{event.title}{event.description ? <p>{event.description}</p> : null}</figcaption>
             </figure>;
           })}</div></> : null}

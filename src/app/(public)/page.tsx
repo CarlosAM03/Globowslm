@@ -25,6 +25,6 @@ export default function Home() {
   return <main id="contenido" tabIndex={-1}>
     {process.env.CMS_BASELINE_FIXTURE === "1" ?
       <><HeroSection /><AboutSection /><ServicesEventsSection /><GallerySection /><CoursesSection /><CertificationsSection /><TrustSupportSection /><ContactSection /></> :
-      <Suspense fallback={<p className="section" role="status">Cargando contenido…</p>}><CmsLanding /></Suspense>}
+      <Suspense fallback={<section className="hero section" aria-label="Contenido institucional"><p className="page-container" role="status">Cargando contenido…</p></section>}><CmsLanding /></Suspense>}
   </main>;
 }

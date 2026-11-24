@@ -22,7 +22,7 @@ export default function PublicLayout({ children }: LayoutProps<"/">) {
   const baseline = process.env.CMS_BASELINE_FIXTURE === "1";
   return <>
     <a className="skip-link" href="#contenido">Saltar al contenido</a>
-    {baseline ? <Navbar /> : <Suspense><CmsChrome part="header" /></Suspense>}
+    {baseline ? <Navbar /> : <Suspense fallback={<div className="site-header-placeholder" aria-hidden="true" />}><CmsChrome part="header" /></Suspense>}
     {children}
     {baseline ? <><Footer /><FloatingContactMenu /></> : <Suspense><CmsChrome part="footer" /></Suspense>}
   </>;

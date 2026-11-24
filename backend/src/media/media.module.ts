@@ -1,5 +1,5 @@
 import {
-  Body, Controller, Delete, Get, Header, Headers, HttpCode, Module, Param,
+  Body, Controller, Delete, Get, Header, Headers, HttpCode, Module, NotFoundException, Param,
   ParseUUIDPipe, Patch, Post, Query, Req, Res,
 } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
@@ -90,8 +90,11 @@ class DirectMediaController {
   }
 
   @Get("public/:id")
-  async publicAsset(@Param("id", ParseUUIDPipe) id: string, @Req() req: Request, @Res() res: Response) {
-    return this.media.send(await this.media.publicAsset(id), req, res);
+  async publicAsset(@Param("id", ParseUUIDPipe) id: string, @Query("width") width: unknown, @Req() req: Request, @Res() res: Response) {
+    if (width !== undefined && !["320", "480", "640", "828", "1080", "1280"].some((value) => value === width)) {
+      throw new NotFoundException();
+    }
+    return this.media.send(await this.media.publicAsset(id), req, res, width === undefined ? undefined : Number(width));
   }
 
   @Get("preview/:id")

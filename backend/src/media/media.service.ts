@@ -7,6 +7,7 @@ import {
   UnauthorizedException, UnprocessableEntityException,
 } from "@nestjs/common";
 import type { Request, Response } from "express";
+import sharp from "sharp";
 import { API_CONFIG, type ApiConfig } from "../config.js";
 import { DatabaseService } from "../database.js";
 import { hashToken, newToken, tokenPattern } from "../auth/credentials.js";
@@ -23,6 +24,9 @@ const select = {
 
 @Injectable()
 export class MediaService {
+  private readonly variants = new Map<string, Buffer>();
+  private readonly resizing = new Map<string, Promise<Buffer>>();
+
   constructor(
     private readonly db: DatabaseService,
     private readonly storage: MediaStorage,
@@ -174,12 +178,26 @@ export class MediaService {
     return row.media;
   }
 
-  async send(asset: Media, req: Request, res: Response) {
+  async send(asset: Media, req: Request, res: Response, width?: number) {
     const mime = asset.mime;
     if (!isMime(mime)) throw new NotFoundException();
     const filename = this.storage.file(asset.storageKey);
     const info = await lstat(filename).catch(() => null);
     if (!info?.isFile() || info.size !== asset.size) throw new NotFoundException();
+
+    if (width && !mime.startsWith("image/")) throw new NotFoundException();
+    if (width) {
+      const key = `${asset.sha256}:${width}`;
+      const bytes = this.variants.get(key) ?? await this.resize(key, filename, width);
+      if (bytes) {
+        res.status(200).set({
+          "Content-Type": "image/webp", "Content-Length": String(bytes.byteLength),
+          "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Referrer-Policy": "no-referrer",
+        });
+        res.end(req.method === "HEAD" ? undefined : bytes);
+        return;
+      }
+    }
 
     const range = rangeFor(req.get("Range"), asset.size);
     res.set({
@@ -205,6 +223,24 @@ export class MediaService {
       return;
     }
     await pipeline(createReadStream(filename, range ?? {}), res);
+  }
+
+  private resize(key: string, filename: string, width: number) {
+    const pending = this.resizing.get(key);
+    if (pending) return pending;
+    if (this.resizing.size >= 2) return null;
+    const result = sharp(filename, { limitInputPixels: 40_000_000 }).rotate()
+      .resize({ width, height: 1600, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 68 }).toBuffer().then((bytes) => {
+        this.variants.set(key, bytes);
+        if (this.variants.size > 16) {
+          const oldest = this.variants.keys().next().value;
+          if (oldest) this.variants.delete(oldest);
+        }
+        return bytes;
+      }).finally(() => this.resizing.delete(key));
+    this.resizing.set(key, result);
+    return result;
   }
 
   private activeSession(now: Date): Prisma.SessionWhereInput {

@@ -463,3 +463,6 @@ img { display: block; max-width: 100%; }
   max-width: 100%;
   height: auto;
 }
+
+.site-header-placeholder { height: calc(var(--space-20) + 1px); }
+.published-picture { display: contents; }
