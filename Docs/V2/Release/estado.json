@@ -23,7 +23,7 @@
     "P23": { "state": "DONE", "evidence": "Vercel Ready desde main, CI en Node 22.23.5 y 24.x; verificado en P25." },
     "P24": { "state": "DONE", "evidence": "Aceptación del propietario de las cuentas y la importación. Inventario confirmado en P25." },
     "P25": { "state": "DONE", "evidence": "evidencias/P25.md", "commitTrailer": "Release-Patch: P25" },
-    "P26": { "state": "READY", "gate": "Cierre académico y validación no comercial. La aceptación comercial permanece bloqueada por Vercel Hobby." }
+    "P26": { "state": "VERIFYING", "version": "2.0.0", "evidence": "evidencias/P26.md", "commitTrailer": "Release-Patch: P26", "gate": "CI del PR, CI y deployments del SHA de main, smoke final, tag anotado y GitHub Release. La aceptación comercial permanece bloqueada por Vercel Hobby." }
   },
   "cloudMutations": [
     { "patch": "P20", "provider": "GitHub", "operation": "push", "ref": "refs/heads/develop/v2.0.0", "sha": "b1bf4cc545b95a180bf4817a3d4eaf49160ec82b", "verified": true },
