@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
-import { lstat, link, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { lstat, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { basename, join } from "node:path";
 import { z } from "zod";
 import type { ApiConfig } from "../config.js";
@@ -82,25 +82,25 @@ async function readMedia(root: string, media: MediaInput) {
 
 async function storeMedia(tx: Tx, storage: MediaStorage, media: MediaInput, bytes: Buffer, created: string[]) {
   const storageKey = `${media.id}.webp`;
-  const target = storage.file(storageKey);
   const existing = await tx.media.findUnique({ where: { id: media.id } });
   if (existing && (existing.sha256 !== media.sha256 || existing.storageKey !== storageKey || existing.status !== "READY")) {
     throw new Error("La identidad de una imagen aprobada está ocupada.");
   }
-  const available = await lstat(target).catch((error: NodeJS.ErrnoException) => {
-    if (error.code === "ENOENT") return null;
-    throw error;
-  });
-  if (available) {
-    if (!available.isFile() || available.size !== media.size || hash(await readFile(target)) !== media.sha256) {
+  const available = await storage.size(storageKey);
+  if (available !== null) {
+    const source = available === media.size ? await storage.read(storageKey, media.size) : null;
+    if (!source) throw new Error("Archivo almacenado distinto del derivado aprobado.");
+    const digest = createHash("sha256");
+    for await (const chunk of source) digest.update(chunk);
+    if (digest.digest("hex") !== media.sha256) {
       throw new Error("Archivo almacenado distinto del derivado aprobado.");
     }
   } else {
     const temporary = storage.file(`${randomUUID()}.tmp`);
     try {
       await writeFile(temporary, bytes, { flag: "wx", mode: 0o600 });
-      await link(temporary, target);
-      created.push(target);
+      await storage.write(storageKey, temporary, "image/webp", media.size);
+      created.push(storageKey);
     } finally {
       await rm(temporary, { force: true });
     }
@@ -180,7 +180,8 @@ export async function importV1(db: DatabaseService, config: ApiConfig, raw: unkn
       }
       return { applied: true, conflicts, decisions, media: files.length };
     } catch (error) {
-      await Promise.all(written.map((filename) => rm(filename, { force: true })));
+      // A retried cloud import can reuse the verified immutable objects from a failed DB transaction.
+      if (!config.cloudStorage) await Promise.all(written.map((key) => storage.remove(key)));
       throw error;
     }
   }, { isolationLevel: Prisma.TransactionIsolationLevel.Serializable, timeout: 60_000 });

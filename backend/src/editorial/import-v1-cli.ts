@@ -23,6 +23,6 @@ async function run() {
 try {
   await run();
 } catch {
-  console.error(JSON.stringify({ event: "import_v1_failed", message: "Revisa el modo, inventario, OWNER y almacenamiento local." }));
+  console.error(JSON.stringify({ event: "import_v1_failed", message: "Revisa el modo, el inventario, la cuenta OWNER y el almacenamiento configurado." }));
   process.exitCode = 1;
 }

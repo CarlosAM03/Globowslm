@@ -1,6 +1,8 @@
 import { isAbsolute, parse } from "node:path";
 import { Global, Module } from "@nestjs/common";
 
+export type StorageConfig = { origin: string; bucket: string; key: string };
+
 export type ApiConfig = {
   mode: "local" | "test" | "production";
   port: number;
@@ -9,6 +11,7 @@ export type ApiConfig = {
   appOrigin: string;
   videoLimitMiB: 45 | 100;
   bffSecret?: string;
+  cloudStorage?: StorageConfig;
 };
 
 export const API_CONFIG = Symbol("API_CONFIG");
@@ -61,10 +64,26 @@ export function loadConfig(env: NodeJS.ProcessEnv): ApiConfig {
   if ((mode === "production" || bffSecret !== undefined) && !/^[A-Za-z0-9_-]{43,86}$/.test(bffSecret ?? "")) {
     throw new Error("CMS_BFF_SECRET inválido");
   }
+  if (mode === "production" && databaseUrl.searchParams.get("sslmode") !== "verify-full") {
+    throw new Error("DATABASE_URL requiere sslmode=verify-full");
+  }
+  const storageEnabled = [env.SUPABASE_PROJECT_URL, env.SUPABASE_MEDIA_BUCKET, env.SUPABASE_STORAGE_KEY].some((value) => value !== undefined);
+  let cloudStorage: StorageConfig | undefined;
+  if (mode === "production" || storageEnabled) {
+    const url = parseUrl(env.SUPABASE_PROJECT_URL, "SUPABASE_PROJECT_URL");
+    const bucket = env.SUPABASE_MEDIA_BUCKET ?? "";
+    const key = env.SUPABASE_STORAGE_KEY ?? "";
+    if (url.protocol !== "https:" || url.port || !/^[a-z0-9]{20}\.supabase\.co$/.test(url.hostname) ||
+        url.href !== `${url.origin}/` || !/^[a-z0-9][a-z0-9-]{2,62}$/.test(bucket) ||
+        !/^sb_secret_[A-Za-z0-9_-]{20,200}$/.test(key) || videoLimit !== "45") {
+      throw new Error("Configuración de Storage privado inválida");
+    }
+    cloudStorage = { origin: url.origin, bucket, key };
+  }
 
   return {
     mode, port, databaseUrl: databaseUrl.href, mediaRoot, appOrigin: appOrigin.origin,
-    videoLimitMiB: videoLimit === "45" ? 45 : 100, ...(bffSecret && { bffSecret }),
+    videoLimitMiB: videoLimit === "45" ? 45 : 100, ...(bffSecret && { bffSecret }), ...(cloudStorage && { cloudStorage }),
   };
 }
 

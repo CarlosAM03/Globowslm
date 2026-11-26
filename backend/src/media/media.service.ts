@@ -1,6 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { lstat, rename, rm } from "node:fs/promises";
-import { createReadStream } from "node:fs";
+import { rm } from "node:fs/promises";
 import { pipeline } from "node:stream/promises";
 import {
   ConflictException, ForbiddenException, HttpException, Inject, Injectable, NotFoundException,
@@ -103,13 +102,12 @@ export class MediaService {
     const id = randomUUID();
     const storageKey = `${id}.${formats[mime].extension}`;
     const tmp = this.storage.file(`${id}.tmp`);
-    const target = this.storage.file(storageKey);
-    let moved = false;
+    let stored = false;
     try {
       const hash = await saveUpload(request, tmp, ticket.maxBytes);
       const metadata = await validateMedia(tmp, mime);
-      await rename(tmp, target);
-      moved = true;
+      await this.storage.write(storageKey, tmp, mime, hash.size);
+      stored = true;
       return await this.db.$transaction(async (tx) => {
         const asset = await tx.media.create({
           data: { id, storageKey, originalName: ticket.originalName, mime, ...hash, ...metadata, status: "READY" },
@@ -119,8 +117,13 @@ export class MediaService {
         return asset;
       });
     } catch (error) {
-      await rm(moved ? target : tmp, { force: true });
+      if (stored) {
+        const persisted = await this.db.media.findUnique({ where: { id }, select: { id: true } }).catch(() => undefined);
+        if (persisted === null) await this.storage.remove(storageKey).catch(() => {});
+      }
       throw error;
+    } finally {
+      await rm(tmp, { force: true });
     }
   }
 
@@ -149,7 +152,7 @@ export class MediaService {
       if (current.status === "DELETING") return current;
       return tx.media.update({ where: { id, version }, data: { version: { increment: 1 }, status: "DELETING" } });
     });
-    await rm(this.storage.file(asset.storageKey), { force: true });
+    await this.storage.remove(asset.storageKey);
     await this.db.$transaction(async (tx) => {
       const removed = await tx.media.deleteMany({ where: { id, status: "DELETING" } });
       if (removed.count) await this.audit(tx, actorId, id, requestId, "DELETE_MEDIA", ["file"]);
@@ -182,14 +185,11 @@ export class MediaService {
   async send(asset: Media, req: Request, res: Response, width?: number) {
     const mime = asset.mime;
     if (!isMime(mime)) throw new NotFoundException();
-    const filename = this.storage.file(asset.storageKey);
-    const info = await lstat(filename).catch(() => null);
-    if (!info?.isFile() || info.size !== asset.size) throw new NotFoundException();
-
     if (width && !mime.startsWith("image/")) throw new NotFoundException();
     if (width) {
+      if (await this.storage.size(asset.storageKey) !== asset.size) throw new NotFoundException();
       const key = `${asset.sha256}:${width}`;
-      const bytes = this.variants.get(key) ?? await this.resize(key, filename, width);
+      const bytes = this.variants.get(key) ?? await this.resize(key, asset, width);
       if (bytes) {
         res.status(200).set({
           "Content-Type": "image/webp", "Content-Length": String(bytes.byteLength),
@@ -201,6 +201,10 @@ export class MediaService {
     }
 
     const range = rangeFor(req.get("Range"), asset.size);
+    const head = req.method === "HEAD";
+    if ((head || range === false) && await this.storage.size(asset.storageKey) !== asset.size) throw new NotFoundException();
+    const stream = head || range === false ? null : await this.storage.read(asset.storageKey, asset.size, range ?? undefined);
+    if (!head && range !== false && !stream) throw new NotFoundException();
     res.set({
       "Cache-Control": "no-store", "Referrer-Policy": "no-referrer",
       "Accept-Ranges": "bytes", "X-Content-Type-Options": "nosniff",
@@ -219,27 +223,30 @@ export class MediaService {
     } else {
       res.status(200).set("Content-Length", String(asset.size));
     }
-    if (req.method === "HEAD") {
+    if (!stream) {
       res.end();
       return;
     }
-    await pipeline(createReadStream(filename, range ?? {}), res);
+    await pipeline(stream, res);
   }
 
-  private resize(key: string, filename: string, width: number) {
+  private resize(key: string, asset: Media, width: number) {
     const pending = this.resizing.get(key);
     if (pending) return pending;
     if (this.resizing.size >= 2) return null;
-    const result = sharp(filename, { limitInputPixels: 40_000_000 }).rotate()
-      .resize({ width, height: 1600, fit: "inside", withoutEnlargement: true })
-      .webp({ quality: 68 }).toBuffer().then((bytes) => {
-        this.variants.set(key, bytes);
-        if (this.variants.size > 16) {
-          const oldest = this.variants.keys().next().value;
-          if (oldest) this.variants.delete(oldest);
-        }
-        return bytes;
-      }).finally(() => this.resizing.delete(key));
+    const result = (async () => {
+      const input = await this.storage.read(asset.storageKey, asset.size);
+      if (!input) throw new NotFoundException();
+      const image = sharp({ limitInputPixels: 40_000_000 }).rotate()
+        .resize({ width, height: 1600, fit: "inside", withoutEnlargement: true }).webp({ quality: 68 });
+      const [bytes] = await Promise.all([image.toBuffer(), pipeline(input, image)]);
+      this.variants.set(key, bytes);
+      if (this.variants.size > 16) {
+        const oldest = this.variants.keys().next().value;
+        if (oldest) this.variants.delete(oldest);
+      }
+      return bytes;
+    })().finally(() => this.resizing.delete(key));
     this.resizing.set(key, result);
     return result;
   }
