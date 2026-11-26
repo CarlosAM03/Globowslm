@@ -40,6 +40,7 @@ export async function createApp(): Promise<INestApplication> {
     .setVersion("1.0")
     .addBearerAuth({ type: "http", scheme: "bearer" }, "ownerSession")
     .addBearerAuth({ type: "http", scheme: "bearer" }, "uploadTicket")
+    .addApiKey({ type: "apiKey", in: "header", name: "X-Cms-Bff" }, "cmsBff")
     .build();
   SwaggerModule.setup("api/v1/openapi", app, () => documentApi(SwaggerModule.createDocument(app, config)), {
     ui: false,

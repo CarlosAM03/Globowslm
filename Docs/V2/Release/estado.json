@@ -5,15 +5,15 @@
   "integrationBranch": "develop/v2.0.0",
   "deadline": "2026-11-26T16:00:00-08:00",
   "patches": {
-    "P18": { "state": "BLOCKED", "branch": "patch/v2/P18", "gate": "Preflight parcialmente acreditado. MCP supabase-globowslm registrado en Codex en solo lectura, OAuth pendiente. Vercel Hobby reservado a validación no comercial." },
-    "P19": { "state": "DONE", "branch": "patch/v2/P19", "base": "6547ce06aa9be97765cec49ed31d02b2574fc8fc", "commitTrailer": "Release-Patch: P19", "qaProjects": ["globows-v2-free-p19", "globows-v2-a190000001"] },
-    "P20": { "state": "READY" },
+    "P18": { "state": "BLOCKED", "branch": "patch/v2/P18", "gate": "Preflight parcialmente acreditado. Supabase OAuth y consulta public verificados; cero tablas. Vercel Hobby reservado a validación no comercial." },
+    "P19": { "state": "DONE", "branch": "patch/v2/P19", "base": "6547ce06aa9be97765cec49ed31d02b2574fc8fc", "commit": "04f67d5c90e2dcf539944578cc7b4ef6b0717858", "commitTrailer": "Release-Patch: P19", "qaProjects": ["globows-v2-free-p19", "globows-v2-a190000001"] },
+    "P20": { "state": "VERIFYING", "branch": "patch/v2/P20", "base": "04f67d5c90e2dcf539944578cc7b4ef6b0717858", "commitTrailer": "Release-Patch: P20", "gates": { "api": 0, "web": 0, "stackChromium": 0, "auditApi": 0, "auditWeb": 0, "runtimeImage": 0, "pushV2": "PENDING" } },
     "P21": { "state": "READY" },
     "P22": { "state": "READY" },
     "P23": { "state": "READY" },
     "P24": { "state": "READY" },
     "P25": { "state": "READY" },
-    "P26": { "state": "READY" }
+    "P26": { "state": "BLOCKED", "gate": "Vercel Hobby reservado a desarrollo y validación inicial no comercial. Publicación comercial condicionada al uso permitido." }
   },
   "cloudMutations": []
 }

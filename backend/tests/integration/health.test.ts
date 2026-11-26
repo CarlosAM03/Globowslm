@@ -64,6 +64,22 @@ test("readiness rejects a storage path that is not a directory", async (t) => {
   assert.equal((await response.json()).code, "NOT_READY");
 });
 
+test("authentication bootstrap accepts only the configured BFF credential", async (t) => {
+  const secret = "a".repeat(43);
+  const api = await server(t, { CMS_BFF_SECRET: secret });
+  const Origin = process.env.APP_ORIGIN ?? "";
+  assert.equal((await fetch(`${api}/auth/csrf`, { headers: { Origin } })).status, 403);
+  assert.equal((await fetch(`${api}/auth/csrf`, { headers: { Origin, "X-Cms-Bff": "b".repeat(43) } })).status, 403);
+  const response = await fetch(`${api}/auth/csrf`, { headers: { Origin, "X-Cms-Bff": secret } });
+  assert.equal(response.status, 200);
+  const { csrfToken } = await response.json();
+  const login = await fetch(`${api}/auth/login`, {
+    method: "POST", headers: { Origin, "X-CSRF-Token": csrfToken, "Content-Type": "application/json" },
+    body: JSON.stringify({ email: "fixture@example.invalid", password: "invalid-fixture" }),
+  });
+  assert.equal(login.status, 403);
+});
+
 test("OpenAPI describes both probes and errors while unknown routes are sanitized", async (t) => {
   const api = await server(t);
   const specResponse = await fetch(`${api}/openapi.json`);

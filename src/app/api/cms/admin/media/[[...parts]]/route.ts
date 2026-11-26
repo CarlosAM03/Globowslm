@@ -56,6 +56,8 @@ async function handle(request: NextRequest, context: RouteContext<"/api/cms/admi
     });
     if (!upstream.ok) return fail(upstream.status);
     const value: unknown = await upstream.json();
+    if (endpoint === "admin/media" && (!isRecord(value) || !isRecord(value.limitsMiB) ||
+        value.limitsMiB.image !== 15 || (value.limitsMiB.video !== 45 && value.limitsMiB.video !== 100))) return fail(503);
     if (mediaOrigin) {
       if (!isRecord(value) || typeof value.token !== "string" || !tokenPattern.test(value.token) ||
           typeof value.expiresAt !== "string") return fail(503);

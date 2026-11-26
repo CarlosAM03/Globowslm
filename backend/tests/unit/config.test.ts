@@ -16,12 +16,16 @@ test("loads an isolated test configuration", () => {
     port: 3101,
     appOrigin: "http://web:3100",
     mediaRoot: "/tmp/globows-media",
+    videoLimitMiB: 100,
   });
 });
 
 test("requires HTTPS by default and disallows non-origin config", () => {
   assert.throws(() => loadConfig({ ...env, HARNESS_MODE: undefined }), /^Error: APP_ORIGIN/);
-  assert.equal(loadConfig({ ...env, HARNESS_MODE: "production", APP_ORIGIN: "https://example.invalid" }).mode, "production");
+  const production = { ...env, HARNESS_MODE: "production", APP_ORIGIN: "https://example.invalid", CMS_BFF_SECRET: "a".repeat(43) };
+  assert.equal(loadConfig(production).videoLimitMiB, 45);
+  assert.throws(() => loadConfig({ ...production, MEDIA_VIDEO_LIMIT_MIB: "100" }), /^Error: MEDIA_VIDEO_LIMIT_MIB/);
+  assert.throws(() => loadConfig({ ...production, CMS_BFF_SECRET: undefined }), /^Error: CMS_BFF_SECRET/);
   assert.throws(() => loadConfig({ ...env, APP_ORIGIN: "http://web:3100/admin" }), /^Error: APP_ORIGIN/);
 });
 

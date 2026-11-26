@@ -72,6 +72,7 @@ test("media tickets, real image/video bytes, published visibility, range, cleanu
   assert.equal((await request("/admin/media/upload-ticket", "POST", { mime: "image/svg+xml", size: 12, filename: "fixture.svg" })).status, 415);
   assert.equal((await request("/admin/media/upload-ticket", "POST", { mime: "image/png", size: 15 * 1024 ** 2 + 1, filename: "fixture.png" })).status, 413);
   assert.equal((await request("/admin/media/upload-ticket", "POST", { mime: "video/mp4", size: 100 * 1024 ** 2 + 1, filename: "fixture.mp4" })).status, 413);
+  assert.deepEqual((await (await request("/admin/media")).json()).limitsMiB, { image: 15, video: 100 });
   assert.equal((await request("/admin/media/upload-ticket", "POST", { mime: "image/png", size: 12, filename: "folder/fixture.png" })).status, 422);
   assert.equal((await upload(await ticket("image/png", png.length - 1), "image/png", png)).status, 413);
   const invalid = Buffer.from("fixture sin bytes de imagen");
@@ -147,4 +148,31 @@ test("media tickets, real image/video bytes, published visibility, range, cleanu
   const spare = await (await upload(await ticket("image/png", png.length), "image/png", png)).json();
   assert.equal((await request(`/admin/media/${spare.id}`, "DELETE", { version: spare.version })).status, 200);
   assert.equal((await request(`/admin/media/${spare.id}`)).status, 404);
+});
+
+test("FREE-01 rejects an oversized ticket before storing any video bytes", async (t) => {
+  assert.equal(process.env.HARNESS_MODE, "test");
+  process.env.MEDIA_VIDEO_LIMIT_MIB = "45";
+  t.after(() => { delete process.env.MEDIA_VIDEO_LIMIT_MIB; });
+  const config = loadConfig(process.env);
+  assert.equal(new URL(config.databaseUrl).hostname, "db-qa");
+  const db = new DatabaseService(config);
+  t.after(() => db.onModuleDestroy());
+  const owner = await db.owner.findUniqueOrThrow({ where: { role: "OWNER" } });
+  const token = newToken();
+  const csrf = csrfFor(token);
+  await db.session.create({ data: {
+    ownerId: owner.id, tokenHash: hashToken(token), csrfHash: hashToken(csrf), expiresAt: new Date(Date.now() + 60_000),
+  } });
+  const app = await createApp();
+  t.after(() => app.close());
+  await app.listen(0, "127.0.0.1");
+  const api = `${await app.getUrl()}/api/v1/admin/media`;
+  const headers = { Authorization: `Bearer ${token}`, Origin: config.appOrigin, "X-CSRF-Token": csrf, "Content-Type": "application/json" };
+  assert.deepEqual((await (await fetch(api, { headers })).json()).limitsMiB, { image: 15, video: 45 });
+  const issue = (size: number) => fetch(`${api}/upload-ticket`, {
+    method: "POST", headers, body: JSON.stringify({ mime: "video/mp4", size, filename: "fixture.mp4" }),
+  });
+  assert.equal((await issue(45 * 1024 ** 2)).status, 201);
+  assert.equal((await issue(45 * 1024 ** 2 + 1)).status, 413);
 });

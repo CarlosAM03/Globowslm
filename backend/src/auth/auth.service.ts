@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "node:crypto";
 import { BadRequestException, ForbiddenException, HttpException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { z } from "zod";
 import { API_CONFIG, type ApiConfig } from "../config.js";
@@ -24,6 +25,13 @@ export class AuthService {
 
   private assertOrigin(origin: string | undefined) {
     if (origin !== this.config.appOrigin) throw new ForbiddenException();
+  }
+
+  assertBff(header: string | undefined) {
+    const secret = this.config.bffSecret;
+    if (!secret) return;
+    if (!header || !/^[A-Za-z0-9_-]{43,86}$/.test(header) || header.length !== secret.length ||
+        !timingSafeEqual(Buffer.from(header), Buffer.from(secret))) throw new ForbiddenException();
   }
 
   async challenge(origin: string | undefined, ip: string) {

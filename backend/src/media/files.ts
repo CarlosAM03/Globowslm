@@ -6,7 +6,7 @@ import { promisify } from "node:util";
 import { HttpException, UnprocessableEntityException } from "@nestjs/common";
 import sharp from "sharp";
 
-const MiB = 1024 * 1024;
+export const MiB = 1024 * 1024;
 const pixelLimit = 40_000_000;
 export const formats = {
   "image/jpeg": { extension: "jpeg", limit: 15 * MiB },

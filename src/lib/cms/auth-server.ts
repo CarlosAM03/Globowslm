@@ -8,25 +8,14 @@ import type { AuthAction } from "./auth-path";
 import type { PublicationState } from "@/types/cms/publications";
 import type { ContentEndpoint, ContentKind } from "./content-path";
 import type { MediaEndpoint } from "./media-path";
+import { getCmsConfig } from "./cms-config";
+export { getCmsConfig } from "./cms-config";
 
 export const ownerCookie = "globows_owner";
 export const loginCookie = "globows_login_challenge";
 export const tokenPattern = /^[A-Za-z0-9_-]{43}$/;
 
-export function getCmsConfig() {
-  const app = new URL(process.env.APP_ORIGIN ?? "");
-  const api = new URL(process.env.CMS_API_INTERNAL_URL ?? "");
-  const isOrigin = (url: URL) => !url.username && !url.password && url.href === `${url.origin}/`;
-  const local = app.protocol === "http:" && (["127.0.0.1", "localhost"].includes(app.hostname) ||
-    (app.hostname === "web" && /^globows-v2-[0-9a-f]{10}$/.test(process.env.STACK_QA_PROJECT ?? "")));
-  if (!isOrigin(app) || !isOrigin(api) || (!local && app.protocol !== "https:") ||
-      (api.protocol !== "https:" && !(local && api.protocol === "http:" && ["api", "localhost", "127.0.0.1"].includes(api.hostname)))) {
-    throw new Error("Configuración CMS inválida");
-  }
-  return { appOrigin: app.origin, apiOrigin: api.origin, secure: app.protocol === "https:" };
-}
-
-type CmsOptions = { method: "GET" | "POST" | "PATCH" | "DELETE"; page?: number; mediaType?: "image" | "video"; kind?: ContentKind; state?: PublicationState; requestId: string; token?: string; csrf?: string; body?: string };
+type CmsOptions = { method: "GET" | "POST" | "PATCH" | "DELETE"; page?: number; mediaType?: "image" | "video"; kind?: ContentKind; state?: PublicationState; requestId: string; token?: string; csrf?: string; body?: string; bff?: string };
 type CmsEndpoint = `auth/${AuthAction}` | "admin/dashboard" | "admin/diagnostics" | "admin/publications" | ContentEndpoint | MediaEndpoint;
 
 export function requestCms(
@@ -37,6 +26,7 @@ export function requestCms(
   const headers = new Headers({ Accept: "application/json", Origin: config.appOrigin, "X-Request-Id": options.requestId });
   if (options.token) headers.set("Authorization", `Bearer ${options.token}`);
   if (options.csrf) headers.set("X-Csrf-Token", options.csrf);
+  if (options.bff) headers.set("X-Cms-Bff", options.bff);
   if (options.body) headers.set("Content-Type", "application/json");
   const url = new URL(`/api/v1/${endpoint}`, config.apiOrigin);
   if (options.page !== undefined) url.searchParams.set("page", String(options.page));
@@ -54,6 +44,11 @@ export function requestCms(
 }
 
 export function requestAuth(config: ReturnType<typeof getCmsConfig>, action: AuthAction, options: CmsOptions) {
+  if (action === "csrf" || action === "login") {
+    const bff = process.env.CMS_BFF_SECRET;
+    if (config.secure && !/^[A-Za-z0-9_-]{43,86}$/.test(bff ?? "")) throw new Error("Configuración del BFF inválida");
+    return requestCms(config, `auth/${action}`, { ...options, bff });
+  }
   return requestCms(config, `auth/${action}`, options);
 }
 

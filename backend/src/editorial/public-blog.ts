@@ -1,4 +1,4 @@
-import { Controller, Get, Header, Module, NotFoundException, Param, Query } from "@nestjs/common";
+import { Controller, Get, Head, Header, HttpCode, Module, NotFoundException, Param, Query } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { z } from "zod";
 import { Public } from "../auth/access.js";
@@ -98,6 +98,18 @@ class BlogController {
     return { items: items.map(summary), total, page, pageSize, categories: categories.map((row) => ({
       slug: row.slug, title: data("BLOG_CATEGORY", row.payload).title,
     })) };
+  }
+
+  @Head(":slug")
+  @HttpCode(200)
+  @Header("Cache-Control", "no-store")
+  async exists(@Param("slug") raw: string) {
+    if (!slug.safeParse(raw).success) throw new NotFoundException();
+    const row = await this.db.contentEntry.findUnique({
+      where: { kind_slug: { kind: "POST", slug: raw } },
+      select: { publishedRevisionId: true },
+    });
+    if (!row?.publishedRevisionId) throw new NotFoundException();
   }
 
   @Get(":slug")

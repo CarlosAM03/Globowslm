@@ -4,14 +4,10 @@ import { cache } from "react";
 import { connection } from "next/server";
 import type { PostPage, PublicPost } from "@/types/cms/public-blog";
 import { getCmsConfig } from "./auth-server";
+import { validSlug } from "./blog-slug";
+export { validSlug } from "./blog-slug";
 
 type Result<T> = { state: "ready"; data: T } | { state: "missing" | "unavailable" };
-
-const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-
-export function validSlug(value: string) {
-  return value.length <= 100 && slugPattern.test(value);
-}
 
 async function request<T>(path: string, query?: URLSearchParams): Promise<Result<T>> {
   try {

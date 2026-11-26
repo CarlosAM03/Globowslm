@@ -5,4 +5,4 @@ export type Asset = {
 };
 
 export type AssetType = "image" | "video";
-export type AssetPage = { items: Asset[]; page: number; pageSize: number; total: number };
+export type AssetPage = { items: Asset[]; page: number; pageSize: number; total: number; limitsMiB: { image: number; video: number } };

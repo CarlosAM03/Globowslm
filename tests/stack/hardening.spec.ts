@@ -99,13 +99,13 @@ test("cabeceras de producción, navegación y panel a publicación con imagen re
   await expect(page.getByText("Borrador guardado.")).toBeVisible();
 
   const publicTab = await context.newPage();
-  await publicTab.goto(`/blog/${slug}`);
+  expect((await publicTab.goto(`/blog/${slug}`))?.status()).toBe(404);
   await expect(publicTab.getByRole("heading", { name: "Publicación no encontrada" })).toBeVisible();
   expect((await request.get(`http://api:3101/api/v1/public/posts/${slug}`)).status()).toBe(404);
 
   await page.getByRole("button", { name: "Publicar", exact: true }).click();
   await expect(page.getByText("Contenido publicado.")).toBeVisible();
-  await publicTab.reload();
+  expect((await publicTab.reload())?.status()).toBe(200);
   await expect(publicTab.getByRole("heading", { name: title })).toBeVisible();
   await expect(publicTab.getByText(paragraph, { exact: true })).toBeVisible();
   const photo = publicTab.locator(".blog-article img");
@@ -123,7 +123,7 @@ test("cabeceras de producción, navegación y panel a publicación con imagen re
   page.once("dialog", (dialog) => void dialog.accept());
   await page.getByRole("button", { name: "Retirar", exact: true }).click();
   await expect(page.getByText("Contenido retirado.")).toBeVisible();
-  await publicTab.reload();
+  expect((await publicTab.reload())?.status()).toBe(404);
   await expect(publicTab.getByRole("heading", { name: "Publicación no encontrada" })).toBeVisible();
   expect((await request.get(src)).status()).toBe(404);
   expect((await request.get(`${src}?width=480`)).status()).toBe(404);

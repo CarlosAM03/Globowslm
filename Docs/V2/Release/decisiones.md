@@ -11,6 +11,6 @@ La autorización directa `APPROVE-GLOBOWS-V2-FREE-01` activa el sprint P18–P26
 
 ## Confirmaciones del propietario del 26 de noviembre
 
-Render se limita al workspace dedicado GlobowsLM, sin método de pago. Supabase GlobowsLM usa el proyecto Free dedicado ya aprovisionado. La reautorización de Codex sigue pendiente. El titular entregará la contraseña de PostgreSQL por un mecanismo seguro cuando sea necesaria.
+Render se limita al workspace dedicado GlobowsLM, sin método de pago. Supabase GlobowsLM usa el proyecto Free dedicado ya aprovisionado. El titular completó OAuth y Codex verificó lectura de tablas en el proyecto exacto. El titular entregará la contraseña de PostgreSQL por un mecanismo seguro cuando sea necesaria.
 
 El sitio busca captar clientes. Vercel `globowslm` está en Hobby y el titular ratificó su uso exclusivo para desarrollo y validación inicial no comercial. Quedan bloqueadas la publicación para captar clientes y la aceptación comercial. El titular conserva los proveedores existentes y el presupuesto de 0 MXN. [Alternativas evaluadas](hosting-frontend.md)

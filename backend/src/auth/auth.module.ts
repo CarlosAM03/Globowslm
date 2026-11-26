@@ -15,7 +15,8 @@ class AuthController {
   @Get("csrf")
   @Header("Cache-Control", "no-store")
   @ApiOperation({ summary: "Emite un desafío de acceso de un solo uso para el BFF." })
-  challenge(@Headers("origin") origin: string | undefined, @Req() req: Request) {
+  challenge(@Headers("origin") origin: string | undefined, @Headers("x-cms-bff") bff: string | undefined, @Req() req: Request) {
+    this.auth.assertBff(bff);
     return this.auth.challenge(origin, req.socket.remoteAddress ?? "unknown");
   }
 
@@ -28,8 +29,10 @@ class AuthController {
     @Body() body: unknown,
     @Headers("origin") origin: string | undefined,
     @Headers("x-csrf-token") csrf: string | undefined,
+    @Headers("x-cms-bff") bff: string | undefined,
     @Req() req: Request,
   ) {
+    this.auth.assertBff(bff);
     return this.auth.login(body, origin, csrf, req.socket.remoteAddress ?? "unknown");
   }
 

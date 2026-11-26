@@ -93,10 +93,10 @@ export function MediaLibrary() {
       </StatusPanel> : null}
       {notice ? <p role="status">{notice}</p> : null}
       <form className="admin-editor" method="post" onSubmit={upload}>
-        <fieldset disabled={working}>
+        <fieldset disabled={working || !data}>
           <legend>Subir archivo</legend>
           <Field id="media-file" label="Archivo" name="file" type="file" accept={supportedMedia.join(",")} required
-            hint="Imágenes JPG, PNG o WebP de hasta 15 MiB. Videos MP4 o WebM de hasta 100 MiB." />
+            hint={data ? `Imágenes JPG, PNG o WebP de hasta ${data.limitsMiB.image} MiB. Videos MP4 o WebM de hasta ${data.limitsMiB.video} MiB.` : "Imágenes JPG, PNG o WebP. Videos MP4 o WebM."} />
           <div><button type="submit">{working ? "Procesando…" : "Subir archivo"}</button></div>
         </fieldset>
       </form>

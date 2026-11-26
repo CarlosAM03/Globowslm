@@ -104,9 +104,11 @@ export function documentApi(document: OpenAPIObject): OpenAPIObject {
     });
   }
   configure("auth/login", "post", (operation) => {
+    operation.security = [{ cmsBff: [] }];
     for (const status of ["401", "403", "429"]) operation.responses[status] = response(status);
   });
   configure("auth/csrf", "get", (operation) => {
+    operation.security = [{ cmsBff: [] }];
     operation.parameters = [...(operation.parameters ?? []), origin];
     operation.responses["403"] = response("403");
     operation.responses["429"] = response("429");
@@ -119,7 +121,7 @@ export function documentApi(document: OpenAPIObject): OpenAPIObject {
   body("admin/media/{id}", "patch", requestBody(edit));
   body("admin/media/{id}", "delete", requestBody(remove));
   configure("media/upload", "post", (operation) => {
-    operation.description = "Sube bytes directamente con el ticket de uso único. Límite de 15 MiB para fotos y 100 MiB para video.";
+    operation.description = "Sube bytes con el ticket de uso único. Límite de 15 MiB para fotos, 100 MiB para video local y 45 MiB para video en FREE-01.";
     operation.security = [{ uploadTicket: [] }];
     operation.parameters = [...(operation.parameters ?? []), origin];
     operation.requestBody = {

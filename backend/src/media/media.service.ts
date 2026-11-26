@@ -14,7 +14,7 @@ import { hashToken, newToken, tokenPattern } from "../auth/credentials.js";
 import type { Authenticated } from "../auth/auth.service.js";
 import { Prisma, type Media } from "../generated/prisma/client.js";
 import { MediaStorage } from "../storage.js";
-import { formats, isMime, rangeFor, saveUpload, validateMedia, type MediaMime } from "./files.js";
+import { formats, isMime, MiB, rangeFor, saveUpload, validateMedia, type MediaMime } from "./files.js";
 
 const minute = 60_000;
 const select = {
@@ -42,7 +42,7 @@ export class MediaService {
       }),
       this.db.media.count({ where }),
     ]);
-    return { items, total, page, pageSize };
+    return { items, total, page, pageSize, limitsMiB: { image: 15, video: this.config.videoLimitMiB } };
   }
 
   async get(id: string) {
@@ -53,7 +53,7 @@ export class MediaService {
 
   async uploadTicket(session: Authenticated, mime: string, size: number, filename: string) {
     if (!isMime(mime)) throw new HttpException("Formato no permitido", 415);
-    if (size > formats[mime].limit) throw new HttpException("Carga demasiado grande", 413);
+    if (size > this.limit(mime)) throw new HttpException("Carga demasiado grande", 413);
     if (filename === "." || filename === ".." || /[\\/:\p{Cc}]/u.test(filename)) throw new UnprocessableEntityException();
     const now = new Date();
     const expiresAt = new Date(now.valueOf() + 5 * minute);
@@ -96,6 +96,7 @@ export class MediaService {
     });
     const mime = request.get("Content-Type") ?? "";
     if (!isMime(mime) || mime !== ticket.expectedMime) throw new HttpException("Tipo diferente al autorizado", 415);
+    if (ticket.maxBytes > this.limit(mime)) throw new HttpException("Carga demasiado grande", 413);
     const length = request.get("Content-Length");
     if (length && Number(length) > ticket.maxBytes) throw new HttpException("Carga demasiado grande", 413);
 
@@ -245,6 +246,10 @@ export class MediaService {
 
   private activeSession(now: Date): Prisma.SessionWhereInput {
     return { revokedAt: null, expiresAt: { gt: now }, lastSeenAt: { gt: new Date(now.valueOf() - 30 * minute) }, owner: { active: true } };
+  }
+
+  private limit(mime: MediaMime) {
+    return Math.min(formats[mime].limit, mime.startsWith("video/") ? this.config.videoLimitMiB * MiB : Infinity);
   }
 
   private async assertNoReferences(tx: Prisma.TransactionClient, mediaId: string) {

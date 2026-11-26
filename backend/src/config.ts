@@ -7,6 +7,8 @@ export type ApiConfig = {
   databaseUrl: string;
   mediaRoot: string;
   appOrigin: string;
+  videoLimitMiB: 45 | 100;
+  bffSecret?: string;
 };
 
 export const API_CONFIG = Symbol("API_CONFIG");
@@ -51,7 +53,19 @@ export function loadConfig(env: NodeJS.ProcessEnv): ApiConfig {
     throw new Error("PORT inválido");
   }
 
-  return { mode, port, databaseUrl: databaseUrl.href, mediaRoot, appOrigin: appOrigin.origin };
+  const videoLimit = env.MEDIA_VIDEO_LIMIT_MIB ?? (mode === "production" ? "45" : "100");
+  if ((videoLimit !== "45" && videoLimit !== "100") || (mode === "production" && videoLimit !== "45")) {
+    throw new Error("MEDIA_VIDEO_LIMIT_MIB inválido");
+  }
+  const bffSecret = env.CMS_BFF_SECRET;
+  if ((mode === "production" || bffSecret !== undefined) && !/^[A-Za-z0-9_-]{43,86}$/.test(bffSecret ?? "")) {
+    throw new Error("CMS_BFF_SECRET inválido");
+  }
+
+  return {
+    mode, port, databaseUrl: databaseUrl.href, mediaRoot, appOrigin: appOrigin.origin,
+    videoLimitMiB: videoLimit === "45" ? 45 : 100, ...(bffSecret && { bffSecret }),
+  };
 }
 
 @Global()

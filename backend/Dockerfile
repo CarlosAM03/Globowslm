@@ -15,7 +15,9 @@ COPY --chown=node:node . .
 CMD ["npm", "run", "gate:api"]
 
 FROM qa AS build
-RUN npm run prisma:generate && npm run build && npm prune --omit=dev --no-audit --no-fund
+RUN npm run prisma:generate && npm run build && npm prune --omit=dev --no-audit --no-fund \
+    && rm -rf node_modules/prisma node_modules/typescript node_modules/@prisma/dev \
+        node_modules/.bin/prisma node_modules/.bin/tsc node_modules/.bin/tsserver
 
 FROM qa AS migration
 COPY --from=build --chown=node:node /app/dist/src ./dist/src
