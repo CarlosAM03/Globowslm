@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "patch": "P12",
+  "base": "84c906bf155a1da3b9c7823786df5496d41a3b47",
+  "branch": "patch/v2/P12",
+  "verified_at": "2026-11-24T09:26:36.414859+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R07"
+  ],
+  "paths": [
+    "Docs/V2/Evidencias/P12.md",
+    "backend/src/app.ts",
+    "backend/src/editorial/content.module.ts",
+    "backend/src/editorial/public-blog.ts",
+    "backend/tests/integration/public-blog.test.ts",
+    "src/app/(admin)/admin/(protected)/blog/page.tsx",
+    "src/app/(public)/blog/[slug]/not-found.tsx",
+    "src/app/(public)/blog/[slug]/page.tsx",
+    "src/app/(public)/blog/page.tsx",
+    "src/app/api/cms/public/media/[id]/route.ts",
+    "src/app/globals.css",
+    "src/components/admin/AdminNavigation.tsx",
+    "src/components/admin/BlogCatalog.tsx",
+    "src/components/admin/EditorialCatalog.tsx",
+    "src/components/blog/BlogContent.tsx",
+    "src/lib/cms/content-path.ts",
+    "src/lib/cms/public-blog.ts",
+    "src/types/cms/public-blog.ts",
+    "tests/e2e/blog.spec.ts"
+  ],
+  "fingerprint": "023982fdd81d774185ed509f5d9a7a0ef58f9d85e32e2db33fd4808d0c2ab4f7",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 122.66,
+      "log_sha256": "c836b7fd5cd569d66e540d2cb627968bf206bca8267dad792a0fb3d4e64170e9",
+      "log_bytes": 16199,
+      "truncated": false,
+      "log_relative": "logs/P12/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 44.72,
+      "log_sha256": "08afd136d7a7921ffb18877bfb43485bcd702f631d1a8391b0657726fed12ae1",
+      "log_bytes": 23255,
+      "truncated": false,
+      "log_relative": "logs/P12/1-2.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

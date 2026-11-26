@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "patch": "P13",
+  "base": "c7919639cce6b90bfa2fe64a3a84665af09edbd7",
+  "branch": "patch/v2/P13",
+  "verified_at": "2026-11-24T09:33:33.430527+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R10"
+  ],
+  "paths": [
+    "Docs/V2/Evidencias/P13.md",
+    "backend/src/editorial/content.module.ts",
+    "backend/src/editorial/editorial.ts",
+    "backend/tests/integration/publications.test.ts",
+    "src/app/(admin)/admin/(protected)/publicaciones/page.tsx",
+    "src/app/api/cms/admin/content/[...parts]/route.ts",
+    "src/app/api/cms/admin/publications/route.ts",
+    "src/app/globals.css",
+    "src/components/admin/AdminNavigation.tsx",
+    "src/components/admin/Publications.tsx",
+    "src/lib/cms/auth-server.ts",
+    "src/lib/cms/content-path.ts",
+    "src/lib/cms/publication-client.ts",
+    "src/types/cms/publications.ts"
+  ],
+  "fingerprint": "4ac7a441202fa6e5ef0c80fe79769e927f89a57db597ac2c6a3b6de4f9300378",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 132.7,
+      "log_sha256": "ba0c728d103823a85607238862256a55b919f1a1bcc164549940ab017a9e4809",
+      "log_bytes": 16262,
+      "truncated": false,
+      "log_relative": "logs/P13/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 56.72,
+      "log_sha256": "dd9a38c25892fa7f7d2a6287b3bba43ff8c3679ed5a63d6449940d171fd9b577",
+      "log_bytes": 24723,
+      "truncated": false,
+      "log_relative": "logs/P13/1-2.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

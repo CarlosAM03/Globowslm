@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "patch": "P09",
+  "base": "03eecff50ce9429bf561a9769d53e87d4695bb5b",
+  "branch": "patch/v2/P09",
+  "verified_at": "2026-11-24T09:09:53.136695+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R05"
+  ],
+  "paths": [
+    "Docs/V2/Evidencias/P09.md",
+    "backend/src/editorial/content.module.ts",
+    "backend/src/editorial/dto.ts",
+    "backend/tests/integration/editorial.test.ts",
+    "src/app/(admin)/admin/(protected)/galerias/page.tsx",
+    "src/components/admin/AdminNavigation.tsx",
+    "src/components/admin/EditorialCatalog.tsx",
+    "src/components/admin/GalleryCatalog.tsx",
+    "src/lib/cms/content-path.ts",
+    "tests/auth-live/galleries.spec.ts",
+    "tests/auth-live/playwright.config.ts"
+  ],
+  "fingerprint": "66e6afab96646f8ad48f4d630b2a991eec0cef3ec026d14f7d599e06ad0d6c97",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 132.59,
+      "log_sha256": "c3ef1d1a1e0090716696ea11501149152256eb8fc3558041207668439e5312a1",
+      "log_bytes": 15899,
+      "truncated": false,
+      "log_relative": "logs/P09/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 41.23,
+      "log_sha256": "f137138bf576e6e55c46df580b19b4ca9d17c226380d4acee08286d93b0b1b9b",
+      "log_bytes": 20110,
+      "truncated": false,
+      "log_relative": "logs/P09/1-2.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

@@ -1,0 +1,56 @@
+{
+  "name": "globowslm-api",
+  "version": "2.0.0-rc.1",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.19.0 <23",
+    "npm": ">=10.9.0 <12"
+  },
+  "scripts": {
+    "prisma:generate": "prisma generate",
+    "db:deploy": "prisma migrate deploy",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests prisma.config.ts",
+    "build": "tsc",
+    "start": "node dist/src/main.js",
+    "test": "node --test dist/tests/unit/*.test.js",
+    "test:integration": "node --test --test-concurrency=1 dist/tests/integration/*.test.js",
+    "gate:audit": "node scripts/gate-audit.mjs",
+    "gate:api": "npm run prisma:generate && npm run typecheck && npm run lint && npm run build && npm test && npm run db:deploy && npm run test:integration",
+    "owner:provision": "node dist/src/auth/owner-cli.js provision",
+    "owner:recover": "node dist/src/auth/owner-cli.js recover",
+    "import:v1": "node dist/src/editorial/import-v1-cli.js",
+    "seed:demo": "node dist/src/editorial/seed-demo.js",
+    "media:cleanup": "node dist/src/media/cleanup-cli.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "12.6.0",
+    "@nestjs/core": "12.6.0",
+    "@nestjs/platform-express": "12.6.0",
+    "@nestjs/swagger": "12.1.2",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
+    "express": "5.3.0",
+    "pg": "8.23.1",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "zod": "4.6.7",
+    "@node-rs/argon2": "2.2.2",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/express": "5.0.6",
+    "@types/node": "22.20.5",
+    "eslint": "10.15.0",
+    "prisma": "7.10.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.74.0"
+  },
+  "overrides": {
+    "@prisma/config": {
+      "effect": "3.22.1"
+    }
+  }
+}

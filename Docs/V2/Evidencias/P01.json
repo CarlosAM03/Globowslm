@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "patch": "P01",
+  "base": "a4d561f1a77d859e7f27eebab72329881d2ff13b",
+  "branch": "patch/v2/P01",
+  "verified_at": "2026-11-24T06:48:03.721302+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [],
+  "paths": [
+    "Dockerfile.qa",
+    "Docs/V2/ADR.md",
+    "Docs/V2/CONTRACTS.md",
+    "Docs/V2/Dependencias.md",
+    "Docs/V2/ERV2.md",
+    "Docs/V2/Evidencias/P01.md",
+    "Docs/V2/README.md",
+    "package-lock.json",
+    "package.json"
+  ],
+  "fingerprint": "75a2449588a65233b9e3d6c64562f36f0c4b89cb4c44ed666a427a1adfe9b063",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 188.34,
+      "log_sha256": "6dab8e71fd226e4328c04aca936dfa5a6806ca3de112d179faddc2eb5ff74393",
+      "log_bytes": 14917,
+      "truncated": false,
+      "log_relative": "logs/P01/2-1.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

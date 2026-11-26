@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "patch": "P07",
+  "base": "933b7735fc73c1004d287f61d60420f0c338eaa0",
+  "branch": "patch/v2/P07",
+  "verified_at": "2026-11-24T08:31:37.809538+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R04"
+  ],
+  "paths": [
+    "Docs/V2/Evidencias/P07.md",
+    "backend/src/editorial/content.module.ts",
+    "backend/tests/integration/catalog.test.ts",
+    "src/app/(admin)/admin/(protected)/servicios/page.tsx",
+    "src/app/globals.css",
+    "src/components/admin/AdminNavigation.tsx",
+    "src/components/admin/ServiceCatalog.tsx",
+    "src/lib/cms/content-client.ts",
+    "src/lib/cms/content-path.ts",
+    "src/lib/cms/v1-services.ts",
+    "tests/auth-live/catalog.spec.ts",
+    "tests/auth-live/playwright.config.ts",
+    "tests/unit/v1-services.test.mjs"
+  ],
+  "fingerprint": "e09a088f63ae41bd275ed2a16526cca43e8665198a4bae5f3c00edb39a087762",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 113.44,
+      "log_sha256": "fd43c1aa9a8f3d1fe90cecadea3301a13ba592527a7768fd82cd75e9ab19a593",
+      "log_bytes": 15702,
+      "truncated": false,
+      "log_relative": "logs/P07/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 32.48,
+      "log_sha256": "d34bdcc2efb130f3b8b6d73f7b41453ed5521624468b8d60c38ac675fbc8909c",
+      "log_bytes": 14860,
+      "truncated": false,
+      "log_relative": "logs/P07/1-2.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

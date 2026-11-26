@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "patch": "P06",
+  "base": "6f41f4498aee8f96e9412888f29a5127d82bad88",
+  "branch": "patch/v2/P06",
+  "verified_at": "2026-11-24T08:22:39.438945+00:00",
+  "harness_sha256": "c258fadf7253e4f1f96e5b7be5ff3e714dfbe66db3b505141acc77d0d0c859d3",
+  "requirements": [
+    "R03"
+  ],
+  "paths": [
+    "Docs/V2/Evidencias/P06.md",
+    "backend/src/app.ts",
+    "backend/src/auth/auth.service.ts",
+    "backend/src/editorial/content.module.ts",
+    "backend/src/editorial/editorial.ts",
+    "backend/tests/integration/auth.test.ts",
+    "backend/tests/integration/health.test.ts",
+    "src/app/(admin)/admin/(protected)/institucional/page.tsx",
+    "src/app/(admin)/admin/(protected)/layout.tsx",
+    "src/app/api/cms/[...action]/route.ts",
+    "src/app/api/cms/admin/content/[...parts]/route.ts",
+    "src/app/globals.css",
+    "src/components/admin/AdminNavigation.tsx",
+    "src/components/admin/AdminSession.tsx",
+    "src/components/admin/SiteEditor.tsx",
+    "src/lib/cms/auth-server.ts",
+    "src/lib/cms/cms-json.ts",
+    "src/lib/cms/content-client.ts",
+    "src/lib/cms/content-path.ts",
+    "src/types/cms/content.ts",
+    "tests/auth-live/institution.spec.ts",
+    "tests/auth-live/playwright.config.ts"
+  ],
+  "fingerprint": "23d65bbee3a7798183a8c2d3d98debc0e4e2a12ed0f3cc3c1e2c25aff06ab419",
+  "gates": [
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "web-qa",
+        "npm",
+        "run",
+        "gate:web"
+      ],
+      "exit_code": 0,
+      "duration_s": 148.28,
+      "log_sha256": "76506d0ee16f8e9facf5e9846264a56ce0428784e2162a2155df7b06205d9c9f",
+      "log_bytes": 15507,
+      "truncated": false,
+      "log_relative": "logs/P06/1-1.log"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "-f",
+        "compose.local.yml",
+        "--env-file",
+        ".env.harness.local",
+        "run",
+        "--rm",
+        "--build",
+        "api-qa",
+        "npm",
+        "run",
+        "gate:api"
+      ],
+      "exit_code": 0,
+      "duration_s": 41.47,
+      "log_sha256": "5270420f872528786f4bab606a6590ff3f1bde00acd86776d9d2b6c5ddca8dbf",
+      "log_bytes": 14830,
+      "truncated": false,
+      "log_relative": "logs/P06/1-2.log"
+    }
+  ],
+  "result": "GATES_PASSED",
+  "note": "Logs privados locales; no acredita revisión comercial ni release final."
+}

@@ -1,0 +1,351 @@
+{
+  "version": 1,
+  "media": [
+    {
+      "id": "98a553d8-5a7d-5c39-87c5-b2565ca08830",
+      "sha256": "96fe5b07e8955ff5c218269a096fa1379211114950345f67918ad8bec83ab90b",
+      "path": "images/hero/decoracion-globows.webp",
+      "size": 103418,
+      "width": 852,
+      "height": 856,
+      "alt": "Decoración con globos blancos, magenta y dorados alrededor de un sillón blanco."
+    },
+    {
+      "id": "6a06dd96-81a1-5623-8799-5d83c5db4d46",
+      "sha256": "d26b483e0e18f8cfe581e22898dfe1183d154a7db6d9a50c37f4950dcf12c43d",
+      "path": "images/about/licey-marquez-archivo.webp",
+      "size": 243388,
+      "width": 1200,
+      "height": 1200,
+      "alt": "Composición promocional con Licey Márquez, globos de colores y textos de la campaña Corre con Espuma por Ivanna."
+    },
+    {
+      "id": "590b3c9d-1985-5997-8a64-dad05bc3a533",
+      "sha256": "8cfebec25c117d6149bcc56bb14ec803db1f724bdd5e4369db8444f33bf6cd48",
+      "path": "images/courses/montaje-san-valentin.webp",
+      "size": 95578,
+      "width": 706,
+      "height": 707,
+      "alt": "Montaje de San Valentín con globos rojos, rosas y blancos, corazones y un arco con moños."
+    },
+    {
+      "id": "140c225e-a8fd-5717-8d74-3fc01eb48217",
+      "sha256": "22e75839a37e752c308001e36016f29eb6ec06fbe15970e0a0115d7cf6558a8f",
+      "path": "images/gallery/baby-shower.webp",
+      "size": 28252,
+      "width": 472,
+      "height": 411,
+      "alt": "Decoración rosa al aire libre con globos, mariposas y letrero de Baby Shower."
+    },
+    {
+      "id": "2cd1cc02-f84f-58ed-8e0a-9ba48fa4a3cf",
+      "sha256": "f9f86cf6246786d6f509f2e52038e9fb100dd7068b73af12905fc3b709c875f5",
+      "path": "images/gallery/xv-anos.webp",
+      "size": 88364,
+      "width": 825,
+      "height": 555,
+      "alt": "Decoración de XV años con globos verdes y dorados, fondo brillante y números luminosos 15."
+    },
+    {
+      "id": "a7b13fcf-4506-5bb0-851f-99156c4c3563",
+      "sha256": "9ff719b9657f61feb0931635d9511ca382a61af29144b3677fc3db042cf66c72",
+      "path": "images/gallery/decoracion-tematica.webp",
+      "size": 74970,
+      "width": 827,
+      "height": 531,
+      "alt": "Montaje decorativo con globos naranjas, hojas de otoño y elementos de cosecha."
+    },
+    {
+      "id": "ca332891-a47a-583f-8013-bf3d8535bd94",
+      "sha256": "b1f7623d72c515d2a73c0df890c0cb2c3477629f3f0c8299efe858707fb8ab6a",
+      "path": "images/gallery/8-marzo.webp",
+      "size": 88390,
+      "width": 692,
+      "height": 749,
+      "alt": "Participantes del Gimnasio Sparta 55 junto a una decoración violeta de globos del 8 de marzo."
+    }
+  ],
+  "records": [
+    {
+      "id": "54135e94-b6eb-5240-8967-6b828e6fddf0",
+      "hash": "273bb5d64e6c41fcb12640ebb2d930874bb79d5209d609c79d1fd985b3354262",
+      "kind": "SITE",
+      "sourceKey": "v1:site",
+      "source": "Preview comercial aprobado, Brand Discovery, ERV1",
+      "slug": "site",
+      "position": 0,
+      "payload": {
+        "brandName": "Globows LM",
+        "founderName": "Licey Márquez",
+        "hero": {
+          "title": "Arte en el Aire,",
+          "subtitle": "Excelencia en Educación",
+          "photoRef": "98a553d8-5a7d-5c39-87c5-b2565ca08830"
+        },
+        "about": {
+          "title": "Sobre Licey",
+          "history": "Con más de 5 años moldeando el panorama del diseño de eventos premium, Globows LM fue fundada sobre una premisa simple: los globos no son solo recuerdos de fiesta, son un medio para embellecer y volver memorables las experiencias que acompañan momentos de la vida.",
+          "philosophy": "Nuestro enfoque combina estructura arquitectónica con formas orgánicas fluidas, creando atmósferas inolvidables y a la medida para clientes exigentes y empoderando a la próxima generación de artistas a través de una educación rigurosa.",
+          "portraitRef": "6a06dd96-81a1-5623-8799-5d83c5db4d46"
+        },
+        "trajectory": "Hoy la marca reúne decoración profesional para eventos y formación presencial para quienes desean aprender este oficio.\nEl comienzo. Un emprendimiento iniciado en casa, con los primeros Balloon Bouquets.\nLa evolución. De los bouquets a decoraciones de mayor escala, con formación continua.\nCompartir conocimiento. La creatividad y la enseñanza se encuentran en cursos y talleres presenciales.",
+        "contact": {
+          "phone": "+526644846470",
+          "whatsapp": "5216644846470",
+          "facebook": "https://www.facebook.com/globowslm",
+          "instagram": "https://www.instagram.com/globows_lm/",
+          "tiktok": "https://www.tiktok.com/@globows_liceymarquez"
+        },
+        "faq": [
+          {
+            "question": "¿Con cuánta anticipación debo reservar?",
+            "answer": "Para grandes instalaciones y eventos corporativos, recomendamos reservar con 1–2 meses de anticipación. Para fiestas privadas, 2–4 semanas es ideal para garantizar la disponibilidad de colores y el tiempo de diseño."
+          },
+          {
+            "question": "¿Los cursos son para principiantes?",
+            "answer": "Nuestros talleres y cursos presenciales están diseñados para todos los niveles. Desde principiantes que buscan aprender técnicas básicas hasta profesionales que desean perfeccionar sus habilidades y explorar nuevas tendencias en decoración con globos. Igualmente contamos con clases personalizadas y mentorías para aquellos que buscan un enfoque más profundo y adaptado a sus necesidades específicas."
+          },
+          {
+            "question": "¿En dónde trabajan?",
+            "answer": "Nuestra sede principal de cursos y talleres se encuentra en Tijuana, Baja California, México. Contamos con alcance regional para decoraciones y eventos en los municipios cercanos. Estamos trabajando en expandir la capacitación y cursos al nivel digital para llegar a todo México y Latinoamérica; esta evolución no está disponible en la V1."
+          }
+        ],
+        "seo": {
+          "title": "Globows LM | Decoración con globos y formación presencial",
+          "description": "Elevando el estilo con globos a la categoría de arte. Descubre nuestros servicios premium y talleres de capacitación."
+        }
+      }
+    },
+    {
+      "id": "bc091409-195c-515a-8955-e38e8d26e3be",
+      "hash": "acc696fb2db95017967350af2b661447dafee3fc4d1e22b7e00821e942658cb1",
+      "kind": "SERVICE",
+      "sourceKey": "v1:service:decoraciones",
+      "source": "ERV1 §4 «Servicios» · Brand Discovery §4",
+      "slug": "decoraciones",
+      "position": 0,
+      "payload": {
+        "title": "Decoraciones profesionales",
+        "description": "Instalaciones escultóricas a medida para eventos corporativos, bodas, fiestas de cumpleaños o cualquier otro evento especial.",
+        "ctaInterest": "decoracion",
+        "eventTypes": [],
+        "imageRef": "98a553d8-5a7d-5c39-87c5-b2565ca08830"
+      }
+    },
+    {
+      "id": "22239e3e-bdb2-5be4-8dc0-ea40e2eee724",
+      "hash": "39137b0bdcf9b4e01ec952860dc7c148915c42358667c40b0d2a1f785968e55f",
+      "kind": "SERVICE",
+      "sourceKey": "v1:service:cursos",
+      "source": "ERV1 §4 «Servicios»",
+      "slug": "cursos",
+      "position": 1,
+      "payload": {
+        "title": "Cursos presenciales",
+        "description": "Plan de estudios integral presencial diseñado para aspirantes a profesionales que buscan maestría técnica o iniciar en el mundo del arte con globos.",
+        "ctaInterest": "cursos",
+        "eventTypes": [],
+        "imageRef": "590b3c9d-1985-5997-8a64-dad05bc3a533"
+      }
+    },
+    {
+      "id": "8f01abd2-b384-5cbb-8b1e-595220b51af6",
+      "hash": "357a4b92c50ff665af66fbc7f5b9dd40e512313039efea738bae45bb8553583a",
+      "kind": "SERVICE",
+      "sourceKey": "v1:service:talleres",
+      "source": "ERV1 §4 «Servicios»",
+      "slug": "talleres",
+      "position": 2,
+      "payload": {
+        "title": "Talleres intensivos",
+        "description": "Talleres semanales dedicados a desarrollar habilidades prácticas en diseño y creación de arte con globos.",
+        "ctaInterest": "talleres",
+        "eventTypes": [],
+        "imageRef": "590b3c9d-1985-5997-8a64-dad05bc3a533"
+      }
+    },
+    {
+      "id": "a2f1e534-533a-5db9-8016-fa1e4a0599e7",
+      "hash": "4397d650b389e51bbcb62af8532a38d129f7c00eba2b0e724289b5f9852a535a",
+      "kind": "SERVICE",
+      "sourceKey": "v1:service:certificaciones",
+      "source": "ERV1 §4 «Servicios» y «Certificaciones»",
+      "slug": "certificaciones",
+      "position": 3,
+      "payload": {
+        "title": "Certificaciones",
+        "description": "Información y orientación sobre las propuestas de certificación vinculadas a la formación profesional.",
+        "ctaInterest": "certificaciones",
+        "eventTypes": []
+      }
+    },
+    {
+      "id": "dbd16c42-6c54-5b6b-8c74-47edfdf10416",
+      "hash": "e28d3e01bfb3fd2a770436fdacdc184fef32b7526125aac67b06c9d352dc45c0",
+      "kind": "SERVICE",
+      "sourceKey": "v1:service:asesorias",
+      "source": "ERV1 §4 «Servicios»",
+      "slug": "asesorias",
+      "position": 4,
+      "payload": {
+        "title": "Asesorías",
+        "description": "Orientación personalizada para resolver dudas sobre decoración con globos y desarrollo profesional.",
+        "ctaInterest": "asesorias",
+        "eventTypes": [],
+        "imageRef": "6a06dd96-81a1-5623-8799-5d83c5db4d46"
+      }
+    },
+    {
+      "id": "c556c13d-5525-5694-8819-4fd35bd10111",
+      "hash": "d8784481897f91295c754f1fd70843b0cd08c130a14c831d8f2f2dc2b73e4ff2",
+      "kind": "GALLERY_CATEGORY",
+      "sourceKey": "v1:gallery-category:baby-shower",
+      "source": "Galería de decoraciones del preview aprobado, ERV1",
+      "slug": "baby-shower",
+      "position": 0,
+      "payload": {
+        "title": "Baby Shower"
+      }
+    },
+    {
+      "id": "d466a5f2-20fe-5d0e-888d-e31a5adfab93",
+      "hash": "5cc31bf1a1abb6f8391bcb8adaf535595d1a26bd1ee5c94f5e45e36fca8dcd56",
+      "kind": "GALLERY",
+      "sourceKey": "v1:gallery:baby-shower",
+      "source": "Galería de decoraciones del preview aprobado, ERV1",
+      "slug": "baby-shower",
+      "position": 0,
+      "payload": {
+        "title": "Baby Shower",
+        "categoryRef": "c556c13d-5525-5694-8819-4fd35bd10111",
+        "featured": true,
+        "orderedPhotoRefs": [
+          {
+            "mediaRef": "140c225e-a8fd-5717-8d74-3fc01eb48217",
+            "alt": "Decoración rosa al aire libre con globos, mariposas y letrero de Baby Shower.",
+            "caption": "Decoración, sobremesa y centros de mesa. Baby Shower, 2026"
+          }
+        ]
+      }
+    },
+    {
+      "id": "1046c5da-b67d-5981-8037-17acf76daa0a",
+      "hash": "3c44c731ab4851770bd582d6f23559a51ca6a3edc333af11499bc6d16ccb9232",
+      "kind": "GALLERY_CATEGORY",
+      "sourceKey": "v1:gallery-category:xv-anos",
+      "source": "Galería de decoraciones del preview aprobado, ERV1",
+      "slug": "xv-anos",
+      "position": 1,
+      "payload": {
+        "title": "XV años"
+      }
+    },
+    {
+      "id": "ef6c3401-dfaf-5c67-823c-b98985335959",
+      "hash": "16be18ce7f787031e5ab67162a35e0d44000b077e7a93b8cdc406b0f2f444485",
+      "kind": "GALLERY",
+      "sourceKey": "v1:gallery:xv-anos",
+      "source": "Galería de decoraciones del preview aprobado, ERV1",
+      "slug": "xv-anos",
+      "position": 1,
+      "payload": {
+        "title": "XV años",
+        "categoryRef": "1046c5da-b67d-5981-8037-17acf76daa0a",
+        "featured": true,
+        "orderedPhotoRefs": [
+          {
+            "mediaRef": "2cd1cc02-f84f-58ed-8e0a-9ba48fa4a3cf",
+            "alt": "Decoración de XV años con globos verdes y dorados, fondo brillante y números luminosos 15.",
+            "caption": "Decoración para XV años"
+          }
+        ]
+      }
+    },
+    {
+      "id": "229a2a4b-7169-56c0-81d9-8249bbdc1a1e",
+      "hash": "a9f1e5c91c6734e9eaf68b56e1af6c5ef2d31c265911b72280464576dfe3de42",
+      "kind": "GALLERY_CATEGORY",
+      "sourceKey": "v1:gallery-category:tematicas",
+      "source": "Galería de decoraciones del preview aprobado, ERV1",
+      "slug": "tematicas",
+      "position": 2,
+      "payload": {
+        "title": "Decoraciones temáticas"
+      }
+    },
+    {
+      "id": "96b5810c-8457-550e-8e89-d40fbf8e3b9f",
+      "hash": "a2a512abd2cc48df654579c51ecf6c1f31c0ea80a6e87382aac6e0c0f3cd417d",
+      "kind": "GALLERY",
+      "sourceKey": "v1:gallery:tematicas",
+      "source": "Galería de decoraciones del preview aprobado, ERV1",
+      "slug": "tematicas",
+      "position": 2,
+      "payload": {
+        "title": "Decoraciones temáticas",
+        "categoryRef": "229a2a4b-7169-56c0-81d9-8249bbdc1a1e",
+        "featured": true,
+        "orderedPhotoRefs": [
+          {
+            "mediaRef": "a7b13fcf-4506-5bb0-851f-99156c4c3563",
+            "alt": "Montaje decorativo con globos naranjas, hojas de otoño y elementos de cosecha.",
+            "caption": "Kermés Día de la Cosecha. Tijuana, 2026"
+          },
+          {
+            "mediaRef": "ca332891-a47a-583f-8013-bf3d8535bd94",
+            "alt": "Participantes del Gimnasio Sparta 55 junto a una decoración violeta de globos del 8 de marzo.",
+            "caption": "8 de marzo de 2026 · Gimnasio Sparta 55"
+          }
+        ]
+      }
+    },
+    {
+      "id": "b17ce958-7b09-53db-89b7-af09d8307468",
+      "hash": "408a5cfb693d49bc8e38e043524f92048b542c6548a80d6d2290d5f790049d39",
+      "kind": "TRAINING",
+      "sourceKey": "v1:training:cursos",
+      "source": "legacy/index.html aprobado; Brand Discovery; ERV1 §4 Servicios",
+      "slug": "cursos",
+      "position": 0,
+      "payload": {
+        "title": "Cursos presenciales",
+        "description": "Plan de estudios integral presencial diseñado para aspirantes a profesionales que buscan maestría técnica o iniciar en el mundo del arte con globos.",
+        "trainingType": "COURSE",
+        "photoRef": "590b3c9d-1985-5997-8a64-dad05bc3a533",
+        "ctaInterest": "cursos"
+      }
+    },
+    {
+      "id": "ab74c7c1-bd95-5ea8-87fe-718bd7df946e",
+      "hash": "18207aa27d6071dc436bed5661f11aeb8dc15c7556a06037e662a9278c553983",
+      "kind": "TRAINING",
+      "sourceKey": "v1:training:talleres",
+      "source": "legacy/index.html aprobado; Brand Discovery; ERV1 §4 Servicios",
+      "slug": "talleres",
+      "position": 1,
+      "payload": {
+        "title": "Talleres intensivos",
+        "description": "Talleres semanales dedicados a desarrollar habilidades prácticas en diseño y creación de arte con globos.",
+        "trainingType": "WORKSHOP",
+        "photoRef": "590b3c9d-1985-5997-8a64-dad05bc3a533",
+        "ctaInterest": "talleres"
+      }
+    },
+    {
+      "id": "4a23011b-2616-55ab-817c-7efd3d8960e4",
+      "hash": "a54bd8e340995ea28bb3adc51fd0d24552e2116d7d7f61eccf7f6e05cfbc93d3",
+      "kind": "TRAINING",
+      "sourceKey": "v1:training:asesorias",
+      "source": "legacy/index.html aprobado; Brand Discovery; ERV1 §4 Servicios",
+      "slug": "asesorias",
+      "position": 2,
+      "payload": {
+        "title": "Asesorías",
+        "description": "Orientación personalizada para resolver dudas sobre decoración con globos y desarrollo profesional.",
+        "trainingType": "ADVICE",
+        "photoRef": "6a06dd96-81a1-5623-8799-5d83c5db4d46",
+        "ctaInterest": "asesorias"
+      }
+    }
+  ]
+}
