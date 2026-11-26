@@ -1,5 +1,7 @@
 # Informe de liberación FREE-01 · Globows LM 2.0.0
 
+El cierre remoto, los IDs de despliegue y el SHA congelado constan en el [informe final](informe-final.md).
+
 Estado actual y operaciones persistentes en [estado.json](estado.json). [Decisiones](decisiones.md) · [Preflight P18](evidencias/P18.md) · [Roles P19](evidencias/P19.md) · [Seguridad P20](evidencias/P20.md) · [Candidata 2.0.0-rc.1](../Candidata-2.0.0-rc.1.md)
 
 [Persistencia P21](evidencias/P21.md) · [Configuración y recuperación cloud](operacion-cloud.md) · [Diagnóstico histórico P23](evidencias/P23.md) · [Aceptación cloud P25](evidencias/P25.md) · [Cierre P26](evidencias/P26.md)

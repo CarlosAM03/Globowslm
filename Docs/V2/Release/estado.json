@@ -24,7 +24,7 @@
     "P24": { "state": "DONE", "evidence": "Aceptación del propietario de las cuentas y la importación. Inventario confirmado en P25." },
     "P25": { "state": "DONE", "evidence": "evidencias/P25.md", "commitTrailer": "Release-Patch: P25" },
     "P26": {
-      "state": "VERIFYING",
+      "state": "DONE",
       "version": "2.0.0",
       "evidence": "evidencias/P26.md",
       "commitTrailer": "Release-Patch: P26",
@@ -32,8 +32,14 @@
       "pullRequestHead": "ac53ffc2fe21b2a87d99d2ea43853a39803fef53",
       "pullRequestCi": { "run": 45830270623, "status": "success" },
       "mainSha": "ace77e3caea6b2fa9022536281d0ad96cd660b0d",
-      "mainCi": { "run": 45830715109, "status": "in_progress" },
-      "gate": "CI de main, deployments de ese SHA, smoke final, tag anotado y GitHub Release pendientes. La aceptación comercial permanece bloqueada por Vercel Hobby."
+      "mainCi": { "run": 45830715109, "status": "success" },
+      "deployments": { "vercel": "dpl_DGj6GZZKvyuMMPFEHSrgDqEBYoaS", "render": "dep-dc43cn0ae00c73d4rbtg" },
+      "smoke": { "routesPassed": 9, "mediaSha256Passed": 7, "status": "success" },
+      "tag": { "name": "v2.0.0", "object": "73ba169f3727130b35eea55f3685065a9f40cfdf", "annotated": true },
+      "release": { "id": 459467652, "url": "https://github.com/CarlosAM03/Globowslm/releases/tag/v2.0.0", "publishedAt": "2026-11-26T13:41:50Z" },
+      "result": "READY_FOR_HUMAN_PRODUCTION_ACCEPTANCE",
+      "commercialAcceptance": "BLOCKED_VERCEL_HOBBY",
+      "report": "informe-final.md"
     }
   },
   "cloudMutations": [
