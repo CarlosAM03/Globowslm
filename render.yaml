@@ -3,13 +3,13 @@ services:
     name: globowslm-api
     runtime: docker
     repo: https://github.com/CarlosAM03/Globowslm
-    branch: develop/v2.0.0
+    branch: main
     rootDir: backend
     dockerfilePath: ./Dockerfile
     dockerContext: .
     plan: free
     region: ohio
-    autoDeployTrigger: off
+    autoDeployTrigger: checksPass
     healthCheckPath: /api/v1/health/ready
     envVars:
       - key: HARNESS_MODE
@@ -23,7 +23,7 @@ services:
       - key: SUPABASE_MEDIA_BUCKET
         value: globows-media
       - key: APP_ORIGIN
-        sync: false
+        value: https://globowslm.vercel.app
       - key: DATABASE_URL
         sync: false
       - key: SUPABASE_STORAGE_KEY
