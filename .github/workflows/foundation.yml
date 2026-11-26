@@ -27,6 +27,9 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      # Same isolated baseline fixture as compose.local.yml web-qa.
+      CMS_BASELINE_FIXTURE: "1"
     steps:
       - name: Checkout
         uses: actions/checkout@v7
