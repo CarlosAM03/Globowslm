@@ -6,7 +6,7 @@ Estado actual y operaciones persistentes en [estado.json](estado.json). [Decisio
 
 ## Checkpoint
 
-P19 integrado como `04f67d5c90e2dcf539944578cc7b4ef6b0717858`. P20 integrado y verificado en GitHub como `b1bf4cc545b95a180bf4817a3d4eaf49160ec82b`. P21 permanece en el worktree `patch/v2/P21` con cambios locales y gates Docker aprobados. Retomar por CA de PostgreSQL y validación de clave de Storage, luego ejecutar P21 remoto antes de aprovisionar Render. El preview automático de P20 falló por alcance TypeScript. Se verificó el arreglo correspondiente a P23 en un build local que incluye el monorepo.
+P19 integrado como `04f67d5c90e2dcf539944578cc7b4ef6b0717858`. P20 integrado como `b1bf4cc545b95a180bf4817a3d4eaf49160ec82b`. P21 publicado como `7fa0b44c25eacf70882e68651ee9364032c98445`. Supabase tiene seis migraciones, TLS en ambos tramos del pooler, RLS sobre 16 tablas y Storage privado verificado. El preview automático de P20 falló por alcance TypeScript. La corrección excluye el backend del proyecto TypeScript de Next.
 
 OpenAPI local del stack P21, 27 rutas, SHA-256 `03e56deea2d4ebcbceba57ac1a2b30eb55d48881f0a9eceb61a65c5399abc081`. Archivo local `.visual-evidence/release/openapi-local-free01.json`.
 

@@ -9,6 +9,21 @@ permissions:
   contents: read
 
 jobs:
+  api-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      POSTGRES_PASSWORD: local-ci-fixture-only
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Prisma migrations, types, lint and API tests
+        run: docker compose -p globows-v2-ci -f compose.local.yml run --rm --build api-qa npm run gate:api
+      - name: Remove CI-only containers
+        if: always()
+        run: docker compose -p globows-v2-ci -f compose.local.yml --profile qa down --remove-orphans
+
   validate:
     runs-on: ubuntu-latest
     timeout-minutes: 20

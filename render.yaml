@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: globowslm-api
+    runtime: docker
+    repo: https://github.com/CarlosAM03/Globowslm
+    branch: develop/v2.0.0
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: ohio
+    autoDeployTrigger: off
+    healthCheckPath: /api/v1/health/ready
+    envVars:
+      - key: HARNESS_MODE
+        value: production
+      - key: MEDIA_ROOT
+        value: /var/lib/globows/media
+      - key: MEDIA_VIDEO_LIMIT_MIB
+        value: "45"
+      - key: SUPABASE_PROJECT_URL
+        value: https://ajguiknpwgkpoelwhsnv.supabase.co
+      - key: SUPABASE_MEDIA_BUCKET
+        value: globows-media
+      - key: APP_ORIGIN
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_STORAGE_KEY
+        sync: false
+      - key: CMS_BFF_SECRET
+        sync: false
