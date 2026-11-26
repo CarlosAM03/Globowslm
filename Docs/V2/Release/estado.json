@@ -4,16 +4,26 @@
   "baseline": "6547ce06aa9be97765cec49ed31d02b2574fc8fc",
   "integrationBranch": "develop/v2.0.0",
   "deadline": "2026-11-26T16:00:00-08:00",
+  "closureApproval": "APPROVE-GLOBOWS-V2-RELEASE",
+  "closureScope": "academic-noncommercial",
+  "closureBase": {
+    "branch": "main",
+    "sha": "f0e30b54c621c3e69e972c0224a00ca5a8b8fd90",
+    "mergedPullRequests": [6, 7],
+    "ci": 45816283167,
+    "vercel": "dpl_FmwBu6b7FuDDvDQ3m1Z6z7z2GXfU",
+    "render": "dep-dc4229ui0phs738u3i60"
+  },
   "patches": {
     "P18": { "state": "BLOCKED", "branch": "patch/v2/P18", "gate": "Preflight parcialmente acreditado. Supabase OAuth y consulta public verificados; cero tablas. Vercel Hobby reservado a validación no comercial." },
     "P19": { "state": "DONE", "branch": "patch/v2/P19", "base": "6547ce06aa9be97765cec49ed31d02b2574fc8fc", "commit": "04f67d5c90e2dcf539944578cc7b4ef6b0717858", "commitTrailer": "Release-Patch: P19", "qaProjects": ["globows-v2-free-p19", "globows-v2-a190000001"] },
     "P20": { "state": "DONE", "branch": "patch/v2/P20", "base": "04f67d5c90e2dcf539944578cc7b4ef6b0717858", "commit": "b1bf4cc545b95a180bf4817a3d4eaf49160ec82b", "commitTrailer": "Release-Patch: P20", "gates": { "api": 0, "web": 0, "stackChromium": 0, "auditApi": 0, "auditWeb": 0, "runtimeImage": 0, "pushV2": 0 } },
     "P21": { "state": "DONE", "branch": "patch/v2/P21", "base": "b1bf4cc545b95a180bf4817a3d4eaf49160ec82b", "commitTrailer": "Release-Patch: P21", "gates": { "api": 0, "composeChromium": 0, "localRestore": 0, "localPg17Migration": 0, "pgEngine": "17.12", "remoteTls": "SESSION_POOLER_BOTH_LEGS_VERIFIED", "remotePrismaMigrations": 6, "remoteRlsTables": 16, "remoteDataApiTableGrants": 0, "preMigrationBackupRestored": true, "remoteStorage": "PRIVATE_BUCKETS_RANGE_CHECKSUM_AND_CLEANUP_VERIFIED" } },
-    "P22": { "state": "READY", "dependency": "P21" },
-    "P23": { "state": "FAILED", "environment": "preview no comercial", "deployment": "dpl_3L9xRgcb9wZE9xhAdjbctYrjBEZx", "gate": "El build Next de la rama incluye pruebas TypeScript del backend. Ajuste de alcance validado localmente." },
-    "P24": { "state": "READY", "dependency": "P21/P22" },
-    "P25": { "state": "READY", "dependency": "P21–P24" },
-    "P26": { "state": "BLOCKED", "gate": "Vercel Hobby reservado a desarrollo y validación inicial no comercial. Publicación comercial condicionada al uso permitido." }
+    "P22": { "state": "DONE", "evidence": "Render live desde main, verificado en P25." },
+    "P23": { "state": "DONE", "evidence": "Vercel Ready desde main, CI en Node 22.23.5 y 24.x; verificado en P25." },
+    "P24": { "state": "DONE", "evidence": "Aceptación del propietario de las cuentas y la importación. Inventario confirmado en P25." },
+    "P25": { "state": "DONE", "evidence": "evidencias/P25.md", "commitTrailer": "Release-Patch: P25" },
+    "P26": { "state": "VERIFYING", "version": "2.0.0", "evidence": "evidencias/P26.md", "commitTrailer": "Release-Patch: P26", "gate": "CI del PR, CI y deployments del SHA de main, smoke final, tag anotado y GitHub Release. La aceptación comercial permanece bloqueada por Vercel Hobby." }
   },
   "cloudMutations": [
     { "patch": "P20", "provider": "GitHub", "operation": "push", "ref": "refs/heads/develop/v2.0.0", "sha": "b1bf4cc545b95a180bf4817a3d4eaf49160ec82b", "verified": true },
