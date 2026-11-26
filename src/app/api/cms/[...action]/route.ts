@@ -49,12 +49,13 @@ async function handle(request: NextRequest, context: RouteContext<"/api/cms/[...
     if (action === "login" && !matchesToken(csrf, request.cookies.get(loginCookie)?.value)) return failure(403, id);
 
     const token = request.cookies.get(ownerCookie)?.value;
-    if ((action === "session" || action === "logout") && (!token || !tokenPattern.test(token))) return failure(401, id);
-    if (action === "logout" && (!csrf || !tokenPattern.test(csrf))) return failure(403, id);
-    const body = action === "login" ? await readBody(request) : undefined;
+    const sessionRequired = action === "session" || action === "logout" || action === "password";
+    if (sessionRequired && (!token || !tokenPattern.test(token))) return failure(401, id);
+    if (sessionRequired && method === "POST" && (!csrf || !tokenPattern.test(csrf))) return failure(403, id);
+    const body = action === "login" || action === "password" ? await readBody(request) : undefined;
     const upstream = await requestAuth(config, action, {
       method, requestId: id, csrf, body,
-      token: action === "session" || action === "logout" ? token : undefined,
+      token: sessionRequired ? token : undefined,
     });
     if (!upstream.ok) {
       const rejection = failure(upstream.status, id);
@@ -74,6 +75,12 @@ async function handle(request: NextRequest, context: RouteContext<"/api/cms/[...
     if (action === "logout") {
       if (value.signedOut !== true) return failure(503, id);
       const reply = respond({ signedOut: true }, 200, id);
+      reply.cookies.set(ownerCookie, "", { ...cookieOpts, maxAge: 0 });
+      return reply;
+    }
+    if (action === "password") {
+      if (value.passwordChanged !== true) return failure(503, id);
+      const reply = respond({ passwordChanged: true }, 200, id);
       reply.cookies.set(ownerCookie, "", { ...cookieOpts, maxAge: 0 });
       return reply;
     }

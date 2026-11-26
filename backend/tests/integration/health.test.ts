@@ -73,6 +73,9 @@ test("OpenAPI describes both probes and errors while unknown routes are sanitize
   assert.ok(spec.paths["/api/v1/health/live"].get.responses["200"]);
   assert.ok(spec.paths["/api/v1/health/ready"].get.responses["503"]);
   assert.equal(spec.components.schemas.ApiError.properties.requestId.format, "uuid");
+  assert.ok(spec.paths["/api/v1/auth/password"].post.requestBody.content["application/json"]);
+  assert.deepEqual(spec.paths["/api/v1/auth/session"].get.responses["200"].content["application/json"].schema.properties.owner.properties.role.enum, ["OWNER", "ADMIN"]);
+  assert.ok(spec.paths["/api/v1/admin/diagnostics"].get.responses["403"]);
   const admin = spec.paths["/api/v1/admin/content/{kind}"].post;
   assert.deepEqual(admin.security, [{ ownerSession: [] }]);
   assert.ok(admin.parameters.some((parameter: { name: string }) => parameter.name === "X-CSRF-Token"));

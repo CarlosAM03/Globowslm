@@ -2,7 +2,8 @@ import { BadRequestException, ForbiddenException, HttpException, Inject, Injecta
 import { z } from "zod";
 import { API_CONFIG, type ApiConfig } from "../config.js";
 import { DatabaseService } from "../database.js";
-import { csrfFor, email, hashToken, matchesHash, newToken, tokenPattern, verifyPassword } from "./credentials.js";
+import { lockAccountChanges, passwordUsedByOtherAccount } from "./account-passwords.js";
+import { csrfFor, email, hashPassword, hashToken, matchesHash, newPasswordInput, newToken, passwordInput, tokenPattern, verifyPassword, type AccountRole } from "./credentials.js";
 
 const MINUTE = 60_000;
 const SESSION_LENGTH = 8 * 60 * MINUTE;
@@ -10,10 +11,11 @@ const SESSION_IDLE = 30 * MINUTE;
 const CHALLENGE_LENGTH = 5 * MINUTE;
 export const loginSchema = z.strictObject({
   email,
-  password: z.string().min(1).refine((password) => Buffer.byteLength(password) <= 1024),
+  password: passwordInput,
 });
+export const changePasswordSchema = z.strictObject({ currentPassword: passwordInput, newPassword: newPasswordInput });
 
-export type OwnerIdentity = { id: string; email: string; role: "OWNER" };
+export type OwnerIdentity = { id: string; email: string; role: AccountRole };
 export type Authenticated = { sessionId: string; owner: OwnerIdentity; csrfHash: string; csrfToken: string };
 
 @Injectable()
@@ -75,7 +77,7 @@ export class AuthService {
         expiresAt: new Date(now.valueOf() + SESSION_LENGTH),
       } });
     });
-    return { sessionToken, csrfToken: csrf, owner: this.identity(owner.id, owner.emailNormalized) };
+    return { sessionToken, csrfToken: csrf, owner: this.identity(owner) };
   }
 
   async authenticate(header: string | undefined): Promise<Authenticated> {
@@ -83,7 +85,7 @@ export class AuthService {
     if (!token) throw new UnauthorizedException();
     const session = await this.db.session.findUnique({
       where: { tokenHash: hashToken(token) },
-      include: { owner: { select: { id: true, emailNormalized: true, active: true } } },
+      include: { owner: { select: { id: true, emailNormalized: true, active: true, role: true } } },
     });
     const now = new Date();
     if (!session || session.revokedAt || !session.owner.active) throw new UnauthorizedException();
@@ -98,7 +100,7 @@ export class AuthService {
     if (touched.count !== 1) throw new UnauthorizedException();
     return {
       sessionId: session.id,
-      owner: this.identity(session.owner.id, session.owner.emailNormalized),
+      owner: this.identity(session.owner),
       csrfHash: session.csrfHash,
       csrfToken: csrfFor(token),
     };
@@ -117,8 +119,35 @@ export class AuthService {
     return { signedOut: true };
   }
 
-  private identity(id: string, value: string): OwnerIdentity {
-    return { id, email: value, role: "OWNER" };
+  async changePassword(
+    session: Authenticated, input: unknown, origin: string | undefined, csrfToken: string | undefined, requestId: string,
+  ) {
+    this.assertMutation(session, origin, csrfToken);
+    const body = changePasswordSchema.safeParse(input);
+    if (!body.success || body.data.currentPassword === body.data.newPassword) throw new BadRequestException();
+    await this.rateLimit(`password:${session.owner.id}`, new Date(), 5);
+    await this.db.$transaction(async (tx) => {
+      await lockAccountChanges(tx);
+      const account = await tx.owner.findUnique({ where: { id: session.owner.id } });
+      const liveSession = await tx.session.findFirst({ where: {
+        id: session.sessionId, ownerId: session.owner.id, revokedAt: null, expiresAt: { gt: new Date() },
+      }, select: { id: true } });
+      if (!account?.active || !liveSession ||
+          !await verifyPassword(body.data.currentPassword, account.passwordHash)) throw new UnauthorizedException();
+      if (await passwordUsedByOtherAccount(tx, account.role, body.data.newPassword)) throw new BadRequestException();
+      const passwordHash = await hashPassword(body.data.newPassword);
+      await tx.owner.update({ where: { id: account.id }, data: { passwordHash } });
+      await tx.session.updateMany({ where: { ownerId: account.id, revokedAt: null }, data: { revokedAt: new Date() } });
+      await tx.auditEvent.create({ data: {
+        actorId: account.id, action: "PASSWORD_CHANGED", entityId: account.id, entityType: "ACCOUNT",
+        requestId, changedFields: [], outcome: "SUCCESS",
+      } });
+    });
+    return { passwordChanged: true };
+  }
+
+  private identity(account: { id: string; emailNormalized: string; role: AccountRole }): OwnerIdentity {
+    return { id: account.id, email: account.emailNormalized, role: account.role };
   }
 
   private async rateLimit(scope: string, now: Date, limit: number) {

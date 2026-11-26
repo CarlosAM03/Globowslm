@@ -33,7 +33,8 @@ test("provisions, authenticates, revokes and recovers the only OWNER through rea
   );
 
   assert.equal(JSON.parse((await cli("provision", passwd)).stdout).event, "owner_provisioned");
-  await assert.rejects(cli("provision", passwd));
+  assert.equal(JSON.parse((await cli("provision", passwd)).stdout).event, "owner_already_provisioned");
+  await assert.rejects(cli("provision", recovered));
   const owners = await db.owner.findMany();
   assert.equal(owners.length, 1);
   assert.equal(owners[0].emailNormalized, ownerEmail);
@@ -190,4 +191,94 @@ test("provisions, authenticates, revokes and recovers the only OWNER through rea
   await db.rateLimitBucket.deleteMany();
   assert.equal((await login(passwd)).status, 401);
   assert.equal((await login(recovered)).status, 200);
+});
+
+test("enforces both singleton roles and revokes only the account that changes credentials", async (t) => {
+  const config = loadConfig(process.env);
+  assert.equal(config.mode, "test");
+  assert.equal(new URL(config.databaseUrl).hostname, "db-qa");
+  const db = new DatabaseService(config);
+  t.after(() => db.onModuleDestroy());
+  await db.$transaction([db.session.deleteMany(), db.owner.deleteMany(), db.rateLimitBucket.deleteMany()]);
+
+  const owner = { email: "rbac-owner@example.invalid", password: randomBytes(30).toString("base64url") };
+  const admin = { email: "rbac-admin@example.invalid", password: randomBytes(30).toString("base64url") };
+  const cli = (action: string, role: "ADMIN" | "OWNER", password: string, address: string) => exec(
+    process.execPath, [join(process.cwd(), "dist/src/auth/owner-cli.js"), action, role],
+    { env: { ...process.env, [`HARNESS_${role}_EMAIL`]: address, [`HARNESS_${role}_PASSWORD`]: password } },
+  );
+  await cli("provision", "OWNER", owner.password, owner.email);
+  await assert.rejects(cli("provision", "ADMIN", owner.password, admin.email));
+  await assert.rejects(cli("provision", "ADMIN", admin.password, owner.email.toUpperCase()));
+  const races = await Promise.allSettled([
+    cli("provision", "ADMIN", admin.password, admin.email),
+    cli("provision", "ADMIN", admin.password, admin.email.toUpperCase()),
+  ]);
+  const events = races.flatMap((result) => result.status === "fulfilled" ? [JSON.parse(result.value.stdout).event] : []);
+  assert.deepEqual(events.sort(), ["admin_already_provisioned", "admin_provisioned"]);
+  await assert.rejects(cli("provision", "ADMIN", admin.password, "other@example.invalid"));
+  const accounts = await db.owner.findMany({ orderBy: { role: "asc" } });
+  assert.deepEqual(accounts.map((row) => row.role), ["OWNER", "ADMIN"]);
+  await assert.rejects(db.owner.create({ data: {
+    role: "ADMIN", singleton: null, emailNormalized: "other@example.invalid", passwordHash: accounts[0].passwordHash,
+  } }));
+
+  const app = await createApp();
+  t.after(() => app.close());
+  await app.listen(0, "127.0.0.1");
+  const api = `${await app.getUrl()}/api/v1`;
+  const Origin = config.appOrigin;
+  const login = async (account: object) => {
+    const challenge = await fetch(`${api}/auth/csrf`, { headers: { Origin } });
+    assert.equal(challenge.status, 200);
+    return fetch(`${api}/auth/login`, {
+      method: "POST", headers: { Origin, "Content-Type": "application/json", "X-CSRF-Token": (await challenge.json()).csrfToken },
+      body: JSON.stringify(account),
+    });
+  };
+  const credentials = async (account: object) => {
+    const result = await login(account);
+    assert.equal(result.status, 200);
+    return result.json() as Promise<{ sessionToken: string; csrfToken: string; owner: { id: string; role: string } }>;
+  };
+  assert.equal((await login({ ...owner, role: "ADMIN" })).status, 400);
+  const ownerSession = await credentials(owner);
+  const adminSession = await credentials(admin);
+  assert.equal(ownerSession.owner.role, "OWNER");
+  assert.equal(adminSession.owner.role, "ADMIN");
+  const get = (path: string, token?: string) => fetch(`${api}/${path}`, {
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  assert.equal((await get("admin/diagnostics")).status, 401);
+  assert.equal((await get("admin/diagnostics", ownerSession.sessionToken)).status, 403);
+  assert.equal((await get("admin/dashboard", ownerSession.sessionToken)).status, 200);
+  assert.equal((await get("admin/dashboard", adminSession.sessionToken)).status, 200);
+  const postPassword = (newPassword: string, csrf = adminSession.csrfToken, expectedOrigin = Origin) =>
+    fetch(`${api}/auth/password`, {
+      method: "POST",
+      headers: {
+        Origin: expectedOrigin, "Content-Type": "application/json", "X-CSRF-Token": csrf,
+        Authorization: `Bearer ${adminSession.sessionToken}`,
+      },
+      body: JSON.stringify({ currentPassword: admin.password, newPassword }),
+    });
+  const next = randomBytes(30).toString("base64url");
+  assert.equal((await postPassword(next, ownerSession.csrfToken)).status, 403);
+  assert.equal((await postPassword(next, adminSession.csrfToken, "https://example.invalid")).status, 403);
+  assert.equal((await postPassword(owner.password)).status, 400);
+  assert.equal((await postPassword(next)).status, 200);
+  assert.equal((await get("auth/session", adminSession.sessionToken)).status, 401);
+  assert.equal((await get("auth/session", ownerSession.sessionToken)).status, 200);
+  assert.equal((await login(admin)).status, 401);
+  const renewed = await credentials({ ...admin, password: next });
+  const diagnostic = await get("admin/diagnostics", renewed.sessionToken);
+  assert.equal(diagnostic.status, 200);
+  assert.equal(diagnostic.headers.get("Cache-Control"), "no-store");
+  const report = await diagnostic.json();
+  assert.ok(report.audit.some((event: { actorId: string; action: string }) =>
+    event.actorId === renewed.owner.id && event.action === "PASSWORD_CHANGED"));
+  assert.doesNotMatch(JSON.stringify(report), /passwordHash|csrfHash|emailNormalized|sessionToken/);
+  await cli("recover", "ADMIN", randomBytes(30).toString("base64url"), admin.email);
+  assert.equal((await get("auth/session", renewed.sessionToken)).status, 401);
+  assert.equal((await get("auth/session", ownerSession.sessionToken)).status, 200);
 });

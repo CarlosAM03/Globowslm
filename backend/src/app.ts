@@ -5,6 +5,7 @@ import type { NestExpressApplication } from "@nestjs/platform-express";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import express from "express";
 import { AuthModule } from "./auth/auth.module.js";
+import { DiagnosticsModule } from "./auth/diagnostics.js";
 import { API_CONFIG, ConfigModule, type ApiConfig } from "./config.js";
 import { DashboardModule } from "./dashboard.js";
 import { ContentAdminModule } from "./editorial/content.module.js";
@@ -16,7 +17,7 @@ import { HealthModule } from "./health.js";
 import { ApiErrorFilter, jsonErrors, requestContext } from "./http.js";
 import { documentApi } from "./openapi.js";
 
-@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule, ContentAdminModule, MediaModule, PublicBlogModule, PublicSiteModule] })
+@Module({ imports: [ConfigModule, HealthModule, EditorialModule, AuthModule, DashboardModule, DiagnosticsModule, ContentAdminModule, MediaModule, PublicBlogModule, PublicSiteModule] })
 class AppModule {}
 
 export async function createApp(): Promise<INestApplication> {

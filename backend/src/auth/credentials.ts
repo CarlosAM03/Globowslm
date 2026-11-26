@@ -3,6 +3,10 @@ import { Algorithm, hash, verify } from "@node-rs/argon2";
 import { z } from "zod";
 
 export const email = z.string().trim().toLowerCase().max(254).pipe(z.email());
+export const accountRole = z.enum(["OWNER", "ADMIN"]);
+export type AccountRole = z.infer<typeof accountRole>;
+export const passwordInput = z.string().min(1).refine((value) => Buffer.byteLength(value) <= 1024);
+export const newPasswordInput = passwordInput.refine((value) => value.length >= 12);
 export const tokenPattern = /^[A-Za-z0-9_-]{43}$/;
 export const newToken = () => randomBytes(32).toString("base64url");
 export const hashToken = (value: string) => createHash("sha256").update(value).digest("hex");
@@ -13,7 +17,7 @@ const hashOptions = { algorithm: Algorithm.Argon2id, memoryCost: 65536, timeCost
 const dummyHash = hash(randomBytes(32), hashOptions);
 
 export async function hashPassword(value: string): Promise<string> {
-  if (value.length < 12 || Buffer.byteLength(value) > 1024) throw new Error("Longitud de contraseña inválida");
+  if (!newPasswordInput.safeParse(value).success) throw new Error("Longitud de contraseña inválida");
   return hash(value, hashOptions);
 }
 

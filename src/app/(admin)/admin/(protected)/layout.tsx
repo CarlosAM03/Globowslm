@@ -15,7 +15,7 @@ async function ProtectedContent({ children }: { children: ReactNode }) {
     <>
       <header className="admin-session">
         <span>Globows LM</span>
-        <AdminNavigation />
+        <AdminNavigation role={session.data.owner.role} />
         <SignOut csrfToken={session.data.csrfToken} />
       </header>
       <AdminSession token={session.data.csrfToken}>{children}</AdminSession>

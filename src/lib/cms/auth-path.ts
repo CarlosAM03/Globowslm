@@ -1,4 +1,4 @@
-const methods = { csrf: "GET", session: "GET", login: "POST", logout: "POST" } as const;
+const methods = { csrf: "GET", session: "GET", login: "POST", logout: "POST", password: "POST" } as const;
 export type AuthAction = keyof typeof methods;
 
 export function resolveAuthAction(parts: readonly string[], method: string): AuthAction | null {

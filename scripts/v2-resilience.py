@@ -16,6 +16,7 @@ APP = "dist/src/resilience-probe.js"
 OWNER = "dist/src/auth/owner-cli.js"
 CLEANUP = "dist/src/media/cleanup-cli.js"
 OLD_MIGRATION = "20261124000400_import_origin"
+ACCOUNT_MIGRATION = "20261124000500_account_roles"
 SENTINEL_VALUE = 818
 
 
@@ -49,10 +50,11 @@ class Stack:
     def database(self):
         self.compose("up", "-d", "--wait", "--wait-timeout", "90", "--no-build", "db")
 
-    def migrate(self, *, previous=False):
+    def migrate(self, *, omit=()):
         command = ["npm", "run", "db:deploy"]
-        if previous:
-            command = ["sh", "-ec", f"mv prisma/migrations/{OLD_MIGRATION} /tmp/ && npm run db:deploy"]
+        if omit:
+            moves = " ".join(f"prisma/migrations/{name}" for name in omit)
+            command = ["sh", "-ec", f"mv {moves} /tmp/ && npm run db:deploy"]
         self.compose("run", "-T", "--rm", "--no-deps", "migrate", *command)
 
     def sql(self, statement):
@@ -99,15 +101,33 @@ def assert_equal(actual, expected, label):
 
 def exercise(source, target, workspace):
     source.database()
-    source.migrate(previous=True)
+    source.migrate(omit=(OLD_MIGRATION, ACCOUNT_MIGRATION))
     assert_equal(source.sql('select count(*) from "_prisma_migrations" where finished_at is not null'), "4", "esquema previo")
     source.sql(f"create table resilience_probe (value integer primary key); insert into resilience_probe values ({SENTINEL_VALUE});")
-    source.migrate()
+    source.migrate(omit=(ACCOUNT_MIGRATION,))
     assert_equal(source.sql("select value from resilience_probe"), str(SENTINEL_VALUE), "fila tras upgrade")
     assert_equal(source.sql('select count(*) from "_prisma_migrations" where finished_at is not null'), "5", "upgrade")
     print("upgrade_4_to_5_preserved_row", flush=True)
 
-    source.runtime("node", OWNER, "provision", credentials=True)
+    # Create a baseline account and its related rows before the sixth migration.
+    identity = "89a1a4e0-b0f4-4fcc-88a1-abcc352b9170"
+    legacy_email = "migration-probe@example.invalid"
+    source.sql(
+        f"""INSERT INTO owners (id, "emailNormalized", "passwordHash", "updatedAt")
+            VALUES ('{identity}', '{legacy_email}', 'opaque baseline fixture', now());
+            INSERT INTO sessions (id, "tokenHash", "ownerId", "expiresAt", "csrfHash")
+            VALUES ('89a1a4e0-b0f4-4fcc-88a1-abcc352b9171', repeat('a',64), '{identity}', now(), repeat('b',64));"""
+    )
+    source.migrate()
+    assert_equal(source.sql('select count(*) from "_prisma_migrations" where finished_at is not null'), "6", "upgrade de roles")
+    assert_equal(
+        source.sql(f"""SELECT role || ':' || "emailNormalized" FROM owners WHERE id = '{identity}'"""),
+        f"OWNER:{legacy_email}", "identidad OWNER conservada",
+    )
+    assert_equal(source.sql(f"""SELECT count(*) FROM sessions WHERE "ownerId" = '{identity}'"""), "1", "FK de sesión conservada")
+    print("upgrade_5_to_6_preserved_owner_and_session", flush=True)
+
+    source.runtime("node", OWNER, "recover", credentials=True)
     source.compose("run", "-T", "--rm", "--no-deps", "import-v1", "--apply")
     assert "demo_draft_created" in source.runtime("npm", "run", "seed:demo", "--", "--apply")
     assert "demo_existing" in source.runtime("npm", "run", "seed:demo", "--", "--apply")
@@ -137,7 +157,7 @@ def exercise(source, target, workspace):
 
     target.database()
     target.migrate()
-    assert_equal(target.sql('select count(*) from "_prisma_migrations" where finished_at is not null'), "5", "migración fresh")
+    assert_equal(target.sql('select count(*) from "_prisma_migrations" where finished_at is not null'), "6", "migración fresh")
     assert_equal(target.sql('select count(*) from "content_entries"'), "0", "destino inicialmente vacío")
     target.restore(sql_path, media_path)
     assert_equal(target.sql("select value from resilience_probe"), str(SENTINEL_VALUE), "fila restaurada")

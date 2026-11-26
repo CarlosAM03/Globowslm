@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Header, Headers, HttpCode, Module, Post, Req } from "@nestjs/common";
+import { Body, Controller, Get, Header, Headers, HttpCode, Module, Post, Req, Res } from "@nestjs/common";
 import { APP_GUARD } from "@nestjs/core";
 import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
-import type { Request } from "express";
+import type { Request, Response } from "express";
 import { DatabaseModule } from "../database.js";
 import { OwnerGuard, Public, type OwnerRequest } from "./access.js";
 import { AuthService } from "./auth.service.js";
@@ -23,7 +23,7 @@ class AuthController {
   @Post("login")
   @HttpCode(200)
   @Header("Cache-Control", "no-store")
-  @ApiOperation({ summary: "Autentica al OWNER. La respuesta de sesión se consume dentro del BFF." })
+  @ApiOperation({ summary: "Autentica a OWNER o ADMIN. La respuesta de sesión se consume dentro del BFF." })
   login(
     @Body() body: unknown,
     @Headers("origin") origin: string | undefined,
@@ -51,6 +51,21 @@ class AuthController {
     @Headers("x-csrf-token") csrf: string | undefined,
   ) {
     return this.auth.logout(req.ownerSession, origin, csrf);
+  }
+
+  @Post("password")
+  @HttpCode(200)
+  @ApiBearerAuth("ownerSession")
+  @Header("Cache-Control", "no-store")
+  @ApiOperation({ summary: "Cambia la contraseña de la cuenta autenticada y revoca sus sesiones." })
+  password(
+    @Req() req: OwnerRequest,
+    @Res({ passthrough: true }) res: Response,
+    @Body() body: unknown,
+    @Headers("origin") origin: string | undefined,
+    @Headers("x-csrf-token") csrf: string | undefined,
+  ) {
+    return this.auth.changePassword(req.ownerSession, body, origin, csrf, res.locals.requestId as string);
   }
 }
 

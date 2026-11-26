@@ -27,7 +27,7 @@ export function getCmsConfig() {
 }
 
 type CmsOptions = { method: "GET" | "POST" | "PATCH" | "DELETE"; page?: number; mediaType?: "image" | "video"; kind?: ContentKind; state?: PublicationState; requestId: string; token?: string; csrf?: string; body?: string };
-type CmsEndpoint = `auth/${AuthAction}` | "admin/dashboard" | "admin/publications" | ContentEndpoint | MediaEndpoint;
+type CmsEndpoint = `auth/${AuthAction}` | "admin/dashboard" | "admin/diagnostics" | "admin/publications" | ContentEndpoint | MediaEndpoint;
 
 export function requestCms(
   config: ReturnType<typeof getCmsConfig>,
@@ -65,7 +65,7 @@ export function parseSession(value: unknown): OwnerSession | null {
   if (!isRecord(value) || !isRecord(value.owner)) return null;
   const { id, email, role } = value.owner;
   const { csrfToken } = value;
-  if (typeof id !== "string" || typeof email !== "string" || role !== "OWNER" ||
+  if (typeof id !== "string" || typeof email !== "string" || (role !== "OWNER" && role !== "ADMIN") ||
       typeof csrfToken !== "string" || !tokenPattern.test(csrfToken)) return null;
   return { owner: { id, email, role }, csrfToken };
 }

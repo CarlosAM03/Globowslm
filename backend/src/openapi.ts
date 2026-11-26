@@ -1,6 +1,6 @@
 import type { OpenAPIObject } from "@nestjs/swagger";
 import { z } from "zod";
-import { loginSchema } from "./auth/auth.service.js";
+import { changePasswordSchema, loginSchema } from "./auth/auth.service.js";
 import { contentInput, editorialPayloadSchemas, version } from "./editorial/dto.js";
 import { edit, remove, ticket } from "./media/media.module.js";
 
@@ -72,7 +72,7 @@ export function documentApi(document: OpenAPIObject): OpenAPIObject {
     for (const method of ["get", "post", "patch", "delete"] as const) {
       const operation = item[method];
       if (!operation) continue;
-      const owner = path.startsWith("/api/v1/admin/") || ["/api/v1/auth/session", "/api/v1/auth/logout"].includes(path);
+      const owner = path.startsWith("/api/v1/admin/") || ["/api/v1/auth/session", "/api/v1/auth/logout", "/api/v1/auth/password"].includes(path);
       if (owner) operation.security = [{ ownerSession: [] }];
       if ((owner && method !== "get") || path === "/api/v1/auth/login") {
         operation.parameters = [...(operation.parameters ?? []), origin, csrf];
@@ -84,6 +84,25 @@ export function documentApi(document: OpenAPIObject): OpenAPIObject {
   }
 
   body("auth/login", "post", requestBody(loginSchema));
+  body("auth/password", "post", requestBody(changePasswordSchema));
+  configure("auth/password", "post", (operation) => { operation.responses["429"] = response("429"); });
+  const identity = {
+    type: "object", required: ["id", "email", "role"],
+    properties: { id: uuid, email: { type: "string", format: "email" }, role: { type: "string", enum: ["OWNER", "ADMIN"] as string[] } },
+  } as const;
+  for (const method of ["login", "session"] as const) {
+    configure(`auth/${method}`, method === "login" ? "post" : "get", (operation) => {
+      const text = { type: "string" } as const;
+      operation.responses["200"] = { description: "Sesión válida", content: { "application/json": { schema: {
+        type: "object",
+        required: method === "login" ? ["owner", "csrfToken", "sessionToken"] : ["owner", "csrfToken"],
+        properties: {
+          owner: { ...identity, required: [...identity.required] }, csrfToken: text,
+          ...(method === "login" && { sessionToken: text }),
+        },
+      } } } };
+    });
+  }
   configure("auth/login", "post", (operation) => {
     for (const status of ["401", "403", "429"]) operation.responses[status] = response(status);
   });
